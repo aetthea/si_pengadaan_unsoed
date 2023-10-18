@@ -1,0 +1,219 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Decision Table - Decision Table1</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Decision Table - Decision Table1		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/A0fsSNGGAqDIBCuR', 'Decision Table1\nsistem informasi pengadaan unsoed.vpp://diagram/A0fsSNGGAqDIBCuR', 'Decision Table1', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<p>
+	</p>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+Decision Table1			</td>
+		</tr>
+		<tr>
+			<td class="TableCellSpaceHolder5PxTall">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="691.0px" cellspacing="0" id="diagram">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="2" width="471.0px" style="padding: 5px 10px;">
+<span class="TableContent"></span>			</td>
+			<td colSpan="2" width="220.0px" style="padding: 5px 10px; border-left: 1px solid #808080;" align="center" class="DecisionTableHeader">
+<span class="DecisionTableHeaderText">Rules</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="DecisionTableHeader">
+			<td colSpan="2" width="471.0px" style="padding: 5px 10px;">
+<span class="DecisionTableHeaderText">Conditions</span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #808080;" align="center">
+<span class="DecisionTableRuleHeaderText">1</span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #C0C0C0;" align="center">
+<span class="DecisionTableRuleHeaderText">2</span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td colSpan="1" width="50.0px" style="padding: 5px 10px;" align="right">
+<span class="DecisionTableConditionActionHeaderText">C1.</span>			</td>
+			<td colSpan="1" width="421.0px" style="padding: 5px 10px;">
+<span class="TableContent">Condition</span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #808080;" align="center">
+<span class="TableContent"></span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #C0C0C0;" align="center">
+<span class="TableContent"></span>			</td>
+		</tr>
+		<tr class="DecisionTableHeader">
+			<td colSpan="2" width="471.0px" style="padding: 5px 10px;">
+<span class="DecisionTableHeaderText">Actions</span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #808080;" align="center" class="DecisionTableHeader">
+<span class="DecisionTableRuleHeaderText">1</span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #C0C0C0;" align="center" class="DecisionTableHeader">
+<span class="DecisionTableRuleHeaderText">2</span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td colSpan="1" width="50.0px" style="padding: 5px 10px;" align="right">
+<span class="DecisionTableConditionActionHeaderText">A1.</span>			</td>
+			<td colSpan="1" width="421.0px" style="padding: 5px 10px;">
+<span class="TableContent">Action</span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #808080;" align="center">
+<span class="TableContent"></span>			</td>
+			<td colSpan="1" width="110.0px" style="padding: 5px 10px; border-left: 1px solid #C0C0C0;" align="center">
+<span class="TableContent"></span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<p>
+	</p>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>

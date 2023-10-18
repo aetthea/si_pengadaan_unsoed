@@ -1,0 +1,357 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Use Case Diagram - Persiapan Pengadaan</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="PackageDiagram_EJhvBNGGAqDIBAhR.html" class="PageParentTitle">Sistem Infromasi Pengadaan : Package</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="PackageDiagram_EJhvBNGGAqDIBAhR.html" class="PageParentTitle">Persiapan Pengadaan : Subsystem</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Use Case Diagram - Persiapan Pengadaan		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/SS5mxNGGAqDIBBEs', 'Persiapan Pengadaan\nsistem informasi pengadaan unsoed.vpp://diagram/SS5mxNGGAqDIBBEs', 'Persiapan Pengadaan', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|96.0|136.0|512.0|403.0|System_tk54ZNGGAqDIAw2D.html|System_tk54ZNGGAqDIAw2D.html|tk54ZNGGAqDIAw2C" id="optiontk54ZNGGAqDIAw2C">Persiapan Pengadaan : System</option>
+<option value="shape|7.0|188.0|30.0|60.0|Actor_we07eNGGAqDIBAvb.html|Actor_we07eNGGAqDIBAvb.html|S6cYZNGGAqDIAwv1" id="optionS6cYZNGGAqDIAwv1">PPK : Actor</option>
+<option value="shape|188.0|2.0|30.0|60.0|Actor_WUNYZNGGAqDIAwyA.html|Actor_WUNYZNGGAqDIAwyA.html|JUNYZNGGAqDIAwyB" id="optionJUNYZNGGAqDIAwyB">SOA UNSOED : Actor</option>
+<option value="shape|689.0|398.0|30.0|60.0|Actor_IHLYZNGGAqDIAwys.html|Actor_IHLYZNGGAqDIAwys.html|8HLYZNGGAqDIAwyt" id="option8HLYZNGGAqDIAwyt">KUKPBJ : Actor</option>
+<option value="shape|136.0|223.0|135.0|40.0|UseCase_13UYZNGGAqDIAwve.html|UseCase_13UYZNGGAqDIAwve.html|EPUYZNGGAqDIAwvo" id="optionEPUYZNGGAqDIAwvo">Mengakses RUP : Use Case</option>
+<option value="shape|385.0|161.0|185.0|40.0|UseCase_Fvq4ZNGGAqDIAwzk.html|UseCase_Fvq4ZNGGAqDIAwzk.html|7vq4ZNGGAqDIAwzu" id="option7vq4ZNGGAqDIAwzu">mengupdate spesifikasi teknis : Use Case</option>
+<option value="shape|327.0|347.0|231.0|40.0|UseCase_mz64ZNGGAqDIAwz8.html|UseCase_mz64ZNGGAqDIAwz8.html|Vz64ZNGGAqDIAw0G" id="optionVz64ZNGGAqDIAw0G">update Dokumen Persiapan Pengadaan (DPP) : Use Case</option>
+<option value="shape|490.0|223.0|92.0|40.0|UseCase_ZJm4ZNGGAqDIAw0T.html|UseCase_ZJm4ZNGGAqDIAw0T.html|bJm4ZNGGAqDIAw0d" id="optionbJm4ZNGGAqDIAw0d">update HPS : Use Case</option>
+<option value="shape|327.0|433.0|104.0|40.0|UseCase_3JO4ZNGGAqDIAw1D.html|UseCase_3JO4ZNGGAqDIAw1D.html|3JO4ZNGGAqDIAw1C" id="option3JO4ZNGGAqDIAw1C">Mengirimkan DPP : Use Case</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Persiapan_Pengadaan.png" usemap="#diagram_map" class="Image" width="737" height="543"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="196.0, 68.0, 196.0, 223.0, 210.0, 223.0, 210.0, 68.0" coords2="196.0, 68.0, 196.0, 223.0, 210.0, 223.0, 210.0, 68.0" shape="poly" alt=":Association" id="areadiagram_map_jZJ4ZNGGAqDIAw1w_default" href="Association_pZJ4ZNGGAqDIAw1r.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="37.0, 236.0, 37.0, 248.0, 27.0, 248.0, 27.0, 250.0, 136.0, 250.0, 136.0, 236.0" coords2="37.0, 236.0, 37.0, 248.0, 27.0, 248.0, 27.0, 250.0, 136.0, 250.0, 136.0, 236.0" shape="poly" alt=":Association" id="areadiagram_map_bNp4ZNGGAqDIAw18_default" href="Association_DNp4ZNGGAqDIAw13.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="385.0, 193.50273, 237.0, 221.0, 237.28572, 223.0, 271.0, 223.0, 271.0, 229.05464, 271.0, 229.05464, 422.0, 201.0, 385.0, 201.0, 385.0, 193.50273" coords2="385.0, 193.50273, 237.0, 221.0, 237.28572, 223.0, 271.0, 223.0, 271.0, 229.05464, 271.0, 229.05464, 422.0, 201.0, 385.0, 201.0, 385.0, 193.50273" shape="poly" alt=":Include" id="areadiagram_map_ndt4ZNGGAqDIAw2l_default" href="Include_xdt4ZNGGAqDIAw2j.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="271.0, 240.0, 271.0, 254.0, 490.0, 254.0, 490.0, 240.0" coords2="271.0, 240.0, 271.0, 254.0, 490.0, 254.0, 490.0, 240.0" shape="poly" alt=":Include" id="areadiagram_map_sSD4ZNGGAqDIAw2x_default" href="Include_YSD4ZNGGAqDIAw2w.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="271.0, 250.62962, 271.0, 263.0, 262.87805, 263.0, 327.0, 360.37036, 327.0, 347.0, 334.4634, 347.0, 271.0, 250.62962" coords2="271.0, 250.62962, 271.0, 263.0, 262.87805, 263.0, 327.0, 360.37036, 327.0, 347.0, 334.4634, 347.0, 271.0, 250.62962" shape="poly" alt=":Include" id="areadiagram_map_Pwz4ZNGGAqDIAw29_default" href="Include_Lwz4ZNGGAqDIAw28.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="271.0, 240.0, 271.0, 263.0, 263.24286, 263.0, 326.0, 454.0, 327.0, 453.7857, 327.0, 453.7857, 327.0, 433.0, 334.11374, 433.0, 271.0, 240.0" coords2="271.0, 240.0, 271.0, 263.0, 263.24286, 263.0, 326.0, 454.0, 327.0, 453.7857, 327.0, 453.7857, 327.0, 433.0, 334.11374, 433.0, 271.0, 240.0" shape="poly" alt=":Include" id="areadiagram_map_5.b4ZNGGAqDIAw3R_default" href="Include_h_b4ZNGGAqDIAw3Q.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="431.0, 450.0, 431.0, 464.0, 682.0, 464.0, 682.0, 450.0" coords2="431.0, 450.0, 431.0, 464.0, 682.0, 464.0, 682.0, 450.0" shape="poly" alt=":Association" id="areadiagram_map_ryH4ZNGGAqDIAw3h_default" href="Association_VyH4ZNGGAqDIAw3c.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="327, 433, 431, 473" coords2="327, 433, 431, 473" shape="rect" alt="Mengirimkan DPP:Use Case" id="areadiagram_map_3JO4ZNGGAqDIAw1C_default" href="UseCase_3JO4ZNGGAqDIAw1D.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="490, 223, 582, 275.0" coords2="490, 223, 582, 275.0" shape="rect" alt="update HPS:Use Case" id="areadiagram_map_bJm4ZNGGAqDIAw0d_default" href="UseCase_ZJm4ZNGGAqDIAw0T.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','490, 223, 582, 263',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=UJQ4ZNGGAqDIAwzL/update HPS/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '490, 223, 582, 263')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="327, 347, 558, 399.0" coords2="327, 347, 558, 399.0" shape="rect" alt="update Dokumen Persiapan Pengadaan (DPP):Use Case" id="areadiagram_map_Vz64ZNGGAqDIAw0G_default" href="UseCase_mz64ZNGGAqDIAwz8.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','327, 347, 558, 387',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=z744ZNGGAqDIAwzO/update Dokumen Persiapan Pengadaan/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '327, 347, 558, 387')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="385, 161, 570, 213.0" coords2="385, 161, 570, 213.0" shape="rect" alt="mengupdate spesifikasi teknis:Use Case" id="areadiagram_map_7vq4ZNGGAqDIAwzu_default" href="UseCase_Fvq4ZNGGAqDIAwzk.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','385, 161, 570, 201',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=69_YZNGGAqDIAwzI/mengupdate spesifikasi teknis/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '385, 161, 570, 201')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="689, 398, 719, 470.0" coords2="689, 398, 719, 470.0" shape="rect" alt="KUKPBJ:Actor" id="areadiagram_map_8HLYZNGGAqDIAwyt_default" href="Actor_IHLYZNGGAqDIAwys.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','689, 398, 719, 458',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=4cjYZNGGAqDIAwya/KUKPBJ/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '689, 398, 719, 458')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="188, 2, 218, 74.0" coords2="188, 2, 218, 74.0" shape="rect" alt="SOA UNSOED:Actor" id="areadiagram_map_JUNYZNGGAqDIAwyB_default" href="Actor_WUNYZNGGAqDIAwyA.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','188, 2, 218, 62',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=cexYZNGGAqDIAwxu/SOA UNSOED/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '188, 2, 218, 62')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="7, 188, 37, 260.0" coords2="7, 188, 37, 260.0" shape="rect" alt="PPK:Actor" id="areadiagram_map_S6cYZNGGAqDIAwv1_default" href="Actor_we07eNGGAqDIBAvb.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','7, 188, 37, 248',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=MzReSNGHWZSaSwb6/PPK/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '7, 188, 37, 248')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="136, 223, 271, 275.0" coords2="136, 223, 271, 275.0" shape="rect" alt="Mengakses RUP:Use Case" id="areadiagram_map_EPUYZNGGAqDIAwvo_default" href="UseCase_13UYZNGGAqDIAwve.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','136, 223, 271, 263',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=dB6IZNGGAqDIAwuO/Persiapan Pengadaan/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '136, 223, 271, 263')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="96, 136, 608, 539" coords2="96, 136, 608, 539" shape="rect" alt="Persiapan Pengadaan:System" id="areadiagram_map_tk54ZNGGAqDIAw2C_default" href="System_tk54ZNGGAqDIAw2D.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/System.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/System.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="System_tk54ZNGGAqDIAw2D.html" class="ItemLink">Persiapan Pengadaan : System</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Actor_we07eNGGAqDIBAvb.html" class="ItemLink">PPK : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Actor_WUNYZNGGAqDIAwyA.html" class="ItemLink">SOA UNSOED : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Actor_IHLYZNGGAqDIAwys.html" class="ItemLink">KUKPBJ : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_13UYZNGGAqDIAwve.html" class="ItemLink">Mengakses RUP : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_Fvq4ZNGGAqDIAwzk.html" class="ItemLink">mengupdate spesifikasi teknis : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_mz64ZNGGAqDIAwz8.html" class="ItemLink">update Dokumen Persiapan Pengadaan (DPP) : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_ZJm4ZNGGAqDIAw0T.html" class="ItemLink">update HPS : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_3JO4ZNGGAqDIAw1D.html" class="ItemLink">Mengirimkan DPP : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>

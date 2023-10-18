@@ -1,0 +1,392 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Use Case Diagram - Pengadaan Barang/Jasa Melalui Swakelola</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="PackageDiagram_EJhvBNGGAqDIBAhR.html" class="PageParentTitle">Sistem Infromasi Pengadaan : Package</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="PackageDiagram_EJhvBNGGAqDIBAhR.html" class="PageParentTitle">Pengadaan Swakelola : Subsystem</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Use Case Diagram - Pengadaan Barang/Jasa Melalui Swakelola		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/bCWNRNGAUYAGDgkT', 'Pengadaan Barang/Jasa Melalui Swakelola\nsistem informasi pengadaan unsoed.vpp://diagram/bCWNRNGAUYAGDgkT', 'Pengadaan Barang/Jasa Melalui Swakelola', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|230.0|2.0|450.0|560.0|System_JcjjRNGAUYAGDgq6.html|System_JcjjRNGAUYAGDgq6.html|xcjjRNGAUYAGDgq5" id="optionxcjjRNGAUYAGDgq5">Pengadaan Melalui Swakelola : System</option>
+<option value="shape|109.0|419.0|30.0|60.0|Actor_we07eNGGAqDIBAvb.html|Actor_we07eNGGAqDIBAvb.html|iPF9RNGAUYAGDgmB" id="optioniPF9RNGAUYAGDgmB">PPK : Actor</option>
+<option value="shape|79.0|237.0|30.0|60.0|Actor_6_p9RNGAUYAGDgll.html|Actor_6_p9RNGAUYAGDgll.html|V.p9RNGAUYAGDglm" id="optionV.p9RNGAUYAGDglm">Penyelenggara Swakelola : Actor</option>
+<option value="shape|35.0|419.0|30.0|60.0|Actor_3XZ9RNGAUYAGDglz.html|Actor_3XZ9RNGAUYAGDglz.html|s3Z9RNGAUYAGDgl0" id="options3Z9RNGAUYAGDgl0">Tim Swakelola : Actor</option>
+<option value="shape|845.0|264.0|30.0|60.0|Actor_F1ojRNGAUYAGDgod.html|Actor_F1ojRNGAUYAGDgod.html|D1ojRNGAUYAGDgoe" id="optionD1ojRNGAUYAGDgoe">Pelaksana Swakelola : Actor</option>
+<option value="shape|359.0|201.0|261.0|40.0|UseCase_pe_gRNGAUZQAagpc.html|UseCase_pe_gRNGAUZQAagpc.html|8LVjRNGAUYAGDgqk" id="option8LVjRNGAUYAGDgqk">Penetapan Anggaran Pengadaan Barang/Jasa : Use Case</option>
+<option value="shape|413.0|365.0|181.0|40.0|UseCase_T2AjRNGAUYAGDgnv.html|UseCase_T2AjRNGAUYAGDgnv.html|cOAjRNGAUYAGDgn5" id="optioncOAjRNGAUYAGDgn5">Menyusun rancangan kontrak : Use Case</option>
+<option value="shape|359.0|55.0|171.0|40.0|UseCase_5AQjRNGAUYAGDgoG.html|UseCase_5AQjRNGAUYAGDgoG.html|nAQjRNGAUYAGDgoQ" id="optionnAQjRNGAUYAGDgoQ">Menyusun rencana kegiatan : Use Case</option>
+<option value="shape|426.0|447.0|168.0|40.0|UseCase_FJMjRNGAUYAGDgor.html|UseCase_FJMjRNGAUYAGDgor.html|wpMjRNGAUYAGDgo1" id="optionwpMjRNGAUYAGDgo1">penyiapan Surat Keputusan : Use Case</option>
+<option value="shape|369.0|138.0|134.0|40.0|UseCase__3ajRNGAUYAGDgpX.html|UseCase__3ajRNGAUYAGDgpX.html|D3ajRNGAUYAGDgph" id="optionD3ajRNGAUYAGDgph">rencana pelaksanaan : Use Case</option>
+<option value="shape|369.0|264.0|134.0|40.0|UseCase_v5GjRNGAUYAGDgpu.html|UseCase_v5GjRNGAUYAGDgpu.html|CFGjRNGAUYAGDgp4" id="optionCFGjRNGAUYAGDgp4">rencana pengawasan : Use Case</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Pengadaan_BarangJasa_Melalui_Swakelola.png" usemap="#diagram_map" class="Image" width="929" height="566"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="45.0, 303.0, 45.0, 419.0, 59.0, 419.0, 59.0, 303.0" coords2="45.0, 303.0, 45.0, 419.0, 59.0, 419.0, 59.0, 303.0" shape="poly" alt=":Generalization" id="areadiagram_map_Net9RNGAUYAGDgmd_default" href="Generalization_pet9RNGAUYAGDgmc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="112.0, 303.0, 112.0, 419.0, 126.0, 419.0, 126.0, 303.0" coords2="112.0, 303.0, 112.0, 419.0, 126.0, 419.0, 126.0, 303.0" shape="poly" alt=":Generalization" id="areadiagram_map_b2d9RNGAUYAGDgmh_default" href="Generalization_d2d9RNGAUYAGDgmg.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="359.0, 86.37184, 109.0, 275.90253, 109.0, 275.90253, 109.0, 292.9675, 109.0, 292.9675, 370.12857, 95.0, 359.0, 95.0, 359.0, 86.37184" coords2="359.0, 86.37184, 109.0, 275.90253, 109.0, 275.90253, 109.0, 292.9675, 109.0, 292.9675, 370.12857, 95.0, 359.0, 95.0, 359.0, 86.37184" shape="poly" alt=":Association" id="areadiagram_map_5nTjRNGAUYAGDgrK_default" href="Association_OnTjRNGAUYAGDgrF.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="369.0, 169.81757, 109.0, 247.99324, 109.0, 247.99324, 109.0, 263.18982, 109.0, 263.18982, 391.3708, 178.0, 369.0, 178.0, 369.0, 169.81757" coords2="369.0, 169.81757, 109.0, 247.99324, 109.0, 247.99324, 109.0, 263.18982, 109.0, 263.18982, 391.3708, 178.0, 369.0, 178.0, 369.0, 169.81757" shape="poly" alt=":Association" id="areadiagram_map_ze7jRNGAUYAGDgrw_default" href="Association_de7jRNGAUYAGDgrr.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="99.0, 234.0, 99.0, 237.0, 109.0, 237.0, 109.0, 248.0, 369.0, 248.0, 369.0, 241.0, 359.0, 241.0, 359.0, 234.0" coords2="99.0, 234.0, 99.0, 237.0, 109.0, 237.0, 109.0, 248.0, 369.0, 248.0, 369.0, 241.0, 359.0, 241.0, 359.0, 234.0" shape="poly" alt=":Association" id="areadiagram_map_zGHjRNGAUYAGDgr4_default" href="Association_pGHjRNGAUYAGDgrz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="109.0, 281.0, 109.0, 295.0, 369.0, 295.0, 369.0, 281.0" coords2="109.0, 281.0, 109.0, 295.0, 369.0, 295.0, 369.0, 281.0" shape="poly" alt=":Association" id="areadiagram_map_4SnjRNGAUYAGDgsA_default" href="Association_ASnjRNGAUYAGDgr7.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="165.0, 304.0, 163.0, 318.0, 413.0, 371.88693, 413.0, 365.0, 448.0, 365.0, 165.0, 304.0" coords2="165.0, 304.0, 163.0, 318.0, 413.0, 371.88693, 413.0, 365.0, 448.0, 365.0, 165.0, 304.0" shape="poly" alt=":Association" id="areadiagram_map_sKXjRNGAUYAGDgsI_default" href="Association_4KXjRNGAUYAGDgsD.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="166.0, 302.0, 161.0, 315.0, 426.0, 453.98602, 426.0, 453.98602, 426.0, 447.0, 442.46667, 447.0, 166.0, 302.0" coords2="166.0, 302.0, 161.0, 315.0, 426.0, 453.98602, 426.0, 453.98602, 426.0, 447.0, 442.46667, 447.0, 166.0, 302.0" shape="poly" alt=":Association" id="areadiagram_map_pW3jRNGAUYAGDgsQ_default" href="Association__W3jRNGAUYAGDgsL.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="803.0, 333.0, 551.0, 362.0, 551.0, 365.0, 594.0, 365.0, 594.0, 371.05157, 594.0, 371.05157, 803.0, 347.0, 803.0, 333.0" coords2="803.0, 333.0, 551.0, 362.0, 551.0, 365.0, 594.0, 365.0, 594.0, 371.05157, 594.0, 371.05157, 803.0, 347.0, 803.0, 333.0" shape="poly" alt=":Association" id="areadiagram_map__ZPjRNGAUYAGDgsY_default" href="Association_LZPjRNGAUYAGDgsT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="800.0, 329.0, 576.47156, 447.0, 594.0, 447.0, 594.0, 453.38626, 805.0, 342.0, 800.0, 329.0" coords2="800.0, 329.0, 576.47156, 447.0, 594.0, 447.0, 594.0, 453.38626, 805.0, 342.0, 800.0, 329.0" shape="poly" alt=":Association" id="areadiagram_map_25vjRNGAUYAGDgsg_default" href="Association_C5vjRNGAUYAGDgsb.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="359, 201, 620, 253.0" coords2="359, 201, 620, 253.0" shape="rect" alt="Penetapan Anggaran Pengadaan Barang/Jasa:Use Case" id="areadiagram_map_8LVjRNGAUYAGDgqk_default" href="UseCase_pe_gRNGAUZQAagpc.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','359, 201, 620, 241',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=Z7dgRNGAUZQAagnp/Penetapan Anggaran Pengadaan Barang/Jasa/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '359, 201, 620, 241')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="369, 264, 503, 316.0" coords2="369, 264, 503, 316.0" shape="rect" alt="rencana pengawasan:Use Case" id="areadiagram_map_CFGjRNGAUYAGDgp4_default" href="UseCase_v5GjRNGAUYAGDgpu.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','369, 264, 503, 304',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=WkzDRNGAUYAGDgnX/rencana pengawasan/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '369, 264, 503, 304')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="369, 138, 503, 190.0" coords2="369, 138, 503, 190.0" shape="rect" alt="rencana pelaksanaan:Use Case" id="areadiagram_map_D3ajRNGAUYAGDgph_default" href="UseCase__3ajRNGAUYAGDgpX.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','369, 138, 503, 178',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=uFjDRNGAUYAGDgnU/rencana pelaksanaan/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '369, 138, 503, 178')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="426, 447, 594, 499.0" coords2="426, 447, 594, 499.0" shape="rect" alt="penyiapan Surat Keputusan:Use Case" id="areadiagram_map_wpMjRNGAUYAGDgo1_default" href="UseCase_FJMjRNGAUYAGDgor.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','426, 447, 594, 487',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=RQ7DRNGAUYAGDgnd/penyiapan Surat Keputusan/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '426, 447, 594, 487')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="845, 264, 875, 336.0" coords2="845, 264, 875, 336.0" shape="rect" alt="Pelaksana Swakelola:Actor" id="areadiagram_map_D1ojRNGAUYAGDgoe_default" href="Actor_F1ojRNGAUYAGDgod.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','845, 264, 875, 324',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=Zn3DRNGAUYAGDgng/Pelaksana Swakelola/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '845, 264, 875, 324')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="359, 55, 530, 107.0" coords2="359, 55, 530, 107.0" shape="rect" alt="Menyusun rencana kegiatan:Use Case" id="areadiagram_map_nAQjRNGAUYAGDgoQ_default" href="UseCase_5AQjRNGAUYAGDgoG.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','359, 55, 530, 95',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=txtDRNGAUYAGDgnR/Menyusun rencana kegiatan/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '359, 55, 530, 95')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="413, 365, 594, 417.0" coords2="413, 365, 594, 417.0" shape="rect" alt="Menyusun rancangan kontrak:Use Case" id="areadiagram_map_cOAjRNGAUYAGDgn5_default" href="UseCase_T2AjRNGAUYAGDgnv.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','413, 365, 594, 405',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=LKrDRNGAUYAGDgna/Menyusun rancangan kontrak/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '413, 365, 594, 405')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="109, 419, 139, 491.0" coords2="109, 419, 139, 491.0" shape="rect" alt="PPK:Actor" id="areadiagram_map_iPF9RNGAUYAGDgmB_default" href="Actor_we07eNGGAqDIBAvb.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','109, 419, 139, 479',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=MzReSNGHWZSaSwb6/PPK/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '109, 419, 139, 479')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="35, 419, 65, 491.0" coords2="35, 419, 65, 491.0" shape="rect" alt="Tim Swakelola:Actor" id="areadiagram_map_s3Z9RNGAUYAGDgl0_default" href="Actor_3XZ9RNGAUYAGDglz.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','35, 419, 65, 479',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=Ele9RNGAUYAGDglW/Tim Swakelola/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '35, 419, 65, 479')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="230, 2, 680, 562" coords2="230, 2, 680, 562" shape="rect" alt="Pengadaan Melalui Swakelola:System" id="areadiagram_map_xcjjRNGAUYAGDgq5_default" href="System_JcjjRNGAUYAGDgq6.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="79, 237, 109, 309.0" coords2="79, 237, 109, 309.0" shape="rect" alt="Penyelenggara Swakelola:Actor" id="areadiagram_map_V.p9RNGAUYAGDglm_default" href="Actor_6_p9RNGAUYAGDgll.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','79, 237, 109, 297',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=lbFeSNGHWZSaSwcG/Penyelenggara Swakelola/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '79, 237, 109, 297')" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/System.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/System.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="System_JcjjRNGAUYAGDgq6.html" class="ItemLink">Pengadaan Melalui Swakelola : System</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Actor_we07eNGGAqDIBAvb.html" class="ItemLink">PPK : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Actor_6_p9RNGAUYAGDgll.html" class="ItemLink">Penyelenggara Swakelola : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Actor_3XZ9RNGAUYAGDglz.html" class="ItemLink">Tim Swakelola : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Actor_F1ojRNGAUYAGDgod.html" class="ItemLink">Pelaksana Swakelola : Actor</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_pe_gRNGAUZQAagpc.html" class="ItemLink">Penetapan Anggaran Pengadaan Barang/Jasa : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_T2AjRNGAUYAGDgnv.html" class="ItemLink">Menyusun rancangan kontrak : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_5AQjRNGAUYAGDgoG.html" class="ItemLink">Menyusun rencana kegiatan : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_FJMjRNGAUYAGDgor.html" class="ItemLink">penyiapan Surat Keputusan : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase__3ajRNGAUYAGDgpX.html" class="ItemLink">rencana pelaksanaan : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="UseCase_v5GjRNGAUYAGDgpu.html" class="ItemLink">rencana pengawasan : Use Case</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>

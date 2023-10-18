@@ -1,0 +1,742 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Package Diagram - Sistem Informasi Pengadaan</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Package Diagram - Sistem Informasi Pengadaan		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/EJhvBNGGAqDIBAhR', 'Sistem Informasi Pengadaan\nsistem informasi pengadaan unsoed.vpp://diagram/EJhvBNGGAqDIBAhR', 'Sistem Informasi Pengadaan', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|910.0|203.0|179.0|100.0|Package_baDwZNGGAqDIAwsW.html|Package_baDwZNGGAqDIAwsW.html|baDwZNGGAqDIAwsV" id="optionbaDwZNGGAqDIAwsV">Ssistem Informasi Kepegawaian : Package</option>
+<option value="shape|249.0|234.0|150.0|100.0|Subsystem_DaPQZNGGAqDIAwrG.html|Subsystem_DaPQZNGGAqDIAwrG.html|9aPQZNGGAqDIAwrF" id="option9aPQZNGGAqDIAwrF">RUP : Subsystem</option>
+<option value="shape|557.0|82.0|150.0|100.0|Subsystem_Q0uQZNGGAqDIAwnk.html|Subsystem_Q0uQZNGGAqDIAwnk.html|Q0uQZNGGAqDIAwnj" id="optionQ0uQZNGGAqDIAwnj">AksesRUP : Subsystem</option>
+<option value="shape|687.0|619.0|140.0|100.0|Subsystem_B_MgZNGGAqDIAwkf.html|Subsystem_B_MgZNGGAqDIAwkf.html|B_MgZNGGAqDIAwke" id="optionB_MgZNGGAqDIAwke">SPMK : Subsystem</option>
+<option value="shape|22.0|228.0|190.0|100.0|Subsystem_w8XGhNGGAqDIBA2y.html|Subsystem_w8XGhNGGAqDIBA2y.html|Q8XGhNGGAqDIBA2x" id="optionQ8XGhNGGAqDIBA2x">Publikasi Rencana Umum Pengadaan : Subsystem</option>
+<option value="shape|2.0|203.0|412.0|144.0|Package__pEaxNGGAqDIBA_n.html|Package__pEaxNGGAqDIBA_n.html|_pEaxNGGAqDIBA_m" id="option_pEaxNGGAqDIBA_m">RUP UNSOED : Package</option>
+<option value="shape|170.0|899.0|158.0|100.0|Subsystem_v1TAxNGAUBwGxA3q.html|Subsystem_v1TAxNGAUBwGxA3q.html|v1TAxNGAUBwGxA3p" id="optionv1TAxNGAUBwGxA3p">Denda : Subsystem</option>
+<option value="shape|14.0|899.0|140.0|100.0|Subsystem_d09AxNGAUBwGxA3W.html|Subsystem_d09AxNGAUBwGxA3W.html|d09AxNGAUBwGxA3V" id="optiond09AxNGAUBwGxA3V">Sanksi : Subsystem</option>
+<option value="shape|22.0|557.0|140.0|100.0|Subsystem_x3HnhNGAUZQAage_.html|Subsystem_x3HnhNGAUZQAage_.html|x3HnhNGAUZQAage9" id="optionx3HnhNGAUZQAage9">Konsolidasi Pengadaan : Subsystem</option>
+<option value="shape|985.0|759.0|155.0|100.0|Subsystem_lJFWhNGGAqDIBA5H.html|Subsystem_lJFWhNGGAqDIBA5H.html|lJFWhNGGAqDIBA5G" id="optionlJFWhNGGAqDIBA5G">Prestasi : Subsystem</option>
+<option value="shape|811.0|759.0|161.0|100.0|Subsystem_trxWhNGGAqDIBA42.html|Subsystem_trxWhNGGAqDIBA42.html|NrxWhNGGAqDIBA41" id="optionNrxWhNGGAqDIBA41">Uang Muka : Subsystem</option>
+<option value="shape|22.0|409.0|195.0|100.0|Subsystem_ZxEWhNGGAqDIBA3l.html|Subsystem_ZxEWhNGGAqDIBA3l.html|pxEWhNGGAqDIBA3k" id="optionpxEWhNGGAqDIBA3k">Persiapan Pengadaan : Subsystem</option>
+<option value="shape|811.0|899.0|201.0|100.0|Subsystem_rBb6hNGGAqDIBA07.html|Subsystem_rBb6hNGGAqDIBA07.html|LBb6hNGGAqDIBA06" id="optionLBb6hNGGAqDIBA06">Pengawasan : Subsystem</option>
+<option value="shape|592.0|759.0|192.0|100.0|Subsystem_O0T6hNGGAqDIBA0q.html|Subsystem_O0T6hNGGAqDIBA0q.html|20T6hNGGAqDIBA0p" id="option20T6hNGGAqDIBA0p">Pelaksanaan Pekerjaan : Subsystem</option>
+<option value="shape|760.0|423.0|164.0|104.0|Subsystem_d3u6hNGGAqDIBAzx.html|Subsystem_d3u6hNGGAqDIBAzx.html|t3u6hNGGAqDIBAzw" id="optiont3u6hNGGAqDIBAzw">Penetapan Vendor : Subsystem</option>
+<option value="shape|536.0|41.0|243.0|151.0|Package_oYYKhNGGAqDIBAok.html|Package_oYYKhNGGAqDIBAok.html|oYYKhNGGAqDIBAoj" id="optionoYYKhNGGAqDIBAoj">SOA UNSOED : Package</option>
+<option value="shape|921.0|18.0|156.0|100.0|Package_oqwKhNGGAqDIBAoZ.html|Package_oqwKhNGGAqDIBAoZ.html|oqwKhNGGAqDIBAoY" id="optionoqwKhNGGAqDIBAoY">Sistem Informasi Keuangan : Package</option>
+<option value="shape|362.0|732.0|166.0|100.0|Subsystem_eZ6_BNGGAqDIBAln.html|Subsystem_eZ6_BNGGAqDIBAln.html|eZ6_BNGGAqDIBAlm" id="optioneZ6_BNGGAqDIBAlm">Pengadaan Melalui Penyedia : Subsystem</option>
+<option value="shape|136.0|732.0|162.0|100.0|Subsystem_9kq_BNGGAqDIBAla.html|Subsystem_9kq_BNGGAqDIBAla.html|9kq_BNGGAqDIBAlZ" id="option9kq_BNGGAqDIBAlZ">Pengadaan Swakelola : Subsystem</option>
+<option value="shape|217.0|557.0|140.0|100.0|Subsystem_JoS_BNGGAqDIBAlF.html|Subsystem_JoS_BNGGAqDIBAlF.html|xoS_BNGGAqDIBAlE" id="optionxoS_BNGGAqDIBAlE">Pengadaan : Subsystem</option>
+<option value="shape|434.0|557.0|176.0|100.0|Subsystem_lCsfBNGGAqDIBAj7.html|Subsystem_lCsfBNGGAqDIBAj7.html|lCsfBNGGAqDIBAj6" id="optionlCsfBNGGAqDIBAj6">Penandatanganan Kontrak : Subsystem</option>
+<option value="shape|592.0|899.0|168.0|100.0|Subsystem_xg0fBNGGAqDIBAju.html|Subsystem_xg0fBNGGAqDIBAju.html|xg0fBNGGAqDIBAjt" id="optionxg0fBNGGAqDIBAjt">Kejadian Kahar : Subsystem</option>
+<option value="shape|548.0|423.0|159.0|100.0|Subsystem_vB_vBNGGAqDIBAjL.html|Subsystem_vB_vBNGGAqDIBAjL.html|PB_vBNGGAqDIBAjK" id="optionPB_vBNGGAqDIBAjK">Penetapan Pelaku Pengadaan : Subsystem</option>
+<option value="shape|920.0|557.0|169.0|100.0|Subsystem_KbPvBNGGAqDIBAi6.html|Subsystem_KbPvBNGGAqDIBAi6.html|KbPvBNGGAqDIBAi5" id="optionKbPvBNGGAqDIBAi5">Pembayaran : Subsystem</option>
+<option value="shape|362.0|899.0|186.0|100.0|Subsystem_WHlvBNGGAqDIBAiE.html|Subsystem_WHlvBNGGAqDIBAiE.html|mHlvBNGGAqDIBAiD" id="optionmHlvBNGGAqDIBAiD">Serah Terima Pekerjaan : Subsystem</option>
+<option value="shape|22.0|64.0|191.0|100.0|Subsystem_DUFvBNGGAqDIBAhz.html|Subsystem_DUFvBNGGAqDIBAhz.html|tUFvBNGGAqDIBAhy" id="optiontUFvBNGGAqDIBAhy">Perencanaan Pengadaan : Subsystem</option>
+<option value="shape|2.0|376.0|1164.0|642.0|Package_x2tvBNGGAqDIBAiV.html|Package_x2tvBNGGAqDIBAiV.html|x2tvBNGGAqDIBAiU" id="optionx2tvBNGGAqDIBAiU">Sistem Infromasi Pengadaan : Package</option>
+<option value="shape|2.0|2.0|326.0|190.0|Package_3yvyhNGGAqDIBAoE.html|Package_3yvyhNGGAqDIBAoE.html|3yvyhNGGAqDIBAoD" id="option3yvyhNGGAqDIBAoD">Sistem Informasi Perencanaan dan Anggaran : Package</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Sistem_Informasi_Pengadaan.png" usemap="#diagram_map" class="Image" width="1170" height="1022"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="291.0, 657.0, 291.0, 732.0, 298.0, 732.0, 298.0, 741.0, 305.0, 741.0, 305.0, 657.0" coords2="291.0, 657.0, 291.0, 732.0, 298.0, 732.0, 298.0, 741.0, 305.0, 741.0, 305.0, 657.0" shape="poly" alt=":Generalization" id="areadiagram_map_LDx_BNGGAqDIBAmu_default" href="Generalization_VDx_BNGGAqDIBAmt.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="312.0, 657.0, 312.0, 696.8571, 306.0, 708.0, 312.0, 711.4, 312.0, 711.4, 312.0, 717.0, 321.88235, 717.0, 362.0, 739.73334, 362.0, 739.73334, 362.0, 732.0, 371.3846, 732.0, 373.0, 729.0, 326.0, 702.36664, 326.0, 657.0" coords2="312.0, 657.0, 312.0, 696.8571, 306.0, 708.0, 312.0, 711.4, 312.0, 711.4, 312.0, 717.0, 321.88235, 717.0, 362.0, 739.73334, 362.0, 739.73334, 362.0, 732.0, 371.3846, 732.0, 373.0, 729.0, 326.0, 702.36664, 326.0, 657.0" shape="poly" alt=":Generalization" id="areadiagram_map_4VJ_BNGGAqDIBAmy_default" href="Generalization__lJ_BNGGAqDIBAmx.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="328.0, 98.0, 328.0, 112.0, 536.0, 112.0, 536.0, 98.0" coords2="328.0, 98.0, 328.0, 112.0, 536.0, 112.0, 536.0, 98.0" shape="poly" alt=":Dependency" id="areadiagram_map_Bh0qhNGGAqDIBAy6_default" href="Dependency_mh0qhNGGAqDIBAy5.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="779.0, 83.0, 779.0, 97.0, 921.0, 97.0, 921.0, 83.0" coords2="779.0, 83.0, 779.0, 97.0, 921.0, 97.0, 921.0, 83.0" shape="poly" alt=":Dependency" id="areadiagram_map_ieMqhNGGAqDIBAzA_default" href="Dependency_UeMqhNGGAqDIBAy_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="162.0, 606.0, 162.0, 620.0, 217.0, 620.0, 217.0, 606.0" coords2="162.0, 606.0, 162.0, 620.0, 217.0, 620.0, 217.0, 606.0" shape="poly" alt=":Dependency" id="areadiagram_map_IEqWhNGGAqDIBA4L_default" href="Dependency_AEqWhNGGAqDIBA4K.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="357.0, 606.0, 357.0, 620.0, 434.0, 620.0, 434.0, 606.0" coords2="357.0, 606.0, 357.0, 620.0, 434.0, 620.0, 434.0, 606.0" shape="poly" alt=":Dependency" id="areadiagram_map_ZR6WhNGGAqDIBA4V_default" href="Dependency_BR6WhNGGAqDIBA4U.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="610.0, 593.0, 610.0, 607.0, 920.0, 607.0, 920.0, 593.0" coords2="610.0, 593.0, 610.0, 607.0, 920.0, 607.0, 920.0, 593.0" shape="poly" alt=":Dependency" id="areadiagram_map_gAWWhNGGAqDIBA4d_default" href="Dependency_n_mWhNGGAqDIBA4c.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="915.0, 648.0, 915.0, 759.0, 929.0, 759.0, 929.0, 657.0, 920.0, 657.0, 920.0, 648.0" coords2="915.0, 648.0, 915.0, 759.0, 929.0, 759.0, 929.0, 657.0, 920.0, 657.0, 920.0, 648.0" shape="poly" alt=":Realization" id="areadiagram_map_TDLWhNGGAqDIBA5r_default" href="Realization_FDLWhNGGAqDIBA5q.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="978.0, 657.0, 978.0, 768.0, 985.0, 768.0, 985.0, 759.0, 992.0, 759.0, 992.0, 657.0" coords2="978.0, 657.0, 978.0, 768.0, 985.0, 768.0, 985.0, 759.0, 992.0, 759.0, 992.0, 657.0" shape="poly" alt=":Realization" id="areadiagram_map_s7XWhNGGAqDIBA6S_default" href="Realization_Y7XWhNGGAqDIBA6R.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="75.0, 509.0, 75.0, 557.0, 89.0, 557.0, 89.0, 509.0" coords2="75.0, 509.0, 75.0, 557.0, 89.0, 557.0, 89.0, 509.0" shape="poly" alt=":Dependency" id="areadiagram_map_f6oXhNGAUZQAaggB_default" href="Dependency_b6oXhNGAUZQAaggA.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="719.0, 719.0, 719.0, 759.0, 733.0, 759.0, 733.0, 719.0" coords2="719.0, 719.0, 719.0, 759.0, 733.0, 759.0, 733.0, 719.0" shape="poly" alt=":Dependency" id="areadiagram_map_n1eXhNGAUZQAaggd_default" href="Dependency_z1eXhNGAUZQAaggc.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="785.0, 848.0, 784.0, 848.7273, 784.0, 859.0, 775.98114, 859.0, 809.0, 909.0, 811.0, 907.5455, 811.0, 899.0, 818.67926, 899.0, 785.0, 848.0" coords2="785.0, 848.0, 784.0, 848.7273, 784.0, 859.0, 775.98114, 859.0, 809.0, 909.0, 811.0, 907.5455, 811.0, 899.0, 818.67926, 899.0, 785.0, 848.0" shape="poly" alt=":Dependency" id="areadiagram_map_WHRXhNGAUZQAaggj_default" href="Dependency_KHRXhNGAUZQAaggi.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="592.0, 849.7241, 536.0, 898.0, 536.8182, 899.0, 548.0, 899.0, 548.0, 906.4138, 603.0, 859.0, 592.0, 859.0, 592.0, 849.7241" coords2="592.0, 849.7241, 536.0, 898.0, 536.8182, 899.0, 548.0, 899.0, 548.0, 906.4138, 603.0, 859.0, 592.0, 859.0, 592.0, 849.7241" shape="poly" alt=":Dependency" id="areadiagram_map_lkJXhNGAUZQAaggp_default" href="Dependency_JkJXhNGAUZQAaggo.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="676.0, 859.0, 676.0, 899.0, 690.0, 899.0, 690.0, 859.0" coords2="676.0, 859.0, 676.0, 899.0, 690.0, 899.0, 690.0, 859.0" shape="poly" alt=":Dependency" id="areadiagram_map_caZXhNGAUZQAagg1_default" href="Dependency_4aZXhNGAUZQAagg0.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="604.0, 192.0, 604.0, 289.0, 414.0, 289.0, 414.0, 303.0, 604.0, 303.0, 604.0, 306.0, 618.0, 306.0, 618.0, 303.0, 621.0, 303.0, 621.0, 289.0, 618.0, 289.0, 618.0, 192.0" coords2="604.0, 192.0, 604.0, 289.0, 414.0, 289.0, 414.0, 303.0, 604.0, 303.0, 604.0, 306.0, 618.0, 306.0, 618.0, 303.0, 621.0, 303.0, 621.0, 289.0, 618.0, 289.0, 618.0, 192.0" shape="poly" alt=":Dependency" id="areadiagram_map_E90axNGGAqDIBA_._default" href="Dependency_w90axNGGAqDIBA_9.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="610.0, 622.0, 610.0, 636.0, 687.0, 636.0, 687.0, 622.0" coords2="610.0, 622.0, 610.0, 636.0, 687.0, 636.0, 687.0, 622.0" shape="poly" alt=":Dependency" id="areadiagram_map_HRigZNGGAqDIAwk0_default" href="Dependency_zRigZNGGAqDIAwkz.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="681.0, 182.0, 681.0, 376.0, 695.0, 376.0, 695.0, 182.0" coords2="681.0, 182.0, 681.0, 376.0, 695.0, 376.0, 695.0, 182.0" shape="poly" alt=":Dependency" id="areadiagram_map_.o.wZNGGAqDIAwr__default" href="Dependency_6o_wZNGGAqDIAwr_.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="716.0, 192.0, 716.0, 256.0, 713.0, 256.0, 713.0, 270.0, 716.0, 270.0, 716.0, 273.0, 730.0, 273.0, 730.0, 270.0, 910.0, 270.0, 910.0, 256.0, 730.0, 256.0, 730.0, 192.0" coords2="716.0, 192.0, 716.0, 256.0, 713.0, 256.0, 713.0, 270.0, 716.0, 270.0, 716.0, 273.0, 730.0, 273.0, 730.0, 270.0, 910.0, 270.0, 910.0, 256.0, 730.0, 256.0, 730.0, 192.0" shape="poly" alt=":Dependency" id="areadiagram_map_TWnwZNGGAqDIAwsm_default" href="Dependency_VWnwZNGGAqDIAwsl.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="910, 203, 1089, 303" coords2="910, 203, 1089, 303" shape="rect" alt="Ssistem Informasi Kepegawaian:Package" id="areadiagram_map_baDwZNGGAqDIAwsV_default" href="Package_baDwZNGGAqDIAwsW.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="249, 234, 399, 334" coords2="249, 234, 399, 334" shape="rect" alt="RUP:Subsystem" id="areadiagram_map_9aPQZNGGAqDIAwrF_default" href="Subsystem_DaPQZNGGAqDIAwrG.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="557, 82, 707, 182" coords2="557, 82, 707, 182" shape="rect" alt="AksesRUP:Subsystem" id="areadiagram_map_Q0uQZNGGAqDIAwnj_default" href="Subsystem_Q0uQZNGGAqDIAwnk.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;color:#000000;margin-right:0;font-weight:normal;font-size:12px;font-family:Dialog;margin-left:0;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      SPMK adalah Surat Perintah Melaksanakan Pekerjaan
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="687, 619, 827, 719" coords2="687, 619, 827, 719" shape="rect" alt="SPMK:Subsystem" id="areadiagram_map_B_MgZNGGAqDIAwke_default" href="Subsystem_B_MgZNGGAqDIAwkf.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" coords="22, 228, 212, 328" coords2="22, 228, 212, 328" shape="rect" alt="Publikasi Rencana Umum Pengadaan:Subsystem" id="areadiagram_map_Q8XGhNGGAqDIBA2x_default" href="Subsystem_w8XGhNGGAqDIBA2y.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 203, 414, 347" coords2="2, 203, 414, 347" shape="rect" alt="RUP UNSOED:Package" id="areadiagram_map__pEaxNGGAqDIBA_m_default" href="Package__pEaxNGGAqDIBA_n.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="170, 899, 328, 999" coords2="170, 899, 328, 999" shape="rect" alt="Denda:Subsystem" id="areadiagram_map_v1TAxNGAUBwGxA3p_default" href="Subsystem_v1TAxNGAUBwGxA3q.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="14, 899, 154, 999" coords2="14, 899, 154, 999" shape="rect" alt="Sanksi:Subsystem" id="areadiagram_map_d09AxNGAUBwGxA3V_default" href="Subsystem_d09AxNGAUBwGxA3W.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;color:#000000;margin-right:0;font-weight:normal;font-size:12px;font-family:Dialog;margin-left:0;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      Paket pemaketan berfungsi untuk mendefinisikan paket pengadaan. Sebuah 
+      paket dapat berasal dari 1 RUP, banyak RUP, atau 1 RUP dipecah menjadi 
+      beberapa paket.
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      &amp;nbsp;
+    &amp;lt;/p&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      Sebuah Paket Pengadaan mungkin mengalami pemecahan Paket Pengadaan, atau 
+      Banyak Paket Pengadaan mungkin mengalami penggabungan Paket Pengadaan. 
+      Kegiatan pemecahan atau penggabungan paket disebut dengan kegiatan 
+      Konsolidasi Pengadaan agar pengadaan efisien dan efektif. Catatan : 
+      Aktor KUKPBJ dan perannya tidak ada dalam Perek No 2 Tahun 2023, 
+      sehingga Flow Map yang diberikan oleh Pak Muchid perlu disesuaikan.
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="22, 557, 162, 657" coords2="22, 557, 162, 657" shape="rect" alt="Konsolidasi Pengadaan:Subsystem" id="areadiagram_map_x3HnhNGAUZQAage9_default" href="Subsystem_x3HnhNGAUZQAage_.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','22, 557, 162, 657',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('UseCaseDiagram_XjckZNGGAqDIAw5t.html/Pengkonsolidasian Pengadaan/UseCaseDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '22, 557, 162, 657'),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" coords="985, 759, 1140, 859" coords2="985, 759, 1140, 859" shape="rect" alt="Prestasi:Subsystem" id="areadiagram_map_lJFWhNGGAqDIBA5G_default" href="Subsystem_lJFWhNGGAqDIBA5H.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="811, 759, 972, 859" coords2="811, 759, 972, 859" shape="rect" alt="Uang Muka:Subsystem" id="areadiagram_map_NrxWhNGGAqDIBA41_default" href="Subsystem_trxWhNGGAqDIBA42.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" docContent="&amp;lt;head&amp;gt;
+    
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body style=&amp;quot;color:#000000;margin-right:0;font-weight:normal;font-size:12px;font-family:Dialog;margin-left:0;&amp;quot;&amp;gt;
+    &amp;lt;p style=&amp;quot;margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;&amp;quot;&amp;gt;
+      Paket ini mengambil data rencana pengadaan dari RUP UNSOED melalui SOA 
+      UNSOED per kode RUP. PPK mengupdate Spesifikasi Teknis, HPS yang disusun 
+      dalam Dokumen Persiapan Pengadaan (DPP)
+    &amp;lt;/p&amp;gt;
+  &amp;lt;/body&amp;gt;" coords="22, 409, 217, 509" coords2="22, 409, 217, 509" shape="rect" alt="Persiapan Pengadaan:Subsystem" id="areadiagram_map_pxEWhNGGAqDIBA3k_default" href="Subsystem_ZxEWhNGGAqDIBA3l.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','22, 409, 217, 509',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('UseCaseDiagram_SS5mxNGGAqDIBBEs.html/Persiapan Pengadaan/UseCaseDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '22, 409, 217, 509'),hideTransitorIcon(),showTooltip(this)" onmousedown="clearSpotLight();" onmouseout="hideTooltip()"/>
+<area imageId="diagram" coords="811, 899, 1012, 999" coords2="811, 899, 1012, 999" shape="rect" alt="Pengawasan:Subsystem" id="areadiagram_map_LBb6hNGGAqDIBA06_default" href="Subsystem_rBb6hNGGAqDIBA07.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="592, 759, 784, 859" coords2="592, 759, 784, 859" shape="rect" alt="Pelaksanaan Pekerjaan:Subsystem" id="areadiagram_map_20T6hNGGAqDIBA0p_default" href="Subsystem_O0T6hNGGAqDIBA0q.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="760, 423, 924, 527" coords2="760, 423, 924, 527" shape="rect" alt="Penetapan Vendor:Subsystem" id="areadiagram_map_t3u6hNGGAqDIBAzw_default" href="Subsystem_d3u6hNGGAqDIBAzx.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="536, 41, 779, 192" coords2="536, 41, 779, 192" shape="rect" alt="SOA UNSOED:Package" id="areadiagram_map_oYYKhNGGAqDIBAoj_default" href="Package_oYYKhNGGAqDIBAok.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="921, 18, 1077, 118" coords2="921, 18, 1077, 118" shape="rect" alt="Sistem Informasi Keuangan:Package" id="areadiagram_map_oqwKhNGGAqDIBAoY_default" href="Package_oqwKhNGGAqDIBAoZ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="362, 732, 528, 832" coords2="362, 732, 528, 832" shape="rect" alt="Pengadaan Melalui Penyedia:Subsystem" id="areadiagram_map_eZ6_BNGGAqDIBAlm_default" href="Subsystem_eZ6_BNGGAqDIBAln.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','362, 732, 528, 832',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('UseCaseDiagram_g8TVSNGHWZSaSwqi.html/Pengadaan Barang/Jasa Melalui Penyedia/UseCaseDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '362, 732, 528, 832'),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="136, 732, 298, 832" coords2="136, 732, 298, 832" shape="rect" alt="Pengadaan Swakelola:Subsystem" id="areadiagram_map_9kq_BNGGAqDIBAlZ_default" href="Subsystem_9kq_BNGGAqDIBAla.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','136, 732, 298, 832',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('UseCaseDiagram_bCWNRNGAUYAGDgkT.html/Pengadaan Barang/Jasa Melalui Swakelola/UseCaseDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '136, 732, 298, 832'),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="217, 557, 357, 657" coords2="217, 557, 357, 657" shape="rect" alt="Pengadaan:Subsystem" id="areadiagram_map_xoS_BNGGAqDIBAlE_default" href="Subsystem_JoS_BNGGAqDIBAlF.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="434, 557, 610, 657" coords2="434, 557, 610, 657" shape="rect" alt="Penandatanganan Kontrak:Subsystem" id="areadiagram_map_lCsfBNGGAqDIBAj6_default" href="Subsystem_lCsfBNGGAqDIBAj7.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="592, 899, 760, 999" coords2="592, 899, 760, 999" shape="rect" alt="Kejadian Kahar:Subsystem" id="areadiagram_map_xg0fBNGGAqDIBAjt_default" href="Subsystem_xg0fBNGGAqDIBAju.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="548, 423, 707, 523" coords2="548, 423, 707, 523" shape="rect" alt="Penetapan Pelaku Pengadaan:Subsystem" id="areadiagram_map_PB_vBNGGAqDIBAjK_default" href="Subsystem_vB_vBNGGAqDIBAjL.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="920, 557, 1089, 657" coords2="920, 557, 1089, 657" shape="rect" alt="Pembayaran:Subsystem" id="areadiagram_map_KbPvBNGGAqDIBAi5_default" href="Subsystem_KbPvBNGGAqDIBAi6.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="362, 899, 548, 999" coords2="362, 899, 548, 999" shape="rect" alt="Serah Terima Pekerjaan:Subsystem" id="areadiagram_map_mHlvBNGGAqDIBAiD_default" href="Subsystem_WHlvBNGGAqDIBAiE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="22, 64, 213, 164" coords2="22, 64, 213, 164" shape="rect" alt="Perencanaan Pengadaan:Subsystem" id="areadiagram_map_tUFvBNGGAqDIBAhy_default" href="Subsystem_DUFvBNGGAqDIBAhz.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','22, 64, 213, 164',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('UseCaseDiagram_rZmZSNGHWZSaSwc4.html/Perencanaan Pengadaan/UseCaseDiagram'),new Array(),new Array(),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '22, 64, 213, 164'),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 376, 1166, 1018" coords2="2, 376, 1166, 1018" shape="rect" alt="Sistem Infromasi Pengadaan:Package" id="areadiagram_map_x2tvBNGGAqDIBAiU_default" href="Package_x2tvBNGGAqDIBAiV.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 2, 328, 192" coords2="2, 2, 328, 192" shape="rect" alt="Sistem Informasi Perencanaan dan Anggaran:Package" id="areadiagram_map_3yvyhNGGAqDIBAoD_default" href="Package_3yvyhNGGAqDIBAoE.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Package.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Package.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Package_baDwZNGGAqDIAwsW.html" class="ItemLink">Ssistem Informasi Kepegawaian : Package</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_DaPQZNGGAqDIAwrG.html" class="ItemLink">RUP : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_Q0uQZNGGAqDIAwnk.html" class="ItemLink">AksesRUP : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_B_MgZNGGAqDIAwkf.html" class="ItemLink">SPMK : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;margin-right:0;font-weight:normal;font-size:12px;font-family:Dialog;margin-left:0;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      SPMK adalah Surat Perintah Melaksanakan Pekerjaan
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_w8XGhNGGAqDIBA2y.html" class="ItemLink">Publikasi Rencana Umum Pengadaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Package.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Package.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Package__pEaxNGGAqDIBA_n.html" class="ItemLink">RUP UNSOED : Package</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_v1TAxNGAUBwGxA3q.html" class="ItemLink">Denda : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_d09AxNGAUBwGxA3W.html" class="ItemLink">Sanksi : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_x3HnhNGAUZQAage_.html" class="ItemLink">Konsolidasi Pengadaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;margin-right:0;font-weight:normal;font-size:12px;font-family:Dialog;margin-left:0;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      Paket pemaketan berfungsi untuk mendefinisikan paket pengadaan. Sebuah 
+      paket dapat berasal dari 1 RUP, banyak RUP, atau 1 RUP dipecah menjadi 
+      beberapa paket.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Sebuah Paket Pengadaan mungkin mengalami pemecahan Paket Pengadaan, atau 
+      Banyak Paket Pengadaan mungkin mengalami penggabungan Paket Pengadaan. 
+      Kegiatan pemecahan atau penggabungan paket disebut dengan kegiatan 
+      Konsolidasi Pengadaan agar pengadaan efisien dan efektif. Catatan : 
+      Aktor KUKPBJ dan perannya tidak ada dalam Perek No 2 Tahun 2023, 
+      sehingga Flow Map yang diberikan oleh Pak Muchid perlu disesuaikan.
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_lJFWhNGGAqDIBA5H.html" class="ItemLink">Prestasi : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_trxWhNGGAqDIBA42.html" class="ItemLink">Uang Muka : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_ZxEWhNGGAqDIBA3l.html" class="ItemLink">Persiapan Pengadaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;margin-right:0;font-weight:normal;font-size:12px;font-family:Dialog;margin-left:0;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      Paket ini mengambil data rencana pengadaan dari RUP UNSOED melalui SOA 
+      UNSOED per kode RUP. PPK mengupdate Spesifikasi Teknis, HPS yang disusun 
+      dalam Dokumen Persiapan Pengadaan (DPP)
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_rBb6hNGGAqDIBA07.html" class="ItemLink">Pengawasan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_O0T6hNGGAqDIBA0q.html" class="ItemLink">Pelaksanaan Pekerjaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_d3u6hNGGAqDIBAzx.html" class="ItemLink">Penetapan Vendor : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Package.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Package.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Package_oYYKhNGGAqDIBAok.html" class="ItemLink">SOA UNSOED : Package</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Package.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Package.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Package_oqwKhNGGAqDIBAoZ.html" class="ItemLink">Sistem Informasi Keuangan : Package</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_eZ6_BNGGAqDIBAln.html" class="ItemLink">Pengadaan Melalui Penyedia : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_9kq_BNGGAqDIBAla.html" class="ItemLink">Pengadaan Swakelola : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_JoS_BNGGAqDIBAlF.html" class="ItemLink">Pengadaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_lCsfBNGGAqDIBAj7.html" class="ItemLink">Penandatanganan Kontrak : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_xg0fBNGGAqDIBAju.html" class="ItemLink">Kejadian Kahar : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_vB_vBNGGAqDIBAjL.html" class="ItemLink">Penetapan Pelaku Pengadaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_KbPvBNGGAqDIBAi6.html" class="ItemLink">Pembayaran : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_WHlvBNGGAqDIBAiE.html" class="ItemLink">Serah Terima Pekerjaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Subsystem.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Subsystem.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Subsystem_DUFvBNGGAqDIBAhz.html" class="ItemLink">Perencanaan Pengadaan : Subsystem</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Package.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Package.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Package_x2tvBNGGAqDIBAiV.html" class="ItemLink">Sistem Infromasi Pengadaan : Package</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Package.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Package.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Package_3yvyhNGGAqDIBAoE.html" class="ItemLink">Sistem Informasi Perencanaan dan Anggaran : Package</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>

@@ -1,0 +1,2361 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Textual Analysis - Textual Analysis1</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Textual Analysis - Textual Analysis1		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/I.0cSNGGAqDIBCul', 'Textual Analysis1\nsistem informasi pengadaan unsoed.vpp://diagram/I.0cSNGGAqDIBCul', 'Textual Analysis1', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+Problem Statement			</td>
+		</tr>
+		<tr>
+			<td class="TableCellSpaceHolder5PxTall">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableContent">
+<span class="TableContent Documentation"><head>
+    
+  </head>
+  <body style="color:#000000;margin-right:0;font-weight:normal;font-size:22px;font-family:Dialog;margin-left:0;">
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      Sistem pengadaan UNSOED yang disingkat menjadi (SI ...) memiliki aktor 
+      internal terdiri dari Rektor, Pemimpin BLU, UPBJ, <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span>, 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pejabat 
+      Pengadaan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pokja 
+      Pemilihan</span>, Toko Daring, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pengguna</span>, 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Pelaku Usaha</span>, 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Penyedia</span>, 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Agen Pengadaan</span>, 
+      Tim Teknis.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0pt;margin-bottom:.0001pt;">
+      Urutan proses pengadaan berjalan sebagai berikut :
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Perencanaan 
+        Pengadaan</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Penetapan 
+        Pelaku Pengadaan</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Penetapan 
+        Vendor</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Persiapan 
+        Pengadaan</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Konsolidasi 
+        Pengadaan</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Pengadaan 
+        Barang/Jasa</span> secara Swakelola oleh UNSOED/Instansi Pemerintah 
+        lain/Organisasi Masyarakat/Kelompok Masyarakat.
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Pengadaan 
+        Barang/Jasa</span> melibatkan <span bgcolor="#ffff00" style="background-color:#ffff00;">penyedia</span> 
+        melalui metode <span bgcolor="#ffff00" style="background-color:#ffff00;">e-Purchasing</span>, 
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Pengadaan 
+        Langsung</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Penunjukan 
+        Langsung</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Quotation</span>, 
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Tender</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Pemilihan 
+        penyedia</span> melalui metode <span bgcolor="#ffff00" style="background-color:#ffff00;">e-Purchasing</span>, 
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Pengadaan 
+        Langsung</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Penunjukan 
+        Langsung</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Quotation</span>, 
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Tender</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Penandatanganan Kontrak Pengadaan
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Penerbitan Surat Perintah Mulai Pekerjaan (SPMK)
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Pelaksanaan Pekerjaan
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Pembayaran Uang Muka
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Pembayaran Prestasi Kerja
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Serah-terima Pekerjaan
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Hal-hal lain yang terjadi :
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Kejadian Kahar
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Pemutusan Kontrak
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Penghentian Kontrak
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Penyelesaian sengketa
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Pemesanan Berulang Barang/Jasa
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Sanksi-sanksi :
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Sanksi teguran tertulis
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Sanksi Pencairan Jaminan
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Sanksi dimasukkan dalam daftar hitam dan dikeluarkan DPT
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Ganti rugi
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Denda keterlambatan
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Layanan hukum
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Pelaku 
+      Pengadaan</span> terdiri dari <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span>, 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pejabat 
+      Pengadaan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pokja 
+      Pemilihan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Agen 
+      Pengadaan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Penyelenggara 
+      Swakelola</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Penyedia</span>. 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Pelaku 
+      Pengadaan harus memiliki sertifikat pengadaaan</span>.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span> 
+      memiliki tugas dan wewenang sebagai berikut :
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span> 
+        menetapkan dan mengumumkan Rencana Umum Pengadaan (<span bgcolor="#ffff00" style="background-color:#ffff00;">RUP</span>)
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span> 
+        menetapkan pemenang <span bgcolor="#ffff00" style="background-color:#ffff00;">pemilihan 
+        penyedia</span> untuk metode pemilihan <span bgcolor="#ffff00" style="background-color:#ffff00;">Tender</span>/<span bgcolor="#ffff00" style="background-color:#ffff00;">Penunjukan 
+        Langsung</span>/<span bgcolor="#ffff00" style="background-color:#ffff00;">e-Purchasing</span> 
+        untuk pengadaan Barang/Pekerjaan Konstruksi/Jasa Lainnya dengan nilai 
+        di atas Rp 100.000.000.000 (seratus miliar rupiah).
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span> 
+        menetapkan pemenang <span bgcolor="#ffff00" style="background-color:#ffff00;">pemilihan 
+        penyedia</span> untuk metode pemilihan <span bgcolor="#ffff00" style="background-color:#ffff00;">Tender</span>/<span bgcolor="#ffff00" style="background-color:#ffff00;">Penunjukan 
+        Langsung</span> untuk Jasa Kosultasi dengan nilai di atas Rp 
+        5.000.000.000 (lima miliar rupiah)
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span> 
+        menetapkan <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span>, 
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Pejabat 
+        Pengadaan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pokja 
+        Pemilihan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Agen 
+        Pengadaan</span>, dan <span bgcolor="#ffff00" style="background-color:#ffff00;">Penyelenggara 
+        Swakelola</span>
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span> 
+      memiliki tugas dan wewenang untuk :
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        a
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        b
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        c
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Pejabat 
+      Pengadaan</span> mempunyai tugas dan wewenang untuk melaksanakan proses <span bgcolor="#ffff00" style="background-color:#ffff00;">Pemilihan 
+      Pengadaan Langsung</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pemilihan 
+      Penunjukan Langsung</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pemilihan 
+      e-Purchasing</span> untuk pekerjaan Pengadaan Barang/Pekerjaan 
+      Konstruksi/Jasa Lainnya dengan nilai paling banyak Rp 200.000.000 (dua 
+      ratus juta rupiah) atau pekerjaan jasa Konsultasi dengan nilai paling 
+      banyak Rp 150.000.000 (seratus lima puluh juta rupiah)
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Pokja Pemilihan</span> 
+      bertanggung jawab <span bgcolor="#ffff00" style="background-color:#ffff00;">melaksanakan 
+      Pemilihan Penyedia</span> dengan metode <span bgcolor="#ffff00" style="background-color:#ffff00;">Quotation</span>/<span bgcolor="#ffff00" style="background-color:#ffff00;">Tender</span>/<span bgcolor="#ffff00" style="background-color:#ffff00;">Penunjukan 
+      Langsung</span> di atas Rp 200.000.000 (dua ratus juta rupiah).
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Pokja Pemilihan</span> 
+      mempunyai tugas dan wewenang untuk :
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        a
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        b
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        c
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        d
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Agen Pengadaan</span> 
+      :
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Kartu Debit :
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Penyelenggara 
+      Swakelola</span> terdiri dari <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span> 
+      dan <span bgcolor="#ffff00" style="background-color:#ffff00;">Tim 
+      Swakelola</span> menajalankan tugas:
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Menyusun 
+        rencana kegiatan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">rencana 
+        pelaksanaan</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">rencana 
+        pengawasan</span>, termasuk anggaran biaya dan pelaporan
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Menyusun 
+        rancangan kontrak</span> dan <span bgcolor="#ffff00" style="background-color:#ffff00;">penyiapan 
+        Surat Keputusan</span> dengan <span bgcolor="#ffff00" style="background-color:#ffff00;">Pelaksana 
+        Swakelola</span>.
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Proses <span bgcolor="#ffff00" style="background-color:#ffff00;">Perencanaan 
+      Pengadaan</span> merupakan tahap awal atau prasyarat agar dapat 
+      menyelenggarakan kegiatan <span bgcolor="#ffff00" style="background-color:#ffff00;">Pengadaan 
+      Barang/Jasa</span>. Aktor yang terlibat dalam <span bgcolor="#ffff00" style="background-color:#ffff00;">Perencanaan 
+      Pengadaan</span> meliputi aktor SIMAPAN, <span bgcolor="#ffff00" style="background-color:#ffff00;">Tim 
+      Perencanaan UNSOED</span>, y,z. Langkah kegiatan <span bgcolor="#ffff00" style="background-color:#ffff00;">Perencanaan 
+      Pengadaan</span> meliputi <span bgcolor="#ffff00" style="background-color:#ffff00;">Identifikasi 
+      Kebutuhan</span>, Penetapan Barang/Jasa, <span bgcolor="#ffff00" style="background-color:#ffff00;">menentukan 
+      Cara/Metode Pengadaan barang/jasa</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">penentuan 
+      Jadwal Pengadaan Barang/Jasa</span>, <span bgcolor="#ffff00" style="background-color:#ffff00;">Penetapan 
+      Anggaran Pengadaan Barang/Jasa</span>. <span bgcolor="#ffff00" style="background-color:#ffff00;">Rencana 
+      Pengadaan</span> diupload ke Sistem Informasi Rencana Pengadaaan.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Setiap satu item <span bgcolor="#ffff00" style="background-color:#ffff00;">Rencana 
+      Pengadaan</span> dikodekan melalui satu Pengkodean Rencana Umum 
+      Pengadaan (<span bgcolor="#ffff00" style="background-color:#ffff00;">RUP</span>) 
+      yang unik. Item <span bgcolor="#ffff00" style="background-color:#ffff00;">Rencana 
+      Pengadaan</span> berasal dari database dalam Sistem Informasi <span bgcolor="#ffff00" style="background-color:#ffff00;">Rencana 
+      Pengadaan</span> yang telah disetujui oleh <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span>.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Pada Sistem Informasi Pengadaan, aktor <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span> 
+      akan menarik data <span bgcolor="#ffff00" style="background-color:#ffff00;">Rencana 
+      Pengadaan</span> per item kode unit <span bgcolor="#ffff00" style="background-color:#ffff00;">RUP</span> 
+      melalui bantuan Aktor Sistem <span bgcolor="#ffff00" style="background-color:#ffff00;">SOA 
+      UNSOED</span>. Kemudian, <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span> 
+      akan <span bgcolor="#ffff00" style="background-color:#ffff00;">mengupdate 
+      spesifikasi teknis</span>(<span bgcolor="#ffff00" style="background-color:#ffff00;">Spek</span>), 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">update HPS</span>, 
+      dan <span bgcolor="#ffff00" style="background-color:#ffff00;">update 
+      Dokumen Persiapan Pengadaan</span> (<span bgcolor="#ffff00" style="background-color:#ffff00;">DPP</span>). 
+      Item <span bgcolor="#ffff00" style="background-color:#ffff00;">Rencana 
+      Pengadaan</span> ini kemudian disebut dengan <span bgcolor="#ffff00" style="background-color:#ffff00;">Paket 
+      Pengadaan</span>.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Paket Pengadaan</span> 
+      dikirim oleh <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span> 
+      ke <span bgcolor="#ffff00" style="background-color:#ffff00;">KUKPBJ</span> 
+      untuk pengadaan <span bgcolor="#ffff00" style="background-color:#ffff00;">Tender</span>, 
+      <span bgcolor="#ffff00" style="background-color:#ffff00;">Quotation</span>. 
+      Sebuah <span bgcolor="#ffff00" style="background-color:#ffff00;">Paket 
+      Pengadaan</span> mungkin mengalami <span bgcolor="#ffff00" style="background-color:#ffff00;">pemecahan 
+      Paket Pengadaan</span>, atau Banyak <span bgcolor="#ffff00" style="background-color:#ffff00;">Paket 
+      Pengadaan</span> mungkin mengalami <span bgcolor="#ffff00" style="background-color:#ffff00;">penggabungan 
+      Paket Pengadaan</span>. Kegiatan pemecahan atau penggabungan paket 
+      disebut dengan kegiatan <span bgcolor="#ffff00" style="background-color:#ffff00;">Konsolidasi 
+      Pengadaan</span> agar pengadaan efisien dan efektif. Catatan : Aktor <span bgcolor="#ffff00" style="background-color:#ffff00;">KUKPBJ</span> 
+      dan perannya tidak ada dalam Perek No 2 Tahun 2023, sehingga Flow Map 
+      yang diberikan oleh Pak Muchid perlu disesuaikan.
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      Informasi :
+    </p>
+    <ol class="decimal" margin-left-ltr="50" margin-right-rtl="50" style="list-style-type:none;margin-left:40pt;margin-top:0px;margin-bottom:0px;">
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">Paket 
+        pengadaan</span>
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Data Vendor
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Data pegawai
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Data anggaraan pengadaan
+      </li>
+      <li style="margin-right:0;margin-left:0;margin-top:0;margin-bottom:0;">
+        Data <span bgcolor="#ffff00" style="background-color:#ffff00;">KPA</span>, 
+        <span bgcolor="#ffff00" style="background-color:#ffff00;">PPK</span>, 
+        PP, <span bgcolor="#ffff00" style="background-color:#ffff00;">Pokja 
+        Pemilihan</span>
+      </li>
+    </ol>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+    <p style="margin-right:0pt;margin-left:0pt;margin-top:0;margin-bottom:.0001pt;">
+      &nbsp;
+    </p>
+  </body></span>			</td>
+		</tr>
+		<tr>
+			<td class="TableHeaderLine2">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+Candidate items			</td>
+		</tr>
+		<tr>
+			<td class="TableCellSpaceHolder5PxTall">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="12" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="12" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="25%">
+<span class="TableHeaderText">Candidate Class</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Extracted Text</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Type</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Occurrence</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Highlight</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="12" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Persiapan Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Persiapan Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Paket Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Paket Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Class</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+5			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+RUP			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+RUP			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Class</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+3			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+SOA UNSOED			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+SOA UNSOED			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+KUKPBJ			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+KUKPBJ			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+2			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+mengupdate spesifikasi teknis			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+mengupdate spesifikasi teknis			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+update HPS			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+update HPS			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+update Dokumen Persiapan Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+update Dokumen Persiapan Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+DPP			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+DPP			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Class</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Konsolidasi Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Konsolidasi Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+2			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+pemecahan Paket Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+pemecahan Paket Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+penggabungan Paket Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+penggabungan Paket Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+HPS			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+HPS			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Class</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+0			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Spek			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Spek			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Class</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Tim Swakelola			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Tim Swakelola			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Menyusun rencana kegiatan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Menyusun rencana kegiatan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+rencana pelaksanaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+rencana pelaksanaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+rencana pengawasan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+rencana pengawasan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Menyusun rancangan kontrak			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Menyusun rancangan kontrak			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+penyiapan Surat Keputusan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+penyiapan Surat Keputusan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaksana Swakelola			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaksana Swakelola			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+identifikasi kebutuhan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+identifikasi kebutuhan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+menentukan Cara/Metode  Pengadaan barang/jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+menentukan Cara/Metode  Pengadaan barang/jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+0			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+penentuan Jadwal Pengadaan Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+penentuan Jadwal Pengadaan Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan Anggaran Pengadaan Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan Anggaran Pengadaan Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan  Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan  Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+0			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+menentukan Cara/Metode Pengadaan barang/jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+menentukan Cara/Metode Pengadaan barang/jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Tim Perencanaan UNSOED			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Tim Perencanaan UNSOED			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Perencanaan Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Perencanaan Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+4			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaku Pengadaan harus memiliki sertifikat pengadaaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaku Pengadaan harus memiliki sertifikat pengadaaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Requirement.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Requirement.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Requirement</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Pengadaan Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pengadaan Barang/Jasa			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+3			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaku Usaha			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaku Usaha			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaku Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pelaku Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+KPA			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+KPA			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+9			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+PPK			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+PPK			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+9			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Pejabat Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pejabat Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+4			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Pokja Pemilihan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pokja Pemilihan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+6			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Agen Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Agen Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+4			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Penyelenggara Swakelola			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Penyelenggara Swakelola			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+3			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Penyedia			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Penyedia			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+3			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+e-Purchasing			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+e-Purchasing			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+3			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Pengadaan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pengadaan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+2			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Penunjukan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Penunjukan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+5			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Quotation			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Quotation			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+4			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Tender			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Tender			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+6			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan Vendor			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan Vendor			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan Pelaku Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Penetapan Pelaku Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Rencana Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Rencana Pengadaan			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+6			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Pengguna			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pengguna			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Actor.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Actor.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Actor</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+melaksanakan pemilihan penyedia			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+melaksanakan pemilihan penyedia			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+pemilihan Pengadaan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+pemilihan Pengadaan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+pemilihan Penunjukan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+pemilihan Penunjukan Langsung			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td class="TableContent">
+Pemilihan e-Purchasing			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pemilihan e-Purchasing			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+1			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td class="TableContent">
+Pemilihan Penyedia			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+Pemilihan Penyedia			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/UseCase.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/UseCase.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <span style="line-height: 18px">Use Case</span>				</span>
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+			</td>
+			<td>
+			</td>
+			<td class="TableContent">
+3			</td>
+			<td>
+			</td>
+			<td>
+				<div style="background: #ffff00; line-height: 12px; margin: 3px;">
+&nbsp;				</div>
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<p>
+	</p>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>
