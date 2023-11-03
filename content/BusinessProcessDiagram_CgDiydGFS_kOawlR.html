@@ -1,0 +1,460 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Business Process Diagram - Pendaftaran Vendor</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Business Process Diagram - Pendaftaran Vendor		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/CgDiydGFS_kOawlR', 'Pendaftaran Vendor\nsistem informasi pengadaan unsoed.vpp://diagram/CgDiydGFS_kOawlR', 'Pendaftaran Vendor', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|2.0|2.0|552.0|360.0|BPPool_93niydGFS_kOawlp.html|BPPool_93niydGFS_kOawlp.html|e3niydGFS_kOawlo" id="optione3niydGFS_kOawlo">sistem pendaftaran : Pool</option>
+<option value="shape|2.0|17.0|232.0|345.0|BPLane_QRQSydGFS_kOawmB.html|BPLane_QRQSydGFS_kOawmB.html|XhQSydGFS_kOawmA" id="optionXhQSydGFS_kOawmA">Vendor : Lane</option>
+<option value="shape|45.0|41.0|20.0|20.0|BPStartEvent_4H4SydGFS_kOawmU.html|BPStartEvent_4H4SydGFS_kOawmU.html|v74SydGFS_kOawmT" id="optionv74SydGFS_kOawmT">Unnamed Start Event : Start Event</option>
+<option value="shape|31.0|93.0|76.0|40.0|BPTask_zjESydGFS_kOawmh.html|BPTask_zjESydGFS_kOawmh.html|BjESydGFS_kOawmg" id="optionBjESydGFS_kOawmg">Register : Task</option>
+<option value="shape|31.0|189.0|108.0|48.0|BPTask_AkCSydGFS_kOawnj.html|BPTask_AkCSydGFS_kOawnj.html|_ECSydGFS_kOawni" id="option_ECSydGFS_kOawni">Mengisi dan Update Data/Dok : Task</option>
+<option value="shape|39.0|284.0|20.0|20.0|BPEndEvent_GPLSydGFS_kOawq2.html|BPEndEvent_GPLSydGFS_kOawq2.html|cPLSydGFS_kOawq1" id="optioncPLSydGFS_kOawq1">Unnamed End Event : End Event</option>
+<option value="shape|234.0|17.0|320.0|345.0|BPLane_z4oSydGFS_kOawmJ.html|BPLane_z4oSydGFS_kOawmJ.html|T4oSydGFS_kOawmI" id="optionT4oSydGFS_kOawmI">UPBJ : Lane</option>
+<option value="shape|370.0|53.0|60.0|40.0|BPTask__qGSydGFS_kOawoM.html|BPTask__qGSydGFS_kOawoM.html|eqGSydGFS_kOawoL" id="optioneqGSydGFS_kOawoL">Verifikasi : Task</option>
+<option value="shape|390.0|128.0|40.0|40.0|BPGateway_IJ2SydGFS_kOawox.html|BPGateway_IJ2SydGFS_kOawox.html|3x2SydGFS_kOawow" id="option3x2SydGFS_kOawow">Gateway3 : Gateway</option>
+<option value="shape|461.0|211.0|73.0|40.0|BPTask_8S_SydGFS_kOawph.html|BPTask_8S_SydGFS_kOawph.html|cS.SydGFS_kOawpg" id="optioncS.SydGFS_kOawpg">Persetujuan : Task</option>
+<option value="shape|398.0|274.0|136.0|40.0|BPTask_abJSydGFS_kOawqC.html|BPTask_abJSydGFS_kOawqC.html|abJSydGFS_kOawqB" id="optionabJSydGFS_kOawqB">Kirim Email persetujuan, no vendor : Task</option>
+<option value="shape|409.0|304.0|20.0|20.0|BPStartEvent_a_tSydGFS_kOawqL.html|BPStartEvent_a_tSydGFS_kOawqL.html|a.tSydGFS_kOawqK" id="optiona.tSydGFS_kOawqK">Unnamed Start Event : Start Event</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Pendaftaran_Vendor.png" usemap="#diagram_map" class="Image" width="558" height="366"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="49.0, 61.0, 49.0, 93.0, 63.0, 93.0, 63.0, 61.0" coords2="49.0, 61.0, 49.0, 93.0, 63.0, 93.0, 63.0, 61.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_7hkSydGFS_kOawmy_default" href="BPSequenceFlow_VhkSydGFS_kOawmx.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="61.0, 133.0, 61.0, 189.0, 75.0, 189.0, 75.0, 133.0" coords2="61.0, 133.0, 61.0, 189.0, 75.0, 189.0, 75.0, 133.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_FEKSydGFS_kOawnz_default" href="BPSequenceFlow__EKSydGFS_kOawny.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="194.0, 63.0, 194.0, 66.0, 191.0, 66.0, 191.0, 80.0, 194.0, 80.0, 194.0, 206.0, 139.0, 206.0, 139.0, 220.0, 194.0, 220.0, 194.0, 223.0, 208.0, 223.0, 208.0, 220.0, 211.0, 220.0, 211.0, 206.0, 208.0, 206.0, 208.0, 80.0, 370.0, 80.0, 370.0, 66.0, 208.0, 66.0, 208.0, 63.0" coords2="194.0, 63.0, 194.0, 66.0, 191.0, 66.0, 191.0, 80.0, 194.0, 80.0, 194.0, 206.0, 139.0, 206.0, 139.0, 220.0, 194.0, 220.0, 194.0, 223.0, 208.0, 223.0, 208.0, 220.0, 211.0, 220.0, 211.0, 206.0, 208.0, 206.0, 208.0, 80.0, 370.0, 80.0, 370.0, 66.0, 208.0, 66.0, 208.0, 63.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_g6GSydGFS_kOawoU_default" href="BPSequenceFlow_zaGSydGFS_kOawoT.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="403.0, 93.0, 403.0, 128.0, 417.0, 128.0, 417.0, 93.0" coords2="403.0, 93.0, 403.0, 128.0, 417.0, 128.0, 417.0, 93.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_EaOSydGFS_kOawpE_default" href="BPSequenceFlow_QaOSydGFS_kOawpD.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="477.0, 138.0, 477.0, 141.0, 430.0, 141.0, 430.0, 155.0, 477.0, 155.0, 477.0, 211.0, 491.0, 211.0, 491.0, 155.0, 494.0, 155.0, 494.0, 141.0, 491.0, 141.0, 491.0, 138.0" coords2="477.0, 138.0, 477.0, 141.0, 430.0, 141.0, 430.0, 155.0, 477.0, 155.0, 477.0, 211.0, 491.0, 211.0, 491.0, 155.0, 494.0, 155.0, 494.0, 141.0, 491.0, 141.0, 491.0, 138.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_s2RSydGFS_kOawpx_default" href="BPSequenceFlow_E2RSydGFS_kOawpw.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="491.0, 251.0, 491.0, 274.0, 505.0, 274.0, 505.0, 251.0" coords2="491.0, 251.0, 491.0, 274.0, 505.0, 274.0, 505.0, 251.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_D0zSydGFS_kOawqh_default" href="BPSequenceFlow_V0zSydGFS_kOawqg.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="42.0, 249.0, 42.0, 252.0, 39.0, 252.0, 39.0, 266.0, 42.0, 266.0, 42.0, 284.0, 56.0, 284.0, 56.0, 266.0, 459.0, 266.0, 459.0, 274.0, 473.0, 274.0, 473.0, 266.0, 476.0, 266.0, 476.0, 252.0, 473.0, 252.0, 473.0, 249.0, 459.0, 249.0, 459.0, 252.0, 56.0, 252.0, 56.0, 249.0" coords2="42.0, 249.0, 42.0, 252.0, 39.0, 252.0, 39.0, 266.0, 42.0, 266.0, 42.0, 284.0, 56.0, 284.0, 56.0, 266.0, 459.0, 266.0, 459.0, 274.0, 473.0, 274.0, 473.0, 266.0, 476.0, 266.0, 476.0, 252.0, 473.0, 252.0, 473.0, 249.0, 459.0, 249.0, 459.0, 252.0, 56.0, 252.0, 56.0, 249.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_C8bSydGFS_kOawrG_default" href="BPSequenceFlow_U8bSydGFS_kOawrF.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="77.0, 138.0, 77.0, 141.0, 74.0, 141.0, 74.0, 155.0, 77.0, 155.0, 77.0, 189.0, 91.0, 189.0, 91.0, 155.0, 390.0, 155.0, 390.0, 141.0, 91.0, 141.0, 91.0, 138.0" coords2="77.0, 138.0, 77.0, 141.0, 74.0, 141.0, 74.0, 155.0, 77.0, 155.0, 77.0, 189.0, 91.0, 189.0, 91.0, 155.0, 390.0, 155.0, 390.0, 141.0, 91.0, 141.0, 91.0, 138.0" shape="poly" alt=":Sequence Flow" id="areadiagram_map_gQAyydGFS_kOawr._default" href="BPSequenceFlow_ngAyydGFS_kOawr9.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="39, 284, 59, 304" coords2="39, 284, 59, 304" shape="rect" alt=":End Event" id="areadiagram_map_cPLSydGFS_kOawq1_default" href="BPEndEvent_GPLSydGFS_kOawq2.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="409, 304, 429, 324" coords2="409, 304, 429, 324" shape="rect" alt=":Start Event" id="areadiagram_map_a.tSydGFS_kOawqK_default" href="BPStartEvent_a_tSydGFS_kOawqL.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="398, 274, 534, 314" coords2="398, 274, 534, 314" shape="rect" alt="Kirim Email persetujuan, no vendor:Task" id="areadiagram_map_abJSydGFS_kOawqB_default" href="BPTask_abJSydGFS_kOawqC.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="461, 211, 534, 251" coords2="461, 211, 534, 251" shape="rect" alt="Persetujuan:Task" id="areadiagram_map_cS.SydGFS_kOawpg_default" href="BPTask_8S_SydGFS_kOawph.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="390, 128, 430, 168" coords2="390, 128, 430, 168" shape="rect" alt="Gateway3:Gateway" id="areadiagram_map_3x2SydGFS_kOawow_default" href="BPGateway_IJ2SydGFS_kOawox.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="370, 53, 430, 93" coords2="370, 53, 430, 93" shape="rect" alt="Verifikasi:Task" id="areadiagram_map_eqGSydGFS_kOawoL_default" href="BPTask__qGSydGFS_kOawoM.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="31, 189, 139, 237" coords2="31, 189, 139, 237" shape="rect" alt="Mengisi dan Update Data/Dok:Task" id="areadiagram_map__ECSydGFS_kOawni_default" href="BPTask_AkCSydGFS_kOawnj.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="31, 93, 107, 133" coords2="31, 93, 107, 133" shape="rect" alt="Register:Task" id="areadiagram_map_BjESydGFS_kOawmg_default" href="BPTask_zjESydGFS_kOawmh.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="45, 41, 65, 61" coords2="45, 41, 65, 61" shape="rect" alt=":Start Event" id="areadiagram_map_v74SydGFS_kOawmT_default" href="BPStartEvent_4H4SydGFS_kOawmU.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="234, 17, 554, 362" coords2="234, 17, 554, 362" shape="rect" alt="UPBJ:Lane" id="areadiagram_map_T4oSydGFS_kOawmI_default" href="BPLane_z4oSydGFS_kOawmJ.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 17, 234, 362" coords2="2, 17, 234, 362" shape="rect" alt="Vendor:Lane" id="areadiagram_map_XhQSydGFS_kOawmA_default" href="BPLane_QRQSydGFS_kOawmB.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 2, 554, 362" coords2="2, 2, 554, 362" shape="rect" alt="sistem pendaftaran:Pool" id="areadiagram_map_e3niydGFS_kOawlo_default" href="BPPool_93niydGFS_kOawlp.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="BusinessProcessDiagram_CgDiydGFS_kOawlR.html_animation/index.html" class="TableContent ItemLink">Animation</a>				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="6" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="10%">
+<span class="TableHeaderText">ID</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="6" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlanePool.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlanePool.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPPool_93niydGFS_kOawlp.html" class="ItemLink">sistem pendaftaran : Pool</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlaneLane.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlaneLane.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPLane_QRQSydGFS_kOawmB.html" class="ItemLink">Vendor : Lane</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP01.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_4H4SydGFS_kOawmU.html" class="ItemLink">N/A : Start Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP01.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_zjESydGFS_kOawmh.html" class="ItemLink">Register : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP01.BP04</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_AkCSydGFS_kOawnj.html" class="ItemLink">Mengisi dan Update Data/Dok : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP01.BP07</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsEnd.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsEnd.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPEndEvent_GPLSydGFS_kOawq2.html" class="ItemLink">N/A : End Event</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/SwimlaneLane.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/SwimlaneLane.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPLane_z4oSydGFS_kOawmJ.html" class="ItemLink">UPBJ : Lane</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP02.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask__qGSydGFS_kOawoM.html" class="ItemLink">Verifikasi : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP02.BP02</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/GatewayExDescMergeDataBased.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/GatewayExDescMergeDataBased.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPGateway_IJ2SydGFS_kOawox.html" class="ItemLink">Gateway3 : Data-Based Exclusive Decision/Merge (XOR)</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP02.BP04</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_8S_SydGFS_kOawph.html" class="ItemLink">Persetujuan : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP02.BP06</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivitiesTask.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivitiesTask.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPTask_abJSydGFS_kOawqC.html" class="ItemLink">Kirim Email persetujuan, no vendor : Task</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+<span class="TableContent">BP09.BP02.BP06.BP01</span>			</td>
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/EventsStart.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/EventsStart.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="BPStartEvent_a_tSydGFS_kOawqL.html" class="ItemLink">N/A : Message Trigger</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>

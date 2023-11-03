@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=9" >
+<title>Animation Sistem Pendaftaran</title>
+</head>
+<body style="overflow: hidden;">
+<div id="layerContainer" style="position:absolute; left:0px; top:0px;">
+<canvas id="canvas" width="558" height="366"/>
+</div>
+<div id="toolbarBackground" style="position:absolute; left:0px; top:0px; background-color:#F0F0F0;"></div>
+<div id="progressBarProgressBackground" style="position:absolute; left:0px; top:0px; background-color:#B5B5B5;"></div>
+<div id="progressBarProgressDone" style="position:absolute; left:0px; top:0px; background-color:#BF56FA;"></div>
+<img id="pause" title="Pause (Ctrl + P)" src="img/NewPause.png" onmousedown="performMousePressed('pause', 'img/NewPause.png', 'img/NewPausePressed.png', 'img/NewPauseDisabled.png');" onmouseup="performMouseUp('pause', 'img/NewPause.png', 'img/NewPausePressed.png', 'img/NewPauseDisabled.png');" onmouseout="performMouseOut('pause', 'img/NewPause.png', 'img/NewPausePressed.png', 'img/NewPauseDisabled.png');" style="position:absolute; left:0px; top:0px;">
+<img id="play" title="Play (Ctrl + P)" src="img/NewPlay.png" onmousedown="performMousePressed('play', 'img/NewPlay.png', 'img/NewPlayPressed.png', 'img/NewPlayDisabled.png');" onmouseup="performMouseUp('play', 'img/NewPlay.png', 'img/NewPlayPressed.png', 'img/NewPlayDisabled.png');" onmouseout="performMouseOut('play', 'img/NewPlay.png', 'img/NewPlayPressed.png', 'img/NewPlayDisabled.png');" style="position:absolute; left:0px; top:0px;">
+<img id="stop" title="Stop (Ctrl + Space)" src="img/NewStop.png" onmousedown="performMousePressed('stop', 'img/NewStop.png', 'img/NewStopPressed.png', 'img/NewStopDisabled.png');" onmouseup="performMouseUp('stop', 'img/NewStop.png', 'img/NewStopPressed.png', 'img/NewStopDisabled.png');" onmouseout="performMouseOut('stop', 'img/NewStop.png', 'img/NewStopPressed.png', 'img/NewStopDisabled.png');" style="position:absolute; left:0px; top:0px;">
+<img id="previous" title="Backward (Ctrl + Left)" src="img/NewPrevious.png" onmousedown="performMousePressed('previous', 'img/NewPrevious.png', 'img/NewPreviousPressed.png', 'img/NewPreviousDisabled.png');" onmouseup="performMouseUp('previous', 'img/NewPrevious.png', 'img/NewPreviousPressed.png', 'img/NewPreviousDisabled.png');" onmouseout="performMouseOut('previous', 'img/NewPrevious.png', 'img/NewPreviousPressed.png', 'img/NewPreviousDisabled.png');" style="position:absolute; left:0px; top:0px;">
+<img id="next" title="Forward (Ctrl + Right)" src="img/NewNext.png" onmousedown="performMousePressed('next', 'img/NewNext.png', 'img/NewNextPressed.png', 'img/NewNextDisabled.png');" onmouseup="performMouseUp('next', 'img/NewNext.png', 'img/NewNextPressed.png', 'img/NewNextDisabled.png');" onmouseout="performMouseOut('next', 'img/NewNext.png', 'img/NewNextPressed.png', 'img/NewNextDisabled.png');" style="position:absolute; left:0px; top:0px;">
+<script type="text/javascript">
+function P(x, y) {
+	this.x = x || 0;
+	this.y = y || 0;
+};
+function AP(type, x, y) {
+	this.type = type || 0;
+	this.x = x || 0;
+	this.y = y || 0;
+};
+window.refreshAnimationLayer = (function(callback) {
+	return window.requestAnimationFrame ||
+		window.webkitRequestAnimationFrame ||
+		window.mozRequestAnimationFrame ||
+		window.oRequestAnimationFrame ||
+		window.msRequestAnimationFrame ||
+		function(callback) {
+			window.setTimeout(callback, 1000 / 30);
+		};
+	}) ();
+var loading = true;
+var imageLoadingText = "";
+var audioLoadingText = "";
+var frameIndex = 0;
+var audioFrameIndex = -1;
+var frameCount = 450;
+var playTo = frameCount - 1;
+var playing = false;
+var paused = false;
+var playingAudio = false;
+var audioQuque = new Array();
+var playingVoice = null;
+var previousIndex = 0;
+var nextIndex = 0;
+function nextFrame() {
+	if (playing == true && paused == false) {
+		audioQuque = new Array();
+		if (playingVoice) {
+			playingVoice.pause();
+			playingVoice.currentTime = 0;
+			playingVoice = null;
+			playingAudio = false;
+		}
+		if (frameIndex < playTo) {
+			frameIndex++;
+		} else if (frameIndex > playTo) {
+			frameIndex--;
+		} else {
+			if (frameIndex == 0 || frameIndex == frameCount - 1) {
+				playing = false;
+				paused = false;
+				stopEvent();
+			} else {
+				if (!playingAudio) {
+		animateV();
+				}
+				paused = true;
+				pauseEvent();
+			}
+		}
+	}
+}
+function nextAudio() {
+	if (audioQuque.length > 0) {
+		var voice = audioQuque.shift();
+		playingVoice = voice;
+		voice.play();
+		voice.setAttribute("onended", "nextAudio()");
+	} else {
+		playingVoice = null;
+		playingAudio = false;
+	}
+}
+var viewportWidth;
+var viewportHeight;
+function layout() {
+	{ // previous
+		var previous = document.getElementById("previous");
+		previous.style.left = "25px";
+		previous.style.top = (viewportHeight - 23) + "px";
+		previous.width = 14;
+		previous.height = 12;
+	}
+	{ // pause
+		var pause = document.getElementById("pause");
+		pause.style.left = "64px";
+		pause.style.top = (viewportHeight - 23) + "px";
+		pause.width = 12;
+		pause.height = 12;
+	}
+	{ // play
+		var play = document.getElementById("play");
+		play.style.left = "64px";
+		play.style.top = (viewportHeight - 23) + "px";
+		play.width = 12;
+		play.height = 12;
+	}
+	{ // stop
+		var stop = document.getElementById("stop");
+		stop.style.left = "101px";
+		stop.style.top = (viewportHeight - 23) + "px";
+		stop.width = 12;
+		stop.height = 12;
+	}
+	{ // next
+		var next = document.getElementById("next");
+		next.style.left = "138px";
+		next.style.top = (viewportHeight - 23) + "px";
+		next.width = 14;
+		next.height = 12;
+	}
+	{ // progressBarProgressDone + progressBarProgressBackground
+		var lMinX = 177;
+		var lMaxX = viewportWidth - 25;
+		var lWidth = lMaxX - lMinX;
+		var lPercent = frameIndex / (frameCount - 1);
+		var lDoneWidth = lPercent * lWidth;
+		var progressBarProgressDone = document.getElementById("progressBarProgressDone");
+		progressBarProgressDone.style.left = lMinX + "px";
+		progressBarProgressDone.style.top = (viewportHeight - 20) + "px";
+		progressBarProgressDone.style.width = lDoneWidth + "px";
+		progressBarProgressDone.style.height = "5px";
+		var progressBarProgressBackground = document.getElementById("progressBarProgressBackground");
+		progressBarProgressBackground.style.left = lMinX + "px";
+		progressBarProgressBackground.style.top = (viewportHeight - 20) + "px";
+		progressBarProgressBackground.style.width = lWidth + "px";
+		progressBarProgressBackground.style.height = "5px";
+	}
+	{ // toolbarBackground
+		var toolbarBackground = document.getElementById("toolbarBackground");
+		toolbarBackground.style.top = (viewportHeight - 34) + "px";
+		toolbarBackground.style.width = viewportWidth + "px";
+		toolbarBackground.style.height = "34px";
+	}
+}
+function updateControls() {
+	var previous = document.getElementById("previous");
+	var pause = document.getElementById("pause");
+	var play = document.getElementById("play");
+	var next = document.getElementById("next");
+	var stop = document.getElementById("stop");
+	if (playing == true && paused == false) {
+		pause.style.display = "inline";
+		play.style.display = "none";
+	} else {
+		pause.style.display = "none";
+		play.style.display = "inline";
+		if (loading == true) {
+			if (play.src.indexOf("img/NewPlay.png") >= 0) {
+				play.src = "img/NewPlayDisabled.png";
+			}
+		} else {
+			if (play.src.indexOf("img/NewPlayDisabled.png") >= 0) {
+				play.src = "img/NewPlay.png";
+			}
+		}
+	}
+	if (previousIndex < frameIndex) {
+		if (previous.src.indexOf("img/NewPreviousDisabled.png") >= 0) {
+			previous.src = "img/NewPrevious.png";
+		}
+	} else {
+		previous.src = "img/NewPreviousDisabled.png";
+	}
+	if (nextIndex > frameIndex) {
+		if (next.src.indexOf("img/NewNextDisabled.png") >= 0) {
+			next.src = "img/NewNext.png";
+		}
+	} else {
+		next.src = "img/NewNextDisabled.png";
+	}
+	if (playing == true || paused == true) {
+		if (stop.src.indexOf("img/NewStopDisabled.png") >= 0) {
+			stop.src = "img/NewStop.png";
+		}
+	} else {
+		if (frameIndex == 0) {
+			if (stop.src.indexOf("img/NewStop.png") >= 0) {
+				stop.src = "img/NewStopDisabled.png";
+			}
+		} else if (frameIndex == frameCount - 1) {
+			if (stop.src.indexOf("img/NewStopDisabled.png") >= 0) {
+				stop.src = "img/NewStop.png";
+			}
+		}
+	}
+}
+function previousEvent() {
+}
+function pauseEvent() {
+}
+function playEvent() {
+}
+function nextEvent() {
+}
+function stopEvent() {
+}
+var IE;
+if (document.all) {
+	IE = true;
+} else {
+	IE = false;
+}
+document.onkeydown = documentKeyDown;
+function documentKeyDown(e) {
+	if (loading == true) {
+		return;
+	}
+	if (e.ctrlKey == true) {
+		if (e.keyCode == 80 || e.keyCode == 112) { // P
+			if (e.preventDefault) {
+				e.preventDefault();
+			}
+			if (playing == true && paused == false) {
+		animateV();
+				paused = true;
+				pauseEvent();
+			} else {
+				audioQuque = new Array();
+				if (playingVoice) {
+					playingVoice.pause();
+					playingVoice.currentTime = 0;
+					playingVoice = null;
+					playingAudio = false;
+				}
+				playTo = frameCount - 1;
+				if (paused == true) {
+					paused = false;
+				} else {
+					playing = true;
+					paused = false;
+					frameIndex = 0;
+					layerOffsetX = 0;
+					layerOffsetY = 0;
+				}
+				playEvent();
+			}
+		} else if (e.keyCode == 37) { // Left
+			playTo = previousIndex;
+			playing = true;
+			paused = false;
+			previousEvent();
+		} else if (e.keyCode == 39) { // Right
+			playTo = nextIndex;
+			playing = true;
+			paused = false;
+			nextEvent();
+		} else if (e.keyCode == 32) { // Space
+			audioQuque = new Array();
+			if (playingVoice) {
+				playingVoice.pause();
+				playingVoice.currentTime = 0;
+				playingVoice = null;
+				playingAudio = false;
+			}
+			playing = false;
+			paused = false;
+			frameIndex = 0;
+			layerOffsetX = 0;
+			layerOffsetY = 0;
+			playEvent();
+		}
+	}
+}
+document.onmousemove = documentMouseMove;
+document.onmousedown = documentMouseDown;
+document.onmouseup = documentMouseUp;
+var mouseX = 0;
+var mouseY = 0;
+function documentMouseMove(e) {
+	if (IE) {
+		mouseX = event.clientX + document.body.scrollLeft;
+		mouseY = event.clientY + document.body.scrollTop;
+	} else {
+		mouseX = e.pageX;
+		mouseY = e.pageY;
+	}  
+	if (mouseX < 0) {
+		mouseX = 0;
+	}
+	if (mouseY < 0) {
+		mouseY = 0;
+	}
+	performDragLayer();
+	performDragProgress();
+}
+function documentMouseDown(e) {
+	if (loading == true) {
+		return;
+	}
+	{ // Layer
+		var lMinX = 0;
+		var lMaxX = viewportWidth;
+		var lMinY = 0;
+		var lMaxY = viewportHeight - 34;
+		if (mouseX >= lMinX && mouseY >= lMinY && mouseX <= lMaxX && mouseY <= lMaxY) {
+			if (e.preventDefault) {
+				e.preventDefault();
+			}
+			startDragLayer();
+		}
+	}
+	{ // Progress
+		var lMinX = 177;
+		var lMaxX = viewportWidth - 25;
+		var lMinY = viewportHeight - 25;
+		var lMaxY = lMinY + 15;
+		if (mouseX >= lMinX && mouseY >= lMinY && mouseX <= lMaxX && mouseY <= lMaxY) {
+			if (e.preventDefault) {
+				e.preventDefault();
+			}
+			startDragProgress();
+		}
+	}
+}
+function documentMouseUp(e) {
+	if (loading == true) {
+		return;
+	}
+	documentMouseMove(e);
+	endDragLayer();
+	endDragProgress();
+}
+var layerTranslateX = 0;
+var layerTranslateY = 0;
+var layerOffsetY = 0;
+var layerOffsetX = 0;
+var layerOffsetY = 0;
+var draggingLayer = false;
+var layerOffsetTempX = 0;
+var layerOffsetTempY = 0;
+var layerPressX = 0;
+var layerPressY = 0;
+var lastScroll = new P(55, 51);
+function startDragLayer() {
+	if (draggingLayer == false) {
+		layerPressX = mouseX
+		layerPressY = mouseY
+		layerOffsetTempX = layerOffsetX
+		layerOffsetTempY = layerOffsetY
+		draggingLayer = true;
+	}
+}
+function endDragLayer() {
+	if (draggingLayer) {
+		draggingLayer = false;
+	}
+}
+function performDragLayer() {
+	if (draggingLayer) {
+		layerOffsetX = layerOffsetTempX + mouseX - layerPressX;
+		layerOffsetY = layerOffsetTempY + mouseY - layerPressY;
+	}
+}
+var draggingProgress = false;
+function startDragProgress() {
+	if (draggingProgress == false) {
+		draggingProgress = true;
+		audioQuque = new Array();
+		if (playingVoice) {
+			playingVoice.pause();
+			playingVoice.currentTime = 0;
+			playingVoice = null;
+			playingAudio = false;
+		}
+	}
+}
+function endDragProgress() {
+	if (draggingProgress) {
+		draggingProgress = false;
+	}
+}
+function performDragProgress() {
+	if (draggingProgress) {
+		audioQuque = new Array();
+		if (playingVoice) {
+			playingVoice.pause();
+			playingVoice.currentTime = 0;
+			playingVoice = null;
+			playingAudio = false;
+		}
+		var lMinX = 177;
+		var lMaxX = viewportWidth - 25;
+		var lX = mouseX;
+		lX = Math.max(lX , lMinX);
+		lX = Math.min(lX , lMaxX);
+		var lPercent = (lX - lMinX) / (lMaxX - lMinX);
+		playing = false;
+		paused = false;
+		frameIndex = Math.round((frameCount - 1) * lPercent);
+	}
+}
+function performMousePressed(id, path, pressedPath, disablePath) {
+	if (loading == true) {
+		return;
+	}
+	var image = document.getElementById(id);
+	if (image.src.indexOf(disablePath) < 0) {
+		image.src = pressedPath;
+	}
+}
+function performMouseUp(id, path, pressedPath, disablePath) {
+	if (loading == true) {
+		return;
+	}
+	var image = document.getElementById(id);
+	if (image.src.indexOf(pressedPath) >= 0) {
+		image.src = path;
+		if ("previous" == id) {
+			playTo = previousIndex;
+			playing = true;
+			paused = false;
+			previousEvent();
+		} else if ("pause" == id) {
+		animateV();
+			paused = true;
+			pauseEvent();
+		} else if ("play" == id) {
+			audioQuque = new Array();
+			if (playingVoice) {
+				playingVoice.pause();
+				playingVoice.currentTime = 0;
+				playingVoice = null;
+				playingAudio = false;
+			}
+			playTo = frameCount - 1;
+			if (paused == true) {
+				paused = false;
+			} else {
+				playing = true;
+				paused = false;
+				frameIndex = 0;
+				layerOffsetX = 0;
+				layerOffsetY = 0;
+			}
+			playEvent();
+		} else if ("next" == id) {
+			playTo = nextIndex;
+			playing = true;
+			paused = false;
+			nextEvent();
+		} else if ("stop" == id) {
+			audioQuque = new Array();
+			if (playingVoice) {
+				playingVoice.pause();
+				playingVoice.currentTime = 0;
+				playingVoice = null;
+				playingAudio = false;
+			}
+			playing = false;
+			paused = false;
+			frameIndex = 0;
+			layerOffsetX = 0;
+			layerOffsetY = 0;
+			stopEvent();
+		}
+	}
+}
+function performMouseOut(id, path, pressedPath, disablePath) {
+	if (loading == true) {
+		return;
+	}
+	var image = document.getElementById(id);
+	if (image.src.indexOf(pressedPath) >= 0) {
+		image.src = path;
+	}
+}
+function animate() {
+	// detect viewport size
+	if (typeof window.innerWidth != 'undefined') {
+		viewportWidth = window.innerWidth,
+		viewportHeight = window.innerHeight
+	} else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0) {
+		viewportWidth = document.documentElement.clientWidth,
+		viewportHeight = document.documentElement.clientHeight
+	} else {
+		viewportWidth = document.getElementsByTagName('body')[0].clientWidth,
+		viewportHeight = document.getElementsByTagName('body')[0].clientHeight
+	}
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	// context.clearRect(0, 0, canvas.width, canvas.height);
+		animateS();
+	layout();
+	updateControls();
+	if (loading == true) {
+		var layerContainer = document.getElementById("layerContainer");
+		layerContainer.style.left = "0px";
+		layerContainer.style.top = "0px";
+		canvas.width = viewportWidth;
+		canvas.height = viewportHeight;
+		var loadingText = "Loading... " + imageLoadingText + " " + audioLoadingText;
+		var textMetrics = context.measureText(loadingText);
+		context.fillText(loadingText, (viewportWidth - textMetrics.width) / 2, (viewportHeight - 34) / 2);
+	} else {
+		var viewBoundsX = (layerTranslateX - layerOffsetX);
+		var viewBoundsY = (layerTranslateY - layerOffsetY);
+		var viewBoundsX2 = viewBoundsX + viewportWidth;
+		var viewBoundsY2 = viewBoundsY + viewportHeight - 34;
+		var lBgX = 0;
+		var lBgY = 0;
+		for (var lRow = 0; lRow < 1; lRow++) {
+			lBgX = 0;
+			var lBgWidth;
+			var lBgHeight;
+			if (lRow == 0) {
+				lBgHeight = 366 - lBgY;
+			} else {
+				lBgHeight = 1000;
+			}
+			for (var lColumn = 0; lColumn < 1; lColumn++) {
+				if (lColumn == 0) {
+					lBgWidth = 558 - lBgX;
+				} else {
+					lBgWidth = 1000;
+				}
+				var lBgTempMinX = Math.min(viewBoundsX, lBgX);
+				var lBgTempMaxX = Math.min(viewBoundsX2, lBgX + lBgWidth);
+				var lBgTempMinY = Math.min(viewBoundsY, lBgY);
+				var lBgTempMaxY = Math.min(viewBoundsY2, lBgY + lBgHeight);
+				var lXOverlap = (lBgTempMaxX - lBgTempMinX) < (lBgWidth + viewportWidth);
+				var lYOverlap = (lBgTempMaxY - lBgTempMinY) < (lBgHeight + viewportHeight);
+				if (lXOverlap && lYOverlap) {
+					try {
+						var lBgId = "BG_" + lRow + "_" + lColumn;
+						context.drawImage(eval(lBgId), lBgX, lBgY, lBgWidth, lBgHeight);
+					} catch (e) {}
+				}
+				lBgX += 1000;
+			}
+			lBgY += 1000;
+		}
+		animateF1();
+		animateF2();
+		animateF3();
+		animateF4();
+		animateF5();
+		animateL1();
+		animateL2();
+		animateL3();
+		animateL4();
+		animateL5();
+		animateB();
+		animateD();
+		animatePI();
+		animateNI();
+	}
+	window.refreshAnimationLayer(function() {
+		animate();
+	});
+}
+window.onload = function() {
+	var canvas = document.getElementById("canvas");
+	if (!!(canvas.getContext && canvas.getContext("2d")) == false) {
+		document.write("Sorry, your browser does not support HTML5.<br>Please upgrade your browser or try another browser.");
+		return;
+	}
+	var context = canvas.getContext("2d");
+	context.save();
+	animate();
+	setInterval(nextFrame, 500 / 10);
+};
+var BG_0_0 = new Image();
+try {
+BG_0_0.src = "img/BG_0_0.png";
+} catch (e) {}
+</script>
+<script type="text/javascript">
+var xB = new Array();
+var B = new Array();
+function animateB() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.fillStyle = "rgba(51, 51, 51, 1.0)";
+	var radius = 5;
+	var balls = B[frameIndex];
+	for(var i = 0; i < balls.length; i++) {
+		var ball = balls[i];
+		context.beginPath();
+		context.arc(ball.x, ball.y, radius, 0, 2 * Math.PI, false);
+		context.fill();
+	}
+}
+var xL1 = new Array();
+var L1 = new Array();
+function animateL1() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.strokeStyle = "rgba(189, 64, 255, 1.0)";
+	context.lineWidth = 3;
+	var areas = L1[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.stroke();
+	}
+}
+var xL2 = new Array();
+var L2 = new Array();
+function animateL2() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.strokeStyle = "rgba(189, 64, 255, 0.2)";
+	context.lineWidth = 3;
+	var areas = L2[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.stroke();
+	}
+}
+var xL3 = new Array();
+var L3 = new Array();
+function animateL3() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.strokeStyle = "rgba(189, 64, 255, 0.4)";
+	context.lineWidth = 3;
+	var areas = L3[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.stroke();
+	}
+}
+var xL4 = new Array();
+var L4 = new Array();
+function animateL4() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.strokeStyle = "rgba(189, 64, 255, 0.6)";
+	context.lineWidth = 3;
+	var areas = L4[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.stroke();
+	}
+}
+var xL5 = new Array();
+var L5 = new Array();
+function animateL5() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.strokeStyle = "rgba(189, 64, 255, 0.8)";
+	context.lineWidth = 3;
+	var areas = L5[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.stroke();
+	}
+}
+var xF1 = new Array();
+var F1 = new Array();
+function animateF1() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.fillStyle = "rgba(155, 0, 255, 0.08)";
+	var areas = F1[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.closePath();
+		context.fill();
+	}
+}
+var xF2 = new Array();
+var F2 = new Array();
+function animateF2() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.fillStyle = "rgba(155, 0, 255, 0.16)";
+	var areas = F2[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.closePath();
+		context.fill();
+	}
+}
+var xF3 = new Array();
+var F3 = new Array();
+function animateF3() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.fillStyle = "rgba(155, 0, 255, 0.24)";
+	var areas = F3[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.closePath();
+		context.fill();
+	}
+}
+var xF4 = new Array();
+var F4 = new Array();
+function animateF4() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.fillStyle = "rgba(155, 0, 255, 0.32)";
+	var areas = F4[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.closePath();
+		context.fill();
+	}
+}
+var xF5 = new Array();
+var F5 = new Array();
+function animateF5() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.fillStyle = "rgba(155, 0, 255, 0.4)";
+	var areas = F5[frameIndex];
+	for(var i = 0; i < areas.length; i++) {
+		var area = areas[i];
+		context.beginPath();
+		for(var j = 0; j < area.length; j++) {
+			var areaPoint = area[j];
+			if (areaPoint.type == 0) {
+				context.moveTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 1) {
+				context.lineTo(areaPoint.x, areaPoint.y);
+			} else if (areaPoint.type == 4) {
+				context.closePath();
+			}
+		}
+		context.closePath();
+		context.fill();
+	}
+}
+var xS = new Array();
+var S = new Array();
+function animateS() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	context.restore();
+	context.save();
+	var scrolls = S[frameIndex];
+	for(var i = 0; i < scrolls.length; i++) {
+		var scroll = scrolls[i];
+		lastScroll = scroll;
+	}
+	var SCROLL_BORDER = 50;
+	var scrollX = lastScroll.x;
+	var scrollY = lastScroll.y;
+	var scrollBoundsX = layerTranslateX + SCROLL_BORDER;
+	var scrollBoundsY = layerTranslateY + SCROLL_BORDER;
+	var scrollBoundsX2 = scrollBoundsX + viewportWidth - SCROLL_BORDER - SCROLL_BORDER;
+	var scrollBoundsY2 = scrollBoundsY + viewportHeight - SCROLL_BORDER - SCROLL_BORDER - 40;
+	if (scrollX < scrollBoundsX) {
+		layerTranslateX -= scrollBoundsX - scrollX;
+	} else if (scrollX > scrollBoundsX2) {
+		layerTranslateX -= scrollBoundsX2 - scrollX;
+	}
+	if (scrollY < scrollBoundsY) {
+		layerTranslateY -= scrollBoundsY - scrollY;
+	} else if (scrollY > scrollBoundsY2) {
+		layerTranslateY -= scrollBoundsY2 - scrollY;
+	}
+	canvas.width = viewportWidth;
+	canvas.height = viewportHeight - 34;
+	context.translate(-(layerTranslateX - layerOffsetX), -(layerTranslateY - layerOffsetY));
+}
+var xD = new Array();
+var D = new Array();
+function animateD() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	if (paused == true) {
+		var x = canvas.width + layerTranslateX - layerOffsetX;
+		var y = canvas.height + layerTranslateY - layerOffsetY;
+		var images = D[frameIndex];
+		for(var i = 0; i < images.length; i++) {
+			var image = images[i];
+			var imageWidth = image.width;
+			var imageHeight = image.height;
+			context.drawImage(image, x - imageWidth, y - imageHeight, imageWidth, imageHeight);
+		}
+	}
+}
+// doc image
+var DI1 = new Image(1, 1);
+try {
+	DI1.src = "./img/DI1.png";
+} catch (e) {}
+var xV = new Array();
+var V = new Array();
+function animateV() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	if (playingAudio == false && draggingProgress == false) {
+		if (audioFrameIndex != frameIndex) {
+			audioFrameIndex = frameIndex;
+			var voices = V[frameIndex - 1];
+			if (voices) {
+				for(var i = 0; i < voices.length; i++) {
+					var voice = voices[i];
+					audioQuque.push(voice);
+				}
+				if (audioQuque.length > 0) {
+					playingAudio = true;
+					nextAudio();
+				}
+			}
+		}
+	}
+}
+// voice
+var xPI = new Array();
+var PI = new Array();
+function animatePI() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	var previousIndexs = PI[frameIndex];
+	for(var i = 0; i < previousIndexs.length; i++) {
+		previousIndex = previousIndexs[i];
+	}
+}
+var xNI = new Array();
+var NI = new Array();
+function animateNI() {
+	var canvas = document.getElementById("canvas");
+	var context = canvas.getContext("2d");
+	var nextIndexs = NI[frameIndex];
+	for(var i = 0; i < nextIndexs.length; i++) {
+		nextIndex = nextIndexs[i];
+	}
+}
+xPI[0] = "|0,0,";
+xNI[0] = "|0,12,";
+xS[1] = "|0,55,51,";
+xD[1] = "|0,DI1,";
+xL2[2] = "|0:0,33.0,29.0,1,33.0,73.0,1,77.0,73.0,1,77.0,29.0,4,-70.0,-28.0;";
+xL2[3] = "0,|";
+xL3[3] = "|0:0,35.0,31.0,1,35.0,71.0,1,75.0,71.0,1,75.0,31.0,4,-70.0,-28.0;";
+xL3[4] = "0,|";
+xL4[4] = "|0:0,36.0,32.0,1,36.0,70.0,1,74.0,70.0,1,74.0,32.0,4,-70.0,-28.0;";
+xL4[5] = "0,|";
+xL5[5] = "|0:0,38.0,34.0,1,38.0,68.0,1,72.0,68.0,1,72.0,34.0,4,-70.0,-28.0;";
+xL1[6] = "|0:0,39.0,35.0,1,39.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xL5[6] = "0,|";
+xF1[7] = "|0:0,39.0,35.0,1,39.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF1[8] = "0,|";
+xF2[8] = "|0:0,39.0,35.0,1,39.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF2[9] = "0,|";
+xF3[9] = "|0:0,39.0,35.0,1,39.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF3[10] = "0,|";
+xF4[10] = "|0:0,39.0,35.0,1,39.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF4[11] = "0,|";
+xF5[11] = "|0:0,39.0,35.0,1,39.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[12] = "0,|0,30,";
+xPI[13] = "0,|0,12,";
+xB[14] = "|0,56,61,";
+xS[14] = "0,|0,56,61,";
+xB[15] = "0,|0,56,81,";
+xS[15] = "0,|0,56,81,";
+xB[16] = "0,|0,56,92,";
+xS[16] = "0,|0,56,92,";
+xB[17] = "0,|";
+xL1[18] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,93.0,1,66.0,93.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[18] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,93.0,1,66.0,93.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[19] = "0,|0,69,113,";
+xL2[20] = "|0:0,19.0,81.0,1,19.0,145.0,1,119.0,145.0,1,119.0,81.0,1,66.0,81.0,1,66.0,93.0,1,46.0,93.0,1,46.0,81.0,4,-70.0,-28.0;";
+xL2[21] = "0,|";
+xL3[21] = "|0:0,21.0,83.0,1,21.0,143.0,1,117.0,143.0,1,117.0,83.0,1,66.0,83.0,1,66.0,93.0,1,46.0,93.0,1,46.0,83.0,4,-70.0,-28.0;";
+xL3[22] = "0,|";
+xL4[22] = "|0:0,22.0,84.0,1,22.0,142.0,1,116.0,142.0,1,116.0,84.0,1,66.0,84.0,1,66.0,93.0,1,46.0,93.0,1,46.0,84.0,4,-70.0,-28.0;";
+xL4[23] = "0,|";
+xL5[23] = "|0:0,24.0,86.0,1,24.0,140.0,1,114.0,140.0,1,114.0,86.0,1,66.0,86.0,1,66.0,93.0,1,46.0,93.0,1,46.0,86.0,4,-70.0,-28.0;";
+xL1[24] = "|1:0,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,93.0,1,46.0,93.0,1,46.0,87.0,4,-70.0,-28.0;";
+xL5[24] = "0,|";
+xF1[25] = "|0:0,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,93.0,1,46.0,93.0,1,46.0,87.0,4,-70.0,-28.0;";
+xF1[26] = "0,|";
+xF2[26] = "|0:0,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,93.0,1,46.0,93.0,1,46.0,87.0,4,-70.0,-28.0;";
+xF2[27] = "0,|";
+xF3[27] = "|0:0,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,93.0,1,46.0,93.0,1,46.0,87.0,4,-70.0,-28.0;";
+xF3[28] = "0,|";
+xF4[28] = "|0:0,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,93.0,1,46.0,93.0,1,46.0,87.0,4,-70.0,-28.0;";
+xF4[29] = "0,|";
+xF5[29] = "|1:0,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,93.0,1,46.0,93.0,1,46.0,87.0,4,-70.0,-28.0;";
+xL1[30] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[30] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[30] = "0,|0,49,";
+xPI[31] = "0,|0,30,";
+xB[32] = "|0,68,133,";
+xS[32] = "0,|0,68,133,";
+xB[33] = "0,|0,68,153,";
+xS[33] = "0,|0,68,153,";
+xB[34] = "0,|0,68,173,";
+xS[34] = "0,|0,68,173,";
+xB[35] = "0,|0,68,188,";
+xS[35] = "0,|0,68,188,";
+xB[36] = "0,|";
+xL1[37] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,189.0,1,78.0,189.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[37] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,189.0,1,78.0,189.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[38] = "0,|0,85,213,";
+xL2[39] = "|0:0,19.0,177.0,1,19.0,249.0,1,151.0,249.0,1,151.0,177.0,1,78.0,177.0,1,78.0,189.0,1,58.0,189.0,1,58.0,177.0,4,-70.0,-28.0;";
+xL2[40] = "0,|";
+xL3[40] = "|0:0,21.0,179.0,1,21.0,247.0,1,149.0,247.0,1,149.0,179.0,1,78.0,179.0,1,78.0,189.0,1,58.0,189.0,1,58.0,179.0,4,-70.0,-28.0;";
+xL3[41] = "0,|";
+xL4[41] = "|0:0,22.0,180.0,1,22.0,246.0,1,148.0,246.0,1,148.0,180.0,1,78.0,180.0,1,78.0,189.0,1,58.0,189.0,1,58.0,180.0,4,-70.0,-28.0;";
+xL4[42] = "0,|";
+xL5[42] = "|0:0,24.0,182.0,1,24.0,244.0,1,146.0,244.0,1,146.0,182.0,1,78.0,182.0,1,78.0,189.0,1,58.0,189.0,1,58.0,182.0,4,-70.0,-28.0;";
+xL1[43] = "|1:0,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,189.0,1,58.0,189.0,1,58.0,183.0,4,-70.0,-28.0;";
+xL5[43] = "0,|";
+xF1[44] = "|0:0,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,189.0,1,58.0,189.0,1,58.0,183.0,4,-70.0,-28.0;";
+xF1[45] = "0,|";
+xF2[45] = "|0:0,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,189.0,1,58.0,189.0,1,58.0,183.0,4,-70.0,-28.0;";
+xF2[46] = "0,|";
+xF3[46] = "|0:0,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,189.0,1,58.0,189.0,1,58.0,183.0,4,-70.0,-28.0;";
+xF3[47] = "0,|";
+xF4[47] = "|0:0,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,189.0,1,58.0,189.0,1,58.0,183.0,4,-70.0,-28.0;";
+xF4[48] = "0,|";
+xF5[48] = "|1:0,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,189.0,1,58.0,189.0,1,58.0,183.0,4,-70.0,-28.0;";
+xL1[49] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[49] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[49] = "0,|0,85,";
+xPI[50] = "0,|0,49,";
+xB[51] = "|0,139,213,";
+xS[51] = "0,|0,139,213,";
+xB[52] = "0,|0,159,213,";
+xS[52] = "0,|0,159,213,";
+xB[53] = "0,|0,179,213,";
+xS[53] = "0,|0,179,213,";
+xB[54] = "0,|0,199,213,";
+xS[54] = "0,|0,199,213,";
+xB[55] = "0,|0,201,213,";
+xS[55] = "0,|0,201,213,";
+xB[56] = "0,|0,201,193,";
+xS[56] = "0,|0,201,193,";
+xB[57] = "0,|0,201,173,";
+xS[57] = "0,|0,201,173,";
+xB[58] = "0,|0,201,153,";
+xS[58] = "0,|0,201,153,";
+xB[59] = "0,|0,201,133,";
+xS[59] = "0,|0,201,133,";
+xB[60] = "0,|0,201,113,";
+xS[60] = "0,|0,201,113,";
+xB[61] = "0,|0,201,93,";
+xS[61] = "0,|0,201,93,";
+xB[62] = "0,|0,201,73,";
+xS[62] = "0,|0,201,73,";
+xB[63] = "0,|0,221,73,";
+xS[63] = "0,|0,221,73,";
+xB[64] = "0,|0,241,73,";
+xS[64] = "0,|0,241,73,";
+xB[65] = "0,|0,261,73,";
+xS[65] = "0,|0,261,73,";
+xB[66] = "0,|0,281,73,";
+xS[66] = "0,|0,281,73,";
+xB[67] = "0,|0,301,73,";
+xS[67] = "0,|0,301,73,";
+xB[68] = "0,|0,321,73,";
+xS[68] = "0,|0,321,73,";
+xB[69] = "0,|0,341,73,";
+xS[69] = "0,|0,341,73,";
+xB[70] = "0,|0,361,73,";
+xS[70] = "0,|0,361,73,";
+xB[71] = "0,|0,369,73,";
+xS[71] = "0,|0,369,73,";
+xB[72] = "0,|";
+xL1[73] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,370.0,83.0,1,370.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[73] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,370.0,83.0,1,370.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[74] = "0,|0,400,73,";
+xL2[75] = "|0:0,358.0,41.0,1,358.0,63.0,1,370.0,63.0,1,370.0,83.0,1,358.0,83.0,1,358.0,105.0,1,442.0,105.0,1,442.0,41.0,4,-70.0,-28.0;";
+xL2[76] = "0,|";
+xL3[76] = "|0:0,360.0,43.0,1,360.0,63.0,1,370.0,63.0,1,370.0,83.0,1,360.0,83.0,1,360.0,103.0,1,440.0,103.0,1,440.0,43.0,4,-70.0,-28.0;";
+xL3[77] = "0,|";
+xL4[77] = "|0:0,361.0,44.0,1,361.0,63.0,1,370.0,63.0,1,370.0,83.0,1,361.0,83.0,1,361.0,102.0,1,439.0,102.0,1,439.0,44.0,4,-70.0,-28.0;";
+xL4[78] = "0,|";
+xL5[78] = "|0:0,363.0,46.0,1,363.0,63.0,1,370.0,63.0,1,370.0,83.0,1,363.0,83.0,1,363.0,100.0,1,437.0,100.0,1,437.0,46.0,4,-70.0,-28.0;";
+xL1[79] = "|1:0,364.0,47.0,1,364.0,63.0,1,370.0,63.0,1,370.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,4,-70.0,-28.0;";
+xL5[79] = "0,|";
+xF1[80] = "|0:0,364.0,47.0,1,364.0,63.0,1,370.0,63.0,1,370.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,4,-70.0,-28.0;";
+xF1[81] = "0,|";
+xF2[81] = "|0:0,364.0,47.0,1,364.0,63.0,1,370.0,63.0,1,370.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,4,-70.0,-28.0;";
+xF2[82] = "0,|";
+xF3[82] = "|0:0,364.0,47.0,1,364.0,63.0,1,370.0,63.0,1,370.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,4,-70.0,-28.0;";
+xF3[83] = "0,|";
+xF4[83] = "|0:0,364.0,47.0,1,364.0,63.0,1,370.0,63.0,1,370.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,4,-70.0,-28.0;";
+xF4[84] = "0,|";
+xF5[84] = "|1:0,364.0,47.0,1,364.0,63.0,1,370.0,63.0,1,370.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,4,-70.0,-28.0;";
+xL1[85] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[85] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,364.0,83.0,1,364.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[85] = "0,|0,103,";
+xPI[86] = "0,|0,85,";
+xB[87] = "|0,410,93,";
+xS[87] = "0,|0,410,93,";
+xB[88] = "0,|0,410,113,";
+xS[88] = "0,|0,410,113,";
+xB[89] = "0,|0,410,128,";
+xS[89] = "0,|0,410,128,";
+xB[90] = "0,|";
+xL1[91] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,128.0,1,420.0,128.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[91] = "0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,128.0,1,420.0,128.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[92] = "0,|0,410,148,";
+xL2[93] = "|0:0,378.0,116.0,1,378.0,180.0,1,442.0,180.0,1,442.0,116.0,1,420.0,116.0,1,420.0,128.0,1,400.0,128.0,1,400.0,116.0,4,-70.0,-28.0;";
+xL2[94] = "0,|";
+xL3[94] = "|0:0,380.0,118.0,1,380.0,178.0,1,440.0,178.0,1,440.0,118.0,1,420.0,118.0,1,420.0,128.0,1,400.0,128.0,1,400.0,118.0,4,-70.0,-28.0;";
+xL3[95] = "0,|";
+xL4[95] = "|0:0,381.0,119.0,1,381.0,177.0,1,439.0,177.0,1,439.0,119.0,1,420.0,119.0,1,420.0,128.0,1,400.0,128.0,1,400.0,119.0,4,-70.0,-28.0;";
+xL4[96] = "0,|";
+xL5[96] = "|0:0,383.0,121.0,1,383.0,175.0,1,437.0,175.0,1,437.0,121.0,1,420.0,121.0,1,420.0,128.0,1,400.0,128.0,1,400.0,121.0,4,-70.0,-28.0;";
+xL1[97] = "|1:0,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,128.0,1,400.0,128.0,1,400.0,122.0,4,-70.0,-28.0;";
+xL5[97] = "0,|";
+xF1[98] = "|0:0,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,128.0,1,400.0,128.0,1,400.0,122.0,4,-70.0,-28.0;";
+xF1[99] = "0,|";
+xF2[99] = "|0:0,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,128.0,1,400.0,128.0,1,400.0,122.0,4,-70.0,-28.0;";
+xF2[100] = "0,|";
+xF3[100] = "|0:0,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,128.0,1,400.0,128.0,1,400.0,122.0,4,-70.0,-28.0;";
+xF3[101] = "0,|";
+xF4[101] = "|0:0,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,128.0,1,400.0,128.0,1,400.0,122.0,4,-70.0,-28.0;";
+xF4[102] = "0,|";
+xF5[102] = "|1:0,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,128.0,1,400.0,128.0,1,400.0,122.0,4,-70.0,-28.0;";
+xL1[103] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[103] = "1,0,|0:0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,83.0,1,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,78.0,183.0,1,78.0,139.0,1,113.0,139.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[103] = "0,|0,137,";
+xPI[104] = "0,|0,103,";
+xB[105] = "|0,389,148,";
+xS[105] = "0,|0,389,148,";
+xB[106] = "0,|0,369,148,";
+xS[106] = "0,|0,369,148,";
+xB[107] = "0,|0,349,148,";
+xS[107] = "0,|0,349,148,";
+xB[108] = "0,|0,329,148,";
+xS[108] = "0,|0,329,148,";
+xB[109] = "0,|0,309,148,";
+xS[109] = "0,|0,309,148,";
+xB[110] = "0,|0,289,148,";
+xS[110] = "0,|0,289,148,";
+xB[111] = "0,|0,269,148,";
+xS[111] = "0,|0,269,148,";
+xB[112] = "0,|0,249,148,";
+xS[112] = "0,|0,249,148,";
+xB[113] = "0,|0,229,148,";
+xS[113] = "0,|0,229,148,";
+xB[114] = "0,|0,209,148,";
+xS[114] = "0,|0,209,148,";
+xB[115] = "0,|0,189,148,";
+xS[115] = "0,|0,189,148,";
+xB[116] = "0,|0,169,148,";
+xS[116] = "0,|0,169,148,";
+xB[117] = "0,|0,149,148,";
+xS[117] = "0,|0,149,148,";
+xB[118] = "0,|0,129,148,";
+xS[118] = "0,|0,129,148,";
+xB[119] = "0,|0,109,148,";
+xS[119] = "0,|0,109,148,";
+xB[120] = "0,|0,89,148,";
+xS[120] = "0,|0,89,148,";
+xB[121] = "0,|0,84,148,";
+xS[121] = "0,|0,84,148,";
+xB[122] = "0,|0,84,168,";
+xS[122] = "0,|0,84,168,";
+xB[123] = "0,|0,84,188,";
+xS[123] = "0,|0,84,188,";
+xB[124] = "0,|";
+xL1[125] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[125] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[126] = "0,|0,85,213,";
+xL2[127] = "|0:0,94.0,177.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,151.0,203.0,1,151.0,177.0,4,-70.0,-28.0,0,19.0,177.0,1,19.0,249.0,1,151.0,249.0,1,151.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,177.0,4,-70.0,-28.0;";
+xL2[128] = "0,|";
+xL3[128] = "|0:0,94.0,179.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,149.0,203.0,1,149.0,179.0,4,-70.0,-28.0,0,21.0,179.0,1,21.0,247.0,1,149.0,247.0,1,149.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,179.0,4,-70.0,-28.0;";
+xL3[129] = "0,|";
+xL4[129] = "|0:0,94.0,180.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,148.0,203.0,1,148.0,180.0,4,-70.0,-28.0,0,22.0,180.0,1,22.0,246.0,1,148.0,246.0,1,148.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,180.0,4,-70.0,-28.0;";
+xL4[130] = "0,|";
+xL5[130] = "|0:0,94.0,182.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,146.0,203.0,1,146.0,182.0,4,-70.0,-28.0,0,24.0,182.0,1,24.0,244.0,1,146.0,244.0,1,146.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,182.0,4,-70.0,-28.0;";
+xL5[131] = "0,|";
+xNI[137] = "0,|0,173,";
+xPI[138] = "0,|0,137,";
+xB[139] = "|0,139,213,";
+xS[139] = "0,|0,139,213,";
+xB[140] = "0,|0,159,213,";
+xS[140] = "0,|0,159,213,";
+xB[141] = "0,|0,179,213,";
+xS[141] = "0,|0,179,213,";
+xB[142] = "0,|0,199,213,";
+xS[142] = "0,|0,199,213,";
+xB[143] = "0,|0,201,213,";
+xS[143] = "0,|0,201,213,";
+xB[144] = "0,|0,201,193,";
+xS[144] = "0,|0,201,193,";
+xB[145] = "0,|0,201,173,";
+xS[145] = "0,|0,201,173,";
+xB[146] = "0,|0,201,153,";
+xS[146] = "0,|0,201,153,";
+xB[147] = "0,|0,201,133,";
+xS[147] = "0,|0,201,133,";
+xB[148] = "0,|0,201,113,";
+xS[148] = "0,|0,201,113,";
+xB[149] = "0,|0,201,93,";
+xS[149] = "0,|0,201,93,";
+xB[150] = "0,|0,201,73,";
+xS[150] = "0,|0,201,73,";
+xB[151] = "0,|0,221,73,";
+xS[151] = "0,|0,221,73,";
+xB[152] = "0,|0,241,73,";
+xS[152] = "0,|0,241,73,";
+xB[153] = "0,|0,261,73,";
+xS[153] = "0,|0,261,73,";
+xB[154] = "0,|0,281,73,";
+xS[154] = "0,|0,281,73,";
+xB[155] = "0,|0,301,73,";
+xS[155] = "0,|0,301,73,";
+xB[156] = "0,|0,321,73,";
+xS[156] = "0,|0,321,73,";
+xB[157] = "0,|0,341,73,";
+xS[157] = "0,|0,341,73,";
+xB[158] = "0,|0,361,73,";
+xS[158] = "0,|0,361,73,";
+xB[159] = "0,|0,369,73,";
+xS[159] = "0,|0,369,73,";
+xB[160] = "0,|";
+xS[162] = "0,|0,400,73,";
+xL2[163] = "|0:0,358.0,83.0,1,358.0,105.0,1,400.0,105.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,358.0,41.0,1,358.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,105.0,1,442.0,105.0,1,442.0,41.0,4,-70.0,-28.0;";
+xL2[164] = "0,|";
+xL3[164] = "|0:0,360.0,83.0,1,360.0,103.0,1,400.0,103.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,360.0,43.0,1,360.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,103.0,1,440.0,103.0,1,440.0,43.0,4,-70.0,-28.0;";
+xL3[165] = "0,|";
+xL4[165] = "|0:0,361.0,83.0,1,361.0,102.0,1,400.0,102.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,361.0,44.0,1,361.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,102.0,1,439.0,102.0,1,439.0,44.0,4,-70.0,-28.0;";
+xL4[166] = "0,|";
+xL5[166] = "|0:0,363.0,83.0,1,363.0,100.0,1,400.0,100.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,363.0,46.0,1,363.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,100.0,1,437.0,100.0,1,437.0,46.0,4,-70.0,-28.0;";
+xL5[167] = "0,|";
+xNI[173] = "0,|0,191,";
+xPI[174] = "0,|0,173,";
+xB[175] = "|0,410,93,";
+xS[175] = "0,|0,410,93,";
+xB[176] = "0,|0,410,113,";
+xS[176] = "0,|0,410,113,";
+xB[177] = "0,|0,410,128,";
+xS[177] = "0,|0,410,128,";
+xB[178] = "0,|";
+xS[180] = "0,|0,410,148,";
+xL2[181] = "|0:0,378.0,116.0,1,378.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,116.0,4,-70.0,-28.0,0,420.0,116.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,378.0,158.0,1,378.0,180.0,1,442.0,180.0,1,442.0,116.0,4,-70.0,-28.0;";
+xL2[182] = "0,|";
+xL3[182] = "|0:0,380.0,118.0,1,380.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,118.0,4,-70.0,-28.0,0,420.0,118.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,380.0,158.0,1,380.0,178.0,1,440.0,178.0,1,440.0,118.0,4,-70.0,-28.0;";
+xL3[183] = "0,|";
+xL4[183] = "|0:0,381.0,119.0,1,381.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,119.0,4,-70.0,-28.0,0,420.0,119.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,381.0,158.0,1,381.0,177.0,1,439.0,177.0,1,439.0,119.0,4,-70.0,-28.0;";
+xL4[184] = "0,|";
+xL5[184] = "|0:0,383.0,121.0,1,383.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,121.0,4,-70.0,-28.0,0,420.0,121.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,383.0,158.0,1,383.0,175.0,1,437.0,175.0,1,437.0,121.0,4,-70.0,-28.0;";
+xL5[185] = "0,|";
+xNI[191] = "0,|0,225,";
+xPI[192] = "0,|0,191,";
+xB[193] = "|0,389,148,";
+xS[193] = "0,|0,389,148,";
+xB[194] = "0,|0,369,148,";
+xS[194] = "0,|0,369,148,";
+xB[195] = "0,|0,349,148,";
+xS[195] = "0,|0,349,148,";
+xB[196] = "0,|0,329,148,";
+xS[196] = "0,|0,329,148,";
+xB[197] = "0,|0,309,148,";
+xS[197] = "0,|0,309,148,";
+xB[198] = "0,|0,289,148,";
+xS[198] = "0,|0,289,148,";
+xB[199] = "0,|0,269,148,";
+xS[199] = "0,|0,269,148,";
+xB[200] = "0,|0,249,148,";
+xS[200] = "0,|0,249,148,";
+xB[201] = "0,|0,229,148,";
+xS[201] = "0,|0,229,148,";
+xB[202] = "0,|0,209,148,";
+xS[202] = "0,|0,209,148,";
+xB[203] = "0,|0,189,148,";
+xS[203] = "0,|0,189,148,";
+xB[204] = "0,|0,169,148,";
+xS[204] = "0,|0,169,148,";
+xB[205] = "0,|0,149,148,";
+xS[205] = "0,|0,149,148,";
+xB[206] = "0,|0,129,148,";
+xS[206] = "0,|0,129,148,";
+xB[207] = "0,|0,109,148,";
+xS[207] = "0,|0,109,148,";
+xB[208] = "0,|0,89,148,";
+xS[208] = "0,|0,89,148,";
+xB[209] = "0,|0,84,148,";
+xS[209] = "0,|0,84,148,";
+xB[210] = "0,|0,84,168,";
+xS[210] = "0,|0,84,168,";
+xB[211] = "0,|0,84,188,";
+xS[211] = "0,|0,84,188,";
+xB[212] = "0,|";
+xS[214] = "0,|0,85,213,";
+xL2[215] = "|0:0,94.0,177.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,151.0,203.0,1,151.0,177.0,4,-70.0,-28.0,0,19.0,177.0,1,19.0,249.0,1,151.0,249.0,1,151.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,177.0,4,-70.0,-28.0;";
+xL2[216] = "0,|";
+xL3[216] = "|0:0,94.0,179.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,149.0,203.0,1,149.0,179.0,4,-70.0,-28.0,0,21.0,179.0,1,21.0,247.0,1,149.0,247.0,1,149.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,179.0,4,-70.0,-28.0;";
+xL3[217] = "0,|";
+xL4[217] = "|0:0,94.0,180.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,148.0,203.0,1,148.0,180.0,4,-70.0,-28.0,0,22.0,180.0,1,22.0,246.0,1,148.0,246.0,1,148.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,180.0,4,-70.0,-28.0;";
+xL4[218] = "0,|";
+xL5[218] = "|0:0,94.0,182.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,146.0,203.0,1,146.0,182.0,4,-70.0,-28.0,0,24.0,182.0,1,24.0,244.0,1,146.0,244.0,1,146.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,182.0,4,-70.0,-28.0;";
+xL5[219] = "0,|";
+xNI[225] = "0,|0,261,";
+xPI[226] = "0,|0,225,";
+xB[227] = "|0,139,213,";
+xS[227] = "0,|0,139,213,";
+xB[228] = "0,|0,159,213,";
+xS[228] = "0,|0,159,213,";
+xB[229] = "0,|0,179,213,";
+xS[229] = "0,|0,179,213,";
+xB[230] = "0,|0,199,213,";
+xS[230] = "0,|0,199,213,";
+xB[231] = "0,|0,201,213,";
+xS[231] = "0,|0,201,213,";
+xB[232] = "0,|0,201,193,";
+xS[232] = "0,|0,201,193,";
+xB[233] = "0,|0,201,173,";
+xS[233] = "0,|0,201,173,";
+xB[234] = "0,|0,201,153,";
+xS[234] = "0,|0,201,153,";
+xB[235] = "0,|0,201,133,";
+xS[235] = "0,|0,201,133,";
+xB[236] = "0,|0,201,113,";
+xS[236] = "0,|0,201,113,";
+xB[237] = "0,|0,201,93,";
+xS[237] = "0,|0,201,93,";
+xB[238] = "0,|0,201,73,";
+xS[238] = "0,|0,201,73,";
+xB[239] = "0,|0,221,73,";
+xS[239] = "0,|0,221,73,";
+xB[240] = "0,|0,241,73,";
+xS[240] = "0,|0,241,73,";
+xB[241] = "0,|0,261,73,";
+xS[241] = "0,|0,261,73,";
+xB[242] = "0,|0,281,73,";
+xS[242] = "0,|0,281,73,";
+xB[243] = "0,|0,301,73,";
+xS[243] = "0,|0,301,73,";
+xB[244] = "0,|0,321,73,";
+xS[244] = "0,|0,321,73,";
+xB[245] = "0,|0,341,73,";
+xS[245] = "0,|0,341,73,";
+xB[246] = "0,|0,361,73,";
+xS[246] = "0,|0,361,73,";
+xB[247] = "0,|0,369,73,";
+xS[247] = "0,|0,369,73,";
+xB[248] = "0,|";
+xS[250] = "0,|0,400,73,";
+xL2[251] = "|0:0,358.0,83.0,1,358.0,105.0,1,400.0,105.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,358.0,41.0,1,358.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,105.0,1,442.0,105.0,1,442.0,41.0,4,-70.0,-28.0;";
+xL2[252] = "0,|";
+xL3[252] = "|0:0,360.0,83.0,1,360.0,103.0,1,400.0,103.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,360.0,43.0,1,360.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,103.0,1,440.0,103.0,1,440.0,43.0,4,-70.0,-28.0;";
+xL3[253] = "0,|";
+xL4[253] = "|0:0,361.0,83.0,1,361.0,102.0,1,400.0,102.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,361.0,44.0,1,361.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,102.0,1,439.0,102.0,1,439.0,44.0,4,-70.0,-28.0;";
+xL4[254] = "0,|";
+xL5[254] = "|0:0,363.0,83.0,1,363.0,100.0,1,400.0,100.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,363.0,46.0,1,363.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,100.0,1,437.0,100.0,1,437.0,46.0,4,-70.0,-28.0;";
+xL5[255] = "0,|";
+xNI[261] = "0,|0,279,";
+xPI[262] = "0,|0,261,";
+xB[263] = "|0,410,93,";
+xS[263] = "0,|0,410,93,";
+xB[264] = "0,|0,410,113,";
+xS[264] = "0,|0,410,113,";
+xB[265] = "0,|0,410,128,";
+xS[265] = "0,|0,410,128,";
+xB[266] = "0,|";
+xS[268] = "0,|0,410,148,";
+xL2[269] = "|0:0,378.0,116.0,1,378.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,116.0,4,-70.0,-28.0,0,420.0,116.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,378.0,158.0,1,378.0,180.0,1,442.0,180.0,1,442.0,116.0,4,-70.0,-28.0;";
+xL2[270] = "0,|";
+xL3[270] = "|0:0,380.0,118.0,1,380.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,118.0,4,-70.0,-28.0,0,420.0,118.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,380.0,158.0,1,380.0,178.0,1,440.0,178.0,1,440.0,118.0,4,-70.0,-28.0;";
+xL3[271] = "0,|";
+xL4[271] = "|0:0,381.0,119.0,1,381.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,119.0,4,-70.0,-28.0,0,420.0,119.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,381.0,158.0,1,381.0,177.0,1,439.0,177.0,1,439.0,119.0,4,-70.0,-28.0;";
+xL4[272] = "0,|";
+xL5[272] = "|0:0,383.0,121.0,1,383.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,121.0,4,-70.0,-28.0,0,420.0,121.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,383.0,158.0,1,383.0,175.0,1,437.0,175.0,1,437.0,121.0,4,-70.0,-28.0;";
+xL5[273] = "0,|";
+xNI[279] = "0,|0,313,";
+xPI[280] = "0,|0,279,";
+xB[281] = "|0,389,148,";
+xS[281] = "0,|0,389,148,";
+xB[282] = "0,|0,369,148,";
+xS[282] = "0,|0,369,148,";
+xB[283] = "0,|0,349,148,";
+xS[283] = "0,|0,349,148,";
+xB[284] = "0,|0,329,148,";
+xS[284] = "0,|0,329,148,";
+xB[285] = "0,|0,309,148,";
+xS[285] = "0,|0,309,148,";
+xB[286] = "0,|0,289,148,";
+xS[286] = "0,|0,289,148,";
+xB[287] = "0,|0,269,148,";
+xS[287] = "0,|0,269,148,";
+xB[288] = "0,|0,249,148,";
+xS[288] = "0,|0,249,148,";
+xB[289] = "0,|0,229,148,";
+xS[289] = "0,|0,229,148,";
+xB[290] = "0,|0,209,148,";
+xS[290] = "0,|0,209,148,";
+xB[291] = "0,|0,189,148,";
+xS[291] = "0,|0,189,148,";
+xB[292] = "0,|0,169,148,";
+xS[292] = "0,|0,169,148,";
+xB[293] = "0,|0,149,148,";
+xS[293] = "0,|0,149,148,";
+xB[294] = "0,|0,129,148,";
+xS[294] = "0,|0,129,148,";
+xB[295] = "0,|0,109,148,";
+xS[295] = "0,|0,109,148,";
+xB[296] = "0,|0,89,148,";
+xS[296] = "0,|0,89,148,";
+xB[297] = "0,|0,84,148,";
+xS[297] = "0,|0,84,148,";
+xB[298] = "0,|0,84,168,";
+xS[298] = "0,|0,84,168,";
+xB[299] = "0,|0,84,188,";
+xS[299] = "0,|0,84,188,";
+xB[300] = "0,|";
+xS[302] = "0,|0,85,213,";
+xL2[303] = "|0:0,94.0,177.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,151.0,203.0,1,151.0,177.0,4,-70.0,-28.0,0,19.0,177.0,1,19.0,249.0,1,151.0,249.0,1,151.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,177.0,4,-70.0,-28.0;";
+xL2[304] = "0,|";
+xL3[304] = "|0:0,94.0,179.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,149.0,203.0,1,149.0,179.0,4,-70.0,-28.0,0,21.0,179.0,1,21.0,247.0,1,149.0,247.0,1,149.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,179.0,4,-70.0,-28.0;";
+xL3[305] = "0,|";
+xL4[305] = "|0:0,94.0,180.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,148.0,203.0,1,148.0,180.0,4,-70.0,-28.0,0,22.0,180.0,1,22.0,246.0,1,148.0,246.0,1,148.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,180.0,4,-70.0,-28.0;";
+xL4[306] = "0,|";
+xL5[306] = "|0:0,94.0,182.0,1,94.0,183.0,1,145.0,183.0,1,145.0,203.0,1,146.0,203.0,1,146.0,182.0,4,-70.0,-28.0,0,24.0,182.0,1,24.0,244.0,1,146.0,244.0,1,146.0,223.0,1,145.0,223.0,1,145.0,243.0,1,25.0,243.0,1,25.0,183.0,1,58.0,183.0,1,58.0,182.0,4,-70.0,-28.0;";
+xL5[307] = "0,|";
+xNI[313] = "0,|0,349,";
+xPI[314] = "0,|0,313,";
+xB[315] = "|0,139,213,";
+xS[315] = "0,|0,139,213,";
+xB[316] = "0,|0,159,213,";
+xS[316] = "0,|0,159,213,";
+xB[317] = "0,|0,179,213,";
+xS[317] = "0,|0,179,213,";
+xB[318] = "0,|0,199,213,";
+xS[318] = "0,|0,199,213,";
+xB[319] = "0,|0,201,213,";
+xS[319] = "0,|0,201,213,";
+xB[320] = "0,|0,201,193,";
+xS[320] = "0,|0,201,193,";
+xB[321] = "0,|0,201,173,";
+xS[321] = "0,|0,201,173,";
+xB[322] = "0,|0,201,153,";
+xS[322] = "0,|0,201,153,";
+xB[323] = "0,|0,201,133,";
+xS[323] = "0,|0,201,133,";
+xB[324] = "0,|0,201,113,";
+xS[324] = "0,|0,201,113,";
+xB[325] = "0,|0,201,93,";
+xS[325] = "0,|0,201,93,";
+xB[326] = "0,|0,201,73,";
+xS[326] = "0,|0,201,73,";
+xB[327] = "0,|0,221,73,";
+xS[327] = "0,|0,221,73,";
+xB[328] = "0,|0,241,73,";
+xS[328] = "0,|0,241,73,";
+xB[329] = "0,|0,261,73,";
+xS[329] = "0,|0,261,73,";
+xB[330] = "0,|0,281,73,";
+xS[330] = "0,|0,281,73,";
+xB[331] = "0,|0,301,73,";
+xS[331] = "0,|0,301,73,";
+xB[332] = "0,|0,321,73,";
+xS[332] = "0,|0,321,73,";
+xB[333] = "0,|0,341,73,";
+xS[333] = "0,|0,341,73,";
+xB[334] = "0,|0,361,73,";
+xS[334] = "0,|0,361,73,";
+xB[335] = "0,|0,369,73,";
+xS[335] = "0,|0,369,73,";
+xB[336] = "0,|";
+xS[338] = "0,|0,400,73,";
+xL2[339] = "|0:0,358.0,83.0,1,358.0,105.0,1,400.0,105.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,358.0,41.0,1,358.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,105.0,1,442.0,105.0,1,442.0,41.0,4,-70.0,-28.0;";
+xL2[340] = "0,|";
+xL3[340] = "|0:0,360.0,83.0,1,360.0,103.0,1,400.0,103.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,360.0,43.0,1,360.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,103.0,1,440.0,103.0,1,440.0,43.0,4,-70.0,-28.0;";
+xL3[341] = "0,|";
+xL4[341] = "|0:0,361.0,83.0,1,361.0,102.0,1,400.0,102.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,361.0,44.0,1,361.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,102.0,1,439.0,102.0,1,439.0,44.0,4,-70.0,-28.0;";
+xL4[342] = "0,|";
+xL5[342] = "|0:0,363.0,83.0,1,363.0,100.0,1,400.0,100.0,1,400.0,99.0,1,364.0,99.0,1,364.0,83.0,4,-70.0,-28.0,0,363.0,46.0,1,363.0,63.0,1,364.0,63.0,1,364.0,47.0,1,436.0,47.0,1,436.0,99.0,1,420.0,99.0,1,420.0,100.0,1,437.0,100.0,1,437.0,46.0,4,-70.0,-28.0;";
+xL5[343] = "0,|";
+xNI[349] = "0,|0,367,";
+xPI[350] = "0,|0,349,";
+xB[351] = "|0,410,93,";
+xS[351] = "0,|0,410,93,";
+xB[352] = "0,|0,410,113,";
+xS[352] = "0,|0,410,113,";
+xB[353] = "0,|0,410,128,";
+xS[353] = "0,|0,410,128,";
+xB[354] = "0,|";
+xS[356] = "0,|0,410,148,";
+xL2[357] = "|0:0,378.0,116.0,1,378.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,116.0,4,-70.0,-28.0,0,420.0,116.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,378.0,158.0,1,378.0,180.0,1,442.0,180.0,1,442.0,116.0,4,-70.0,-28.0;";
+xL2[358] = "0,|";
+xL3[358] = "|0:0,380.0,118.0,1,380.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,118.0,4,-70.0,-28.0,0,420.0,118.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,380.0,158.0,1,380.0,178.0,1,440.0,178.0,1,440.0,118.0,4,-70.0,-28.0;";
+xL3[359] = "0,|";
+xL4[359] = "|0:0,381.0,119.0,1,381.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,119.0,4,-70.0,-28.0,0,420.0,119.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,381.0,158.0,1,381.0,177.0,1,439.0,177.0,1,439.0,119.0,4,-70.0,-28.0;";
+xL4[360] = "0,|";
+xL5[360] = "|0:0,383.0,121.0,1,383.0,138.0,1,384.0,138.0,1,384.0,122.0,1,400.0,122.0,1,400.0,121.0,4,-70.0,-28.0,0,420.0,121.0,1,420.0,122.0,1,436.0,122.0,1,436.0,174.0,1,384.0,174.0,1,384.0,158.0,1,383.0,158.0,1,383.0,175.0,1,437.0,175.0,1,437.0,121.0,4,-70.0,-28.0;";
+xL5[361] = "0,|";
+xNI[367] = "0,|0,390,";
+xPI[368] = "0,|0,367,";
+xB[369] = "|0,430,148,";
+xS[369] = "0,|0,430,148,";
+xB[370] = "0,|0,450,148,";
+xS[370] = "0,|0,450,148,";
+xB[371] = "0,|0,470,148,";
+xS[371] = "0,|0,470,148,";
+xB[372] = "0,|0,484,148,";
+xS[372] = "0,|0,484,148,";
+xB[373] = "0,|0,484,168,";
+xS[373] = "0,|0,484,168,";
+xB[374] = "0,|0,484,188,";
+xS[374] = "0,|0,484,188,";
+xB[375] = "0,|0,484,208,";
+xS[375] = "0,|0,484,208,";
+xB[376] = "0,|0,484,210,";
+xS[376] = "0,|0,484,210,";
+xB[377] = "0,|";
+xL1[378] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,211.0,1,494.0,211.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[378] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,211.0,1,494.0,211.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[379] = "0,|0,497,231,";
+xL2[380] = "|0:0,449.0,199.0,1,449.0,263.0,1,546.0,263.0,1,546.0,199.0,1,494.0,199.0,1,494.0,211.0,1,474.0,211.0,1,474.0,199.0,4,-70.0,-28.0;";
+xL2[381] = "0,|";
+xL3[381] = "|0:0,451.0,201.0,1,451.0,261.0,1,544.0,261.0,1,544.0,201.0,1,494.0,201.0,1,494.0,211.0,1,474.0,211.0,1,474.0,201.0,4,-70.0,-28.0;";
+xL3[382] = "0,|";
+xL4[382] = "|0:0,452.0,202.0,1,452.0,260.0,1,543.0,260.0,1,543.0,202.0,1,494.0,202.0,1,494.0,211.0,1,474.0,211.0,1,474.0,202.0,4,-70.0,-28.0;";
+xL4[383] = "0,|";
+xL5[383] = "|0:0,454.0,204.0,1,454.0,258.0,1,541.0,258.0,1,541.0,204.0,1,494.0,204.0,1,494.0,211.0,1,474.0,211.0,1,474.0,204.0,4,-70.0,-28.0;";
+xL1[384] = "|1:0,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,211.0,1,474.0,211.0,1,474.0,205.0,4,-70.0,-28.0;";
+xL5[384] = "0,|";
+xF1[385] = "|0:0,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,211.0,1,474.0,211.0,1,474.0,205.0,4,-70.0,-28.0;";
+xF1[386] = "0,|";
+xF2[386] = "|0:0,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,211.0,1,474.0,211.0,1,474.0,205.0,4,-70.0,-28.0;";
+xF2[387] = "0,|";
+xF3[387] = "|0:0,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,211.0,1,474.0,211.0,1,474.0,205.0,4,-70.0,-28.0;";
+xF3[388] = "0,|";
+xF4[388] = "|0:0,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,211.0,1,474.0,211.0,1,474.0,205.0,4,-70.0,-28.0;";
+xF4[389] = "0,|";
+xF5[389] = "|1:0,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,211.0,1,474.0,211.0,1,474.0,205.0,4,-70.0,-28.0;";
+xL1[390] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[390] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[390] = "0,|0,408,";
+xPI[391] = "0,|0,390,";
+xB[392] = "|0,498,251,";
+xS[392] = "0,|0,498,251,";
+xB[393] = "0,|0,498,271,";
+xS[393] = "0,|0,498,271,";
+xB[394] = "0,|0,498,273,";
+xS[394] = "0,|0,498,273,";
+xB[395] = "0,|";
+xL1[396] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,488.0,257.0,1,488.0,274.0,1,508.0,274.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[396] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,488.0,257.0,1,488.0,274.0,1,508.0,274.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[397] = "0,|0,466,294,";
+xL2[398] = "|0:0,386.0,262.0,1,386.0,326.0,1,546.0,326.0,1,546.0,262.0,1,508.0,262.0,1,508.0,274.0,1,488.0,274.0,1,488.0,262.0,4,-70.0,-28.0;";
+xL2[399] = "0,|";
+xL3[399] = "|0:0,388.0,264.0,1,388.0,324.0,1,544.0,324.0,1,544.0,264.0,1,508.0,264.0,1,508.0,274.0,1,488.0,274.0,1,488.0,264.0,4,-70.0,-28.0;";
+xL3[400] = "0,|";
+xL4[400] = "|0:0,389.0,265.0,1,389.0,323.0,1,543.0,323.0,1,543.0,265.0,1,508.0,265.0,1,508.0,274.0,1,488.0,274.0,1,488.0,265.0,4,-70.0,-28.0;";
+xL4[401] = "0,|";
+xL5[401] = "|0:0,391.0,267.0,1,391.0,321.0,1,541.0,321.0,1,541.0,267.0,1,508.0,267.0,1,508.0,274.0,1,488.0,274.0,1,488.0,267.0,4,-70.0,-28.0;";
+xL1[402] = "|1:0,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,274.0,1,488.0,274.0,1,488.0,268.0,4,-70.0,-28.0;";
+xL5[402] = "0,|";
+xF1[403] = "|0:0,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,274.0,1,488.0,274.0,1,488.0,268.0,4,-70.0,-28.0;";
+xF1[404] = "0,|";
+xF2[404] = "|0:0,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,274.0,1,488.0,274.0,1,488.0,268.0,4,-70.0,-28.0;";
+xF2[405] = "0,|";
+xF3[405] = "|0:0,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,274.0,1,488.0,274.0,1,488.0,268.0,4,-70.0,-28.0;";
+xF3[406] = "0,|";
+xF4[406] = "|0:0,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,274.0,1,488.0,274.0,1,488.0,268.0,4,-70.0,-28.0;";
+xF4[407] = "0,|";
+xF5[407] = "|1:0,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,274.0,1,488.0,274.0,1,488.0,268.0,4,-70.0,-28.0;";
+xL1[408] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,488.0,257.0,1,488.0,268.0,1,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[408] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,488.0,257.0,1,488.0,268.0,1,392.0,268.0,1,392.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[408] = "0,|0,420,";
+xPI[409] = "0,|0,408,";
+xB[410] = "|0,466,273,";
+xL2[410] = "|0:0,397.0,320.0,1,397.0,336.0,1,441.0,336.0,1,441.0,320.0,4,-70.0,-28.0;";
+xS[410] = "0,|0,466,273,";
+xB[411] = "0,|0,466,259,";
+xL2[411] = "0,|";
+xL3[411] = "|0:0,399.0,320.0,1,399.0,334.0,1,439.0,334.0,1,439.0,320.0,4,-70.0,-28.0;";
+xS[411] = "0,|0,466,259,";
+xB[412] = "0,|0,446,259,";
+xL3[412] = "0,|";
+xL4[412] = "|0:0,400.0,320.0,1,400.0,333.0,1,438.0,333.0,1,438.0,320.0,4,-70.0,-28.0;";
+xS[412] = "0,|0,446,259,";
+xB[413] = "0,|0,426,259,";
+xL4[413] = "0,|";
+xL5[413] = "|0:0,402.0,320.0,1,402.0,331.0,1,436.0,331.0,1,436.0,320.0,4,-70.0,-28.0;";
+xS[413] = "0,|0,426,259,";
+xB[414] = "0,|0,406,259,";
+xL1[414] = "|1:0,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,4,-70.0,-28.0;";
+xL5[414] = "0,|";
+xS[414] = "0,|0,406,259,";
+xB[415] = "0,|0,386,259,";
+xF1[415] = "|0:0,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,4,-70.0,-28.0;";
+xS[415] = "0,|0,386,259,";
+xB[416] = "0,|0,366,259,";
+xF1[416] = "0,|";
+xF2[416] = "|0:0,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,4,-70.0,-28.0;";
+xS[416] = "0,|0,366,259,";
+xB[417] = "0,|0,346,259,";
+xF2[417] = "0,|";
+xF3[417] = "|0:0,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,4,-70.0,-28.0;";
+xS[417] = "0,|0,346,259,";
+xB[418] = "0,|0,326,259,";
+xF3[418] = "0,|";
+xF4[418] = "|0:0,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,4,-70.0,-28.0;";
+xS[418] = "0,|0,326,259,";
+xB[419] = "0,|0,306,259,";
+xF4[419] = "0,|";
+xF5[419] = "|1:0,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,4,-70.0,-28.0;";
+xS[419] = "0,|0,306,259,";
+xB[420] = "0,|0,286,259,";
+xL1[420] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,488.0,257.0,1,488.0,268.0,1,392.0,268.0,1,392.0,320.0,1,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[420] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,257.0,1,488.0,257.0,1,488.0,268.0,1,392.0,268.0,1,392.0,320.0,1,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[420] = "0,|0,286,259,";
+xNI[420] = "0,|0,448,";
+xB[421] = "0,|0,266,259,";
+xS[421] = "0,|0,266,259,";
+xPI[421] = "0,|0,420,";
+xB[422] = "0,|0,246,259,";
+xS[422] = "0,|0,246,259,";
+xB[423] = "0,|0,226,259,";
+xS[423] = "0,|0,226,259,";
+xB[424] = "0,|0,206,259,";
+xS[424] = "0,|0,206,259,";
+xB[425] = "0,|0,186,259,";
+xS[425] = "0,|0,186,259,";
+xB[426] = "0,|0,166,259,";
+xS[426] = "0,|0,166,259,";
+xB[427] = "0,|0,146,259,";
+xS[427] = "0,|0,146,259,";
+xB[428] = "0,|0,126,259,";
+xS[428] = "0,|0,126,259,";
+xB[429] = "0,|0,106,259,";
+xS[429] = "0,|0,106,259,";
+xB[430] = "0,|0,86,259,";
+xS[430] = "0,|0,86,259,";
+xB[431] = "0,|0,66,259,";
+xS[431] = "0,|0,66,259,";
+xB[432] = "0,|0,49,259,";
+xS[432] = "0,|0,49,259,";
+xB[433] = "0,|0,49,279,";
+xS[433] = "0,|0,49,279,";
+xB[434] = "0,|0,49,284,";
+xS[434] = "0,|0,49,284,";
+xB[435] = "0,|";
+xL1[436] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,488.0,257.0,1,488.0,268.0,1,476.0,268.0,1,476.0,257.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,249.0,1,39.0,249.0,1,39.0,284.0,1,59.0,284.0,1,59.0,269.0,1,392.0,269.0,1,392.0,320.0,1,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[436] = "0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,488.0,257.0,1,488.0,268.0,1,476.0,268.0,1,476.0,257.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,249.0,1,39.0,249.0,1,39.0,284.0,1,59.0,284.0,1,59.0,269.0,1,392.0,269.0,1,392.0,320.0,1,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xS[437] = "0,|0,49,294,";
+xL2[438] = "|0:0,27.0,272.0,1,27.0,316.0,1,71.0,316.0,1,71.0,272.0,1,59.0,272.0,1,59.0,284.0,1,39.0,284.0,1,39.0,272.0,4,-70.0,-28.0;";
+xL2[439] = "0,|";
+xL3[439] = "|0:0,29.0,274.0,1,29.0,314.0,1,69.0,314.0,1,69.0,274.0,1,59.0,274.0,1,59.0,284.0,1,39.0,284.0,1,39.0,274.0,4,-70.0,-28.0;";
+xL3[440] = "0,|";
+xL4[440] = "|0:0,30.0,275.0,1,30.0,313.0,1,68.0,313.0,1,68.0,275.0,1,59.0,275.0,1,59.0,284.0,1,39.0,284.0,1,39.0,275.0,4,-70.0,-28.0;";
+xL4[441] = "0,|";
+xL5[441] = "|0:0,32.0,277.0,1,32.0,311.0,1,66.0,311.0,1,66.0,277.0,1,59.0,277.0,1,59.0,284.0,1,39.0,284.0,1,39.0,277.0,4,-70.0,-28.0;";
+xL1[442] = "|1:0,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,284.0,1,39.0,284.0,1,39.0,278.0,4,-70.0,-28.0;";
+xL5[442] = "0,|";
+xF1[443] = "|0:0,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,284.0,1,39.0,284.0,1,39.0,278.0,4,-70.0,-28.0;";
+xF1[444] = "0,|";
+xF2[444] = "|0:0,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,284.0,1,39.0,284.0,1,39.0,278.0,4,-70.0,-28.0;";
+xF2[445] = "0,|";
+xF3[445] = "|0:0,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,284.0,1,39.0,284.0,1,39.0,278.0,4,-70.0,-28.0;";
+xF3[446] = "0,|";
+xF4[446] = "|0:0,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,284.0,1,39.0,284.0,1,39.0,278.0,4,-70.0,-28.0;";
+xF4[447] = "0,|";
+xF5[447] = "|1:0,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,284.0,1,39.0,284.0,1,39.0,278.0,4,-70.0,-28.0;";
+xL1[448] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,488.0,257.0,1,488.0,268.0,1,476.0,268.0,1,476.0,257.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,249.0,1,39.0,249.0,1,39.0,278.0,1,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,269.0,1,392.0,269.0,1,392.0,320.0,1,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xF5[448] = "1,0,|0:0,364.0,83.0,1,364.0,99.0,1,400.0,99.0,1,400.0,122.0,1,384.0,122.0,1,384.0,138.0,1,211.0,138.0,1,211.0,83.0,4,-70.0,-28.0,0,191.0,158.0,1,191.0,203.0,1,145.0,203.0,1,145.0,183.0,1,94.0,183.0,1,94.0,158.0,4,-70.0,-28.0,0,488.0,257.0,1,488.0,268.0,1,476.0,268.0,1,476.0,257.0,4,-70.0,-28.0,0,39.0,35.0,1,39.0,67.0,1,46.0,67.0,1,46.0,87.0,1,25.0,87.0,1,25.0,139.0,1,58.0,139.0,1,58.0,183.0,1,25.0,183.0,1,25.0,243.0,1,145.0,243.0,1,145.0,223.0,1,211.0,223.0,1,211.0,158.0,1,384.0,158.0,1,384.0,174.0,1,436.0,174.0,1,436.0,158.0,1,474.0,158.0,1,474.0,205.0,1,455.0,205.0,1,455.0,249.0,1,39.0,249.0,1,39.0,278.0,1,33.0,278.0,1,33.0,310.0,1,65.0,310.0,1,65.0,278.0,1,59.0,278.0,1,59.0,269.0,1,392.0,269.0,1,392.0,320.0,1,403.0,320.0,1,403.0,330.0,1,435.0,330.0,1,435.0,320.0,1,540.0,320.0,1,540.0,268.0,1,508.0,268.0,1,508.0,257.0,1,540.0,257.0,1,540.0,205.0,1,494.0,205.0,1,494.0,138.0,1,436.0,138.0,1,436.0,122.0,1,420.0,122.0,1,420.0,99.0,1,436.0,99.0,1,436.0,47.0,1,364.0,47.0,1,364.0,63.0,1,191.0,63.0,1,191.0,138.0,1,113.0,138.0,1,113.0,87.0,1,66.0,87.0,1,66.0,67.0,1,71.0,67.0,1,71.0,35.0,4,-70.0,-28.0;";
+xNI[448] = "0,|0,449,";
+// B
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = B[i - 1];
+	}
+	B[i] = oldArray.slice();
+	if (xB[i]) {
+		var removeAddData = xB[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			B[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(",");
+		for(var j = 0; j < add.length - 1; j += 3) {
+			B[i].splice(add[j], 0, new P(add[j + 1], add[j + 2]));
+		}
+	}
+}
+xB = null;
+// L1
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = L1[i - 1];
+	}
+	L1[i] = oldArray.slice();
+	if (xL1[i]) {
+		var removeAddData = xL1[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			L1[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			L1[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				L1[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xL1 = null;
+// L2
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = L2[i - 1];
+	}
+	L2[i] = oldArray.slice();
+	if (xL2[i]) {
+		var removeAddData = xL2[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			L2[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			L2[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				L2[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xL2 = null;
+// L3
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = L3[i - 1];
+	}
+	L3[i] = oldArray.slice();
+	if (xL3[i]) {
+		var removeAddData = xL3[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			L3[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			L3[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				L3[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xL3 = null;
+// L4
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = L4[i - 1];
+	}
+	L4[i] = oldArray.slice();
+	if (xL4[i]) {
+		var removeAddData = xL4[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			L4[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			L4[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				L4[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xL4 = null;
+// L5
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = L5[i - 1];
+	}
+	L5[i] = oldArray.slice();
+	if (xL5[i]) {
+		var removeAddData = xL5[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			L5[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			L5[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				L5[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xL5 = null;
+// F1
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = F1[i - 1];
+	}
+	F1[i] = oldArray.slice();
+	if (xF1[i]) {
+		var removeAddData = xF1[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			F1[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			F1[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				F1[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xF1 = null;
+// F2
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = F2[i - 1];
+	}
+	F2[i] = oldArray.slice();
+	if (xF2[i]) {
+		var removeAddData = xF2[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			F2[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			F2[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				F2[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xF2 = null;
+// F3
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = F3[i - 1];
+	}
+	F3[i] = oldArray.slice();
+	if (xF3[i]) {
+		var removeAddData = xF3[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			F3[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			F3[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				F3[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xF3 = null;
+// F4
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = F4[i - 1];
+	}
+	F4[i] = oldArray.slice();
+	if (xF4[i]) {
+		var removeAddData = xF4[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			F4[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			F4[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				F4[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xF4 = null;
+// F5
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = F5[i - 1];
+	}
+	F5[i] = oldArray.slice();
+	if (xF5[i]) {
+		var removeAddData = xF5[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			F5[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(";");
+		for(var j = 0; j < add.length - 1; j++) {
+			var addPositionPointData = add[j].split(":");
+			var addPosition = addPositionPointData[0];
+			var addPointData = addPositionPointData[1];
+			var addPoint = addPointData.split(",");
+			F5[i].splice(addPosition, 0, new Array());
+			for(var k = 0; k < addPoint.length - 1; k += 3) {
+				F5[i][addPosition].push(new AP(addPoint[k], addPoint[k + 1], addPoint[k + 2]));
+			}
+		}
+	}
+}
+xF5 = null;
+// S
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = S[i - 1];
+	}
+	S[i] = oldArray.slice();
+	if (xS[i]) {
+		var removeAddData = xS[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			S[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(",");
+		for(var j = 0; j < add.length - 1; j += 3) {
+			S[i].splice(add[j], 0, new P(add[j + 1], add[j + 2]));
+		}
+	}
+}
+xS = null;
+// D
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = D[i - 1];
+	}
+	D[i] = oldArray.slice();
+	if (xD[i]) {
+		var removeAddData = xD[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			D[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(",");
+		for(var j = 0; j < add.length - 1; j += 2) {
+			D[i].splice(add[j], 0, eval(add[j + 1]));
+		}
+	}
+}
+xD = null;
+// V
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = V[i - 1];
+	}
+	V[i] = oldArray.slice();
+	if (xV[i]) {
+		var removeAddData = xV[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			V[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(",");
+		for(var j = 0; j < add.length - 1; j += 2) {
+			V[i].splice(add[j], 0, eval(add[j + 1]));
+		}
+	}
+}
+xV = null;
+// PI
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = PI[i - 1];
+	}
+	PI[i] = oldArray.slice();
+	if (xPI[i]) {
+		var removeAddData = xPI[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			PI[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(",");
+		for(var j = 0; j < add.length - 1; j += 3) {
+			PI[i].splice(add[j], 0, add[j + 1]);
+		}
+	}
+}
+xPI = null;
+// NI
+for (var i = 0; i < frameCount; i++) {
+	var oldArray;
+	if (i == 0) {
+		oldArray = new Array();
+	} else {
+		oldArray = NI[i - 1];
+	}
+	NI[i] = oldArray.slice();
+	if (xNI[i]) {
+		var removeAddData = xNI[i].split("|");
+		var removeData = removeAddData[0];
+		var remove = removeData.split(",");
+		for(var j = 0; j < remove.length - 1; j++) {
+			NI[i].splice(remove[j], 1);
+		}
+		var addData = removeAddData[1];
+		var add = addData.split(",");
+		for(var j = 0; j < add.length - 1; j += 3) {
+			NI[i].splice(add[j], 0, add[j + 1]);
+		}
+	}
+}
+xNI = null;
+var ImageLoader = function () {
+	this.onprogress = function (loaded, total) {};
+	this.oncompletion = function (images) {};
+	this.loaded = this.total = 0;
+	this.load = function (images) {
+		var loader = this;
+		for (i in images) {
+			if (typeof images[i] != "string") {
+				continue;
+			}
+			try {
+				this.total++;
+				var imageSrc = images[i];
+				images[i] = new Image();
+				images[i].src = imageSrc;
+				images[i].onload = function () {
+					loader.loaded++;
+					loader.onprogress(loader.loaded, loader.total);
+					if (loader.loaded == loader.total) {
+						loader.oncompletion(images);
+					}
+				}
+			} catch (e) {}
+		}
+		loader.onprogress(this.loaded, this.total);
+		if (this.total == 0) {
+			loader.oncompletion(images);
+		}
+	}
+}
+var loadingImage = true;
+loadImages = function() {
+	this.loader = new ImageLoader();
+	this.loader.onprogress = function (loaded, total) {
+		imageLoadingText = "Image " + loaded + "/" + total;
+	}
+	this.loader.oncompletion = function (images) {
+		imageLoadingText = "";
+		loadingImage = false;
+		if (loadingImage == false && loadingAudio == false) {
+			loading = false;
+		}
+	}
+	this.loader.load({
+		DI1: "./img/DI1.png",
+		play: "img/NewPlay.png",
+		playPressed: "img/NewPlayPressed.png",
+		playDisable: "img/NewPlayDisabled.png",
+		BG_0_0: "img/BG_0_0.png",
+		next: "img/NewNext.png",
+		previous: "img/NewPrevious.png",
+		pausePressed: "img/NewPausePressed.png",
+		previousPressed: "img/NewPreviousPressed.png",
+		pauseDisable: "img/NewPauseDisabled.png",
+		previousDisable: "img/NewPreviousDisabled.png",
+		stopPressed: "img/NewStopPressed.png",
+		stopDisable: "img/NewStopDisabled.png",
+		stop: "img/NewStop.png",
+		nextPressed: "img/NewNextPressed.png",
+		nextDisable: "img/NewNextDisabled.png",
+		pause: "img/NewPause.png",
+	});
+}
+var AudioLoader = function () {
+	this.onprogress = function (loaded, total) {};
+	this.oncompletion = function (audios) {};
+	this.loadedSrc = new Array();
+	this.loaded = this.total = 0;
+	this.load = function (audios) {
+		var loader = this;
+		for (i in audios) {
+			if (typeof audios[i] != "string") {
+				continue;
+			}
+			try {
+				this.total++;
+				var audioSrc = audios[i];
+				this.loadedSrc[audioSrc] = false;
+				audios[i] = new Audio();
+				audios[i].addEventListener('canplaythrough', function() {
+					loader.loadedSrc[this.src] = true;
+					loader.loaded = 0;
+					for (curSrc in loader.loadedSrc) {
+						if (loader.loadedSrc[curSrc] == true) {
+							loader.loaded++;
+						}
+					}
+					loader.onprogress(loader.loaded, loader.total);
+					if (loader.loaded == loader.total) {
+						loader.oncompletion(audios);
+					}
+				}, false);
+				audios[i].src = audioSrc;
+			} catch (e) {}
+		}
+		loader.onprogress(this.loaded, this.total);
+		if (this.total == 0) {
+			loader.oncompletion(audios);
+		}
+	}
+}
+var loadingAudio = true;
+loadAudios = function() {
+	this.loader = new AudioLoader();
+	this.loader.onprogress = function (loaded, total) {
+		audioLoadingText = "Audio " + loaded + "/" + total;
+	}
+	this.loader.oncompletion = function (audios) {
+		audioLoadingText = "";
+		loadingAudio = false;
+		if (loadingImage == false && loadingAudio == false) {
+			loading = false;
+		}
+	}
+	this.loader.load({
+	});
+}
+loadImages();
+loadAudios();
+</script>
+</body>
+</html>
