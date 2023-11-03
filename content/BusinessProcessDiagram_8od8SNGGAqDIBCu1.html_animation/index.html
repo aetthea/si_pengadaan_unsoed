@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=9" >
+<title>Ekosistem Pengadaan UNSOED</title>
+</head>
+<body onresize="doLayout()">
+<script type="text/javascript">
+var viewportWidth;
+var viewportHeight;
+function switchAnimation() {
+	var control = document.getElementById("control");
+	var value = control.options[control.selectedIndex].value;
+	var main = document.getElementById("main");
+	main.src = value;
+}
+function detectViewportSize() {
+	// detect viewport size
+	if (typeof window.innerWidth != 'undefined') {
+		viewportWidth = window.innerWidth,
+		viewportHeight = window.innerHeight
+	} else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0) {
+		viewportWidth = document.documentElement.clientWidth,
+		viewportHeight = document.documentElement.clientHeight
+	} else {
+		viewportWidth = document.getElementsByTagName('body')[0].clientWidth,
+		viewportHeight = document.getElementsByTagName('body')[0].clientHeight
+	}
+}
+function doLayout() {
+	detectViewportSize();
+	var main = document.getElementById("main");
+	main.style.width = viewportWidth + "px";
+	main.style.height = (viewportHeight - 35) + "px";
+};
+window.onload = function() {
+	doLayout();
+	switchAnimation();
+};
+</script>
+<a href="../BusinessProcessDiagram_8od8SNGGAqDIBCu1.html">Back</a>
+<span style="font-size:14px;">Animation:</span>
+<select id="control" onchange="switchAnimation()" >
+<option value="Animation_En/Animation_En.html">Animation End2End RUP - Tender- Kontrak</option>
+<option value="Animation_En2/Animation_En2.html">Animation End2End dari Perencanaan - Kontrak</option>
+</select>
+<iframe id="main" style="position: absolute; border: medium none; bottom: 0; height: 300px; left: 0; right: 0;" >Loading</iframe>
+</body>
+</html>

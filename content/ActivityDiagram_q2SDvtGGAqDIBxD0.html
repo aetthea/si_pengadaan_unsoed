@@ -1,0 +1,411 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Activity Diagram - penggabungan Paket Pengadaan - Scenario</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="PackageDiagram_EJhvBNGGAqDIBAhR.html" class="PageParentTitle">Sistem Infromasi Pengadaan : Package</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="PackageDiagram_EJhvBNGGAqDIBAhR.html" class="PageParentTitle">Konsolidasi Pengadaan : Subsystem</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="UseCaseDiagram_XjckZNGGAqDIAw5t.html" class="PageParentTitle">Konsolidasi Pengadaan : System</a><span class="PageParentTitle">&nbsp;.&nbsp;</span><a href="UseCaseDiagram_XjckZNGGAqDIAw5t.html" class="PageParentTitle">penggabungan Paket Pengadaan : Use Case</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Activity Diagram - penggabungan Paket Pengadaan - Scenario		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/q2SDvtGGAqDIBxD0', 'penggabungan Paket Pengadaan - Scenario\nsistem informasi pengadaan unsoed.vpp://diagram/q2SDvtGGAqDIBxD0', 'penggabungan Paket Pengadaan - Scenario', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|415.0|940.0|20.0|20.0|ActivityFinalNode_0OSDvtGGAqDIBxE7.html|ActivityFinalNode_0OSDvtGGAqDIBxE7.html|0OSDvtGGAqDIBxE8" id="option0OSDvtGGAqDIBxE8">Unnamed Activity Final Node : Activity Final Node</option>
+<option value="shape|415.0|840.0|20.0|40.0|MergeNode_wOSDvtGGAqDIBxEv.html|MergeNode_wOSDvtGGAqDIBxEv.html|wOSDvtGGAqDIBxEw" id="optionwOSDvtGGAqDIBxEw">Unnamed Merge Node : Merge Node</option>
+<option value="shape|2.0|696.0|199.0|40.0|ActivityAction__2SDvtGGAqDIBxEp.html|ActivityAction__2SDvtGGAqDIBxEp.html|_2SDvtGGAqDIBxEq" id="option_2SDvtGGAqDIBxEq">7.1. penggabungan paket selesai : Action</option>
+<option value="shape|415.0|696.0|20.0|40.0|DecisionNode_32SDvtGGAqDIBxEj.html|DecisionNode_32SDvtGGAqDIBxEj.html|32SDvtGGAqDIBxEk" id="option32SDvtGGAqDIBxEk">7. ? : Decision Node</option>
+<option value="shape|650.0|582.0|256.0|40.0|ActivityAction_72SDvtGGAqDIBxEd.html|ActivityAction_72SDvtGGAqDIBxEd.html|H2SDvtGGAqDIBxEe" id="optionH2SDvtGGAqDIBxEe">6.1. Ulangi/update penggabungan pagunya : Action</option>
+<option value="shape|415.0|582.0|20.0|40.0|DecisionNode_T2SDvtGGAqDIBxEX.html|DecisionNode_T2SDvtGGAqDIBxEX.html|z2SDvtGGAqDIBxEY" id="optionz2SDvtGGAqDIBxEY">6. Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan? : Decision Node</option>
+<option value="shape|147.0|482.0|557.0|40.0|ActivityAction_t2SDvtGGAqDIBxER.html|ActivityAction_t2SDvtGGAqDIBxER.html|d2SDvtGGAqDIBxES" id="optiond2SDvtGGAqDIBxES">5. Cek jumlah Pagu Anggaran Paket Asal dengan Penjumlahan dari seluruh paket yang digabungkan : Action</option>
+<option value="shape|253.0|382.0|345.0|40.0|ActivityAction_l2SDvtGGAqDIBxEL.html|ActivityAction_l2SDvtGGAqDIBxEL.html|V2SDvtGGAqDIBxEM" id="optionV2SDvtGGAqDIBxEM">4. Tambahkan nilai Pagu Paket ke Pagu Anggaran Paket Asal : Action</option>
+<option value="shape|296.0|282.0|259.0|40.0|ActivityAction_Z2SDvtGGAqDIBxEF.html|ActivityAction_Z2SDvtGGAqDIBxEF.html|52SDvtGGAqDIBxEG" id="option52SDvtGGAqDIBxEG">3. Pilih paket-paket yang akan digabungkan : Action</option>
+<option value="shape|270.0|182.0|310.0|40.0|ActivityAction_R2SDvtGGAqDIBxD_.html|ActivityAction_R2SDvtGGAqDIBxD_.html|x2SDvtGGAqDIBxEA" id="optionx2SDvtGGAqDIBxEA">2. Catatkan nilai Pagu anggaran RUP dalam paket asal : Action</option>
+<option value="shape|231.0|82.0|389.0|40.0|ActivityAction_O2SDvtGGAqDIBxD5.html|ActivityAction_O2SDvtGGAqDIBxD5.html|e2SDvtGGAqDIBxD6" id="optione2SDvtGGAqDIBxD6">1. Tetapkan satu paket asal untuk menggabungkan paket-paket lain : Action</option>
+<option value="shape|414.0|2.0|22.0|20.0|InitialNode_m2SDvtGGAqDIBxD2.html|InitialNode_m2SDvtGGAqDIBxD2.html|22SDvtGGAqDIBxD3" id="option22SDvtGGAqDIBxD3">Unnamed Initial Node : Initial Node</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/penggabungan_Paket_Pengadaan_Scenario.png" usemap="#diagram_map" class="Image" width="910" height="964"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="418.0, 22.0, 418.0, 82.0, 432.0, 82.0, 432.0, 22.0" coords2="418.0, 22.0, 418.0, 82.0, 432.0, 82.0, 432.0, 22.0" shape="poly" alt=":Control Flow" id="areadiagram_map_h2SDvtGGAqDIBxD9_default" href="ControlFlow_B2SDvtGGAqDIBxD8.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 22.0, 418.0, 82.0, 432.0, 82.0, 432.0, 22.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=22SDvtGGAqDIBxD3/Unnamed/InitialNode'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=e2SDvtGGAqDIBxD6/1. Tetapkan satu paket asal untuk menggabungkan paket-paket lain/Action')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 22.0, 418.0, 82.0, 432.0, 82.0, 432.0, 22.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 122.0, 418.0, 182.0, 432.0, 182.0, 432.0, 122.0" coords2="418.0, 122.0, 418.0, 182.0, 432.0, 182.0, 432.0, 122.0" shape="poly" alt=":Control Flow" id="areadiagram_map_p2SDvtGGAqDIBxED_default" href="ControlFlow_J2SDvtGGAqDIBxEC.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 122.0, 418.0, 182.0, 432.0, 182.0, 432.0, 122.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=e2SDvtGGAqDIBxD6/1. Tetapkan satu paket asal untuk menggabungkan paket-paket lain/Action'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=x2SDvtGGAqDIBxEA/2. Catatkan nilai Pagu anggaran RUP dalam paket asal/Action')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 122.0, 418.0, 182.0, 432.0, 182.0, 432.0, 122.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 222.0, 418.0, 282.0, 432.0, 282.0, 432.0, 222.0" coords2="418.0, 222.0, 418.0, 282.0, 432.0, 282.0, 432.0, 222.0" shape="poly" alt=":Control Flow" id="areadiagram_map_F2SDvtGGAqDIBxEJ_default" href="ControlFlow_F2SDvtGGAqDIBxEI.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 222.0, 418.0, 282.0, 432.0, 282.0, 432.0, 222.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=x2SDvtGGAqDIBxEA/2. Catatkan nilai Pagu anggaran RUP dalam paket asal/Action'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=52SDvtGGAqDIBxEG/3. Pilih paket-paket yang akan digabungkan/Action')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 222.0, 418.0, 282.0, 432.0, 282.0, 432.0, 222.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 322.0, 418.0, 382.0, 432.0, 382.0, 432.0, 322.0" coords2="418.0, 322.0, 418.0, 382.0, 432.0, 382.0, 432.0, 322.0" shape="poly" alt=":Control Flow" id="areadiagram_map_N2SDvtGGAqDIBxEP_default" href="ControlFlow_12SDvtGGAqDIBxEO.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 322.0, 418.0, 382.0, 432.0, 382.0, 432.0, 322.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=52SDvtGGAqDIBxEG/3. Pilih paket-paket yang akan digabungkan/Action'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=V2SDvtGGAqDIBxEM/4. Tambahkan nilai Pagu Paket ke Pagu Anggaran Paket Asal/Action')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 322.0, 418.0, 382.0, 432.0, 382.0, 432.0, 322.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 422.0, 418.0, 482.0, 432.0, 482.0, 432.0, 422.0" coords2="418.0, 422.0, 418.0, 482.0, 432.0, 482.0, 432.0, 422.0" shape="poly" alt=":Control Flow" id="areadiagram_map_j2SDvtGGAqDIBxEV_default" href="ControlFlow_D2SDvtGGAqDIBxEU.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 422.0, 418.0, 482.0, 432.0, 482.0, 432.0, 422.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=V2SDvtGGAqDIBxEM/4. Tambahkan nilai Pagu Paket ke Pagu Anggaran Paket Asal/Action'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=d2SDvtGGAqDIBxES/5. Cek jumlah Pagu Anggaran Paket Asal dengan Penjumlahan dari seluruh paket yang digabungkan/Action')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 422.0, 418.0, 482.0, 432.0, 482.0, 432.0, 422.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 522.0, 418.0, 582.0, 432.0, 582.0, 432.0, 522.0" coords2="418.0, 522.0, 418.0, 582.0, 432.0, 582.0, 432.0, 522.0" shape="poly" alt=":Control Flow" id="areadiagram_map_r2SDvtGGAqDIBxEb_default" href="ControlFlow_L2SDvtGGAqDIBxEa.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 522.0, 418.0, 582.0, 432.0, 582.0, 432.0, 522.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=d2SDvtGGAqDIBxES/5. Cek jumlah Pagu Anggaran Paket Asal dengan Penjumlahan dari seluruh paket yang digabungkan/Action'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=z2SDvtGGAqDIBxEY/6. Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan?/DecisionNode')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 522.0, 418.0, 582.0, 432.0, 582.0, 432.0, 522.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="435.0, 595.0, 435.0, 609.0, 650.0, 609.0, 650.0, 595.0" coords2="435.0, 595.0, 435.0, 609.0, 650.0, 609.0, 650.0, 595.0" shape="poly" alt=":Control Flow" id="areadiagram_map_n2SDvtGGAqDIBxEh_default" href="ControlFlow_n2SDvtGGAqDIBxEg.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','435.0, 595.0, 435.0, 609.0, 650.0, 609.0, 650.0, 595.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=z2SDvtGGAqDIBxEY/6. Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan?/DecisionNode'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=H2SDvtGGAqDIBxEe/6.1. Ulangi/update penggabungan pagunya/Action')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '435.0, 595.0, 435.0, 609.0, 650.0, 609.0, 650.0, 595.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 622.0, 418.0, 696.0, 432.0, 696.0, 432.0, 622.0" coords2="418.0, 622.0, 418.0, 696.0, 432.0, 696.0, 432.0, 622.0" shape="poly" alt=":Control Flow" id="areadiagram_map_v2SDvtGGAqDIBxEn_default" href="ControlFlow_P2SDvtGGAqDIBxEm.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 622.0, 418.0, 696.0, 432.0, 696.0, 432.0, 622.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=z2SDvtGGAqDIBxEY/6. Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan?/DecisionNode'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=32SDvtGGAqDIBxEk/7. ?/DecisionNode')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 622.0, 418.0, 696.0, 432.0, 696.0, 432.0, 622.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="201.0, 709.0, 201.0, 723.0, 415.0, 723.0, 415.0, 709.0" coords2="201.0, 709.0, 201.0, 723.0, 415.0, 723.0, 415.0, 709.0" shape="poly" alt=":Control Flow" id="areadiagram_map_gOSDvtGGAqDIBxEt_default" href="ControlFlow_AOSDvtGGAqDIBxEs.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','201.0, 709.0, 201.0, 723.0, 415.0, 723.0, 415.0, 709.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=32SDvtGGAqDIBxEk/7. ?/DecisionNode'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=_2SDvtGGAqDIBxEq/7.1. penggabungan paket selesai/Action')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '201.0, 709.0, 201.0, 723.0, 415.0, 723.0, 415.0, 709.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="771.0, 622.0, 771.0, 767.4137, 435.0, 849.34247, 435.0, 849.34247, 435.0, 863.83014, 435.0, 863.83014, 771.0, 781.90137, 771.0, 781.90137, 771.0, 783.0, 785.0, 783.0, 785.0, 778.4877, 785.0, 778.4877, 787.0, 778.0, 785.0, 764.0, 785.0, 622.0" coords2="771.0, 622.0, 771.0, 767.4137, 435.0, 849.34247, 435.0, 849.34247, 435.0, 863.83014, 435.0, 863.83014, 771.0, 781.90137, 771.0, 781.90137, 771.0, 783.0, 785.0, 783.0, 785.0, 778.4877, 785.0, 778.4877, 787.0, 778.0, 785.0, 764.0, 785.0, 622.0" shape="poly" alt=":Control Flow" id="areadiagram_map_oOSDvtGGAqDIBxEz_default" href="ControlFlow_IOSDvtGGAqDIBxEy.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','771.0, 622.0, 771.0, 767.4137, 435.0, 849.34247, 435.0, 849.34247, 435.0, 863.83014, 435.0, 863.83014, 771.0, 781.90137, 771.0, 781.90137, 771.0, 783.0, 785.0, 783.0, 785.0, 778.4877, 785.0, 778.4877, 787.0, 778.0, 785.0, 764.0, 785.0, 622.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=H2SDvtGGAqDIBxEe/6.1. Ulangi/update penggabungan pagunya/Action'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=wOSDvtGGAqDIBxEw/Unnamed/MergeNode')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '771.0, 622.0, 771.0, 767.4137, 435.0, 849.34247, 435.0, 849.34247, 435.0, 863.83014, 435.0, 863.83014, 771.0, 781.90137, 771.0, 781.90137, 771.0, 783.0, 785.0, 783.0, 785.0, 778.4877, 785.0, 778.4877, 787.0, 778.0, 785.0, 764.0, 785.0, 622.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="94.0, 736.0, 94.0, 763.0, 90.0, 777.0, 94.0, 778.08014, 94.0, 778.08014, 94.0, 783.0, 108.0, 783.0, 108.0, 781.86053, 108.0, 781.86053, 415.0, 864.75964, 415.0, 864.75964, 415.0, 849.9375, 108.0, 766.7917, 108.0, 766.7917, 108.0, 736.0" coords2="94.0, 736.0, 94.0, 763.0, 90.0, 777.0, 94.0, 778.08014, 94.0, 778.08014, 94.0, 783.0, 108.0, 783.0, 108.0, 781.86053, 108.0, 781.86053, 415.0, 864.75964, 415.0, 864.75964, 415.0, 849.9375, 108.0, 766.7917, 108.0, 766.7917, 108.0, 736.0" shape="poly" alt=":Control Flow" id="areadiagram_map_4OSDvtGGAqDIBxE2_default" href="ControlFlow_4OSDvtGGAqDIBxE1.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','94.0, 736.0, 94.0, 763.0, 90.0, 777.0, 94.0, 778.08014, 94.0, 778.08014, 94.0, 783.0, 108.0, 783.0, 108.0, 781.86053, 108.0, 781.86053, 415.0, 864.75964, 415.0, 864.75964, 415.0, 849.9375, 108.0, 766.7917, 108.0, 766.7917, 108.0, 736.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=_2SDvtGGAqDIBxEq/7.1. penggabungan paket selesai/Action'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=wOSDvtGGAqDIBxEw/Unnamed/MergeNode')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '94.0, 736.0, 94.0, 763.0, 90.0, 777.0, 94.0, 778.08014, 94.0, 778.08014, 94.0, 783.0, 108.0, 783.0, 108.0, 781.86053, 108.0, 781.86053, 415.0, 864.75964, 415.0, 864.75964, 415.0, 849.9375, 108.0, 766.7917, 108.0, 766.7917, 108.0, 736.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 736.0, 418.0, 840.0, 432.0, 840.0, 432.0, 736.0" coords2="418.0, 736.0, 418.0, 840.0, 432.0, 840.0, 432.0, 736.0" shape="poly" alt=":Control Flow" id="areadiagram_map_kOSDvtGGAqDIBxE5_default" href="ControlFlow_kOSDvtGGAqDIBxE4.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 736.0, 418.0, 840.0, 432.0, 840.0, 432.0, 736.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=32SDvtGGAqDIBxEk/7. ?/DecisionNode'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=wOSDvtGGAqDIBxEw/Unnamed/MergeNode')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 736.0, 418.0, 840.0, 432.0, 840.0, 432.0, 736.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="418.0, 880.0, 418.0, 940.0, 432.0, 940.0, 432.0, 880.0" coords2="418.0, 880.0, 418.0, 940.0, 432.0, 940.0, 432.0, 880.0" shape="poly" alt=":Control Flow" id="areadiagram_map_sOSDvtGGAqDIBxE__default" href="ControlFlow_MOSDvtGGAqDIBxE_.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','418.0, 880.0, 418.0, 940.0, 432.0, 940.0, 432.0, 880.0',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=wOSDvtGGAqDIBxEw/Unnamed/MergeNode'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=0OSDvtGGAqDIBxE8/Unnamed/ActivityFinial')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '418.0, 880.0, 418.0, 940.0, 432.0, 940.0, 432.0, 880.0')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="415, 940, 435, 972.0" coords2="415, 940, 435, 972.0" shape="rect" alt=":Activity Final Node" id="areadiagram_map_0OSDvtGGAqDIBxE8_default" href="ActivityFinalNode_0OSDvtGGAqDIBxE7.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','415, 940, 435, 960',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Scenario/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=sOSDvtGGAqDIBxE_/Unnamed/ActivityControlFlow'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '415, 940, 435, 960')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="415, 840, 435, 892.0" coords2="415, 840, 435, 892.0" shape="rect" alt=":Merge Node" id="areadiagram_map_wOSDvtGGAqDIBxEw_default" href="MergeNode_wOSDvtGGAqDIBxEv.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','415, 840, 435, 880',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=oOSDvtGGAqDIBxEz/Unnamed/ActivityControlFlow','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=4OSDvtGGAqDIBxE2/Unnamed/ActivityControlFlow','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=kOSDvtGGAqDIBxE5/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=sOSDvtGGAqDIBxE_/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '415, 840, 435, 880')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 696, 201, 748.0" coords2="2, 696, 201, 748.0" shape="rect" alt="7.1. penggabungan paket selesai:Action" id="areadiagram_map__2SDvtGGAqDIBxEq_default" href="ActivityAction__2SDvtGGAqDIBxEp.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','2, 696, 201, 736',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/penggabungan paket selesai/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=gOSDvtGGAqDIBxEt/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=4OSDvtGGAqDIBxE2/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '2, 696, 201, 736')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="415, 696, 435, 748.0" coords2="415, 696, 435, 748.0" shape="rect" alt="7. ?:Decision Node" id="areadiagram_map_32SDvtGGAqDIBxEk_default" href="DecisionNode_32SDvtGGAqDIBxEj.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','415, 696, 435, 736',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Unnamed/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=v2SDvtGGAqDIBxEn/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=gOSDvtGGAqDIBxEt/Unnamed/ActivityControlFlow','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=kOSDvtGGAqDIBxE5/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '415, 696, 435, 736')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="650, 582, 906, 634.0" coords2="650, 582, 906, 634.0" shape="rect" alt="6.1. Ulangi/update penggabungan pagunya:Action" id="areadiagram_map_H2SDvtGGAqDIBxEe_default" href="ActivityAction_72SDvtGGAqDIBxEd.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','650, 582, 906, 622',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Ulangi/update penggabungan pagunya/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=n2SDvtGGAqDIBxEh/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=oOSDvtGGAqDIBxEz/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '650, 582, 906, 622')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="415, 582, 435, 634.0" coords2="415, 582, 435, 634.0" shape="rect" alt="6. Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan?:Decision Node" id="areadiagram_map_z2SDvtGGAqDIBxEY_default" href="DecisionNode_T2SDvtGGAqDIBxEX.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','415, 582, 435, 622',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=r2SDvtGGAqDIBxEb/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=n2SDvtGGAqDIBxEh/Unnamed/ActivityControlFlow','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=v2SDvtGGAqDIBxEn/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '415, 582, 435, 622')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="147, 482, 704, 534.0" coords2="147, 482, 704, 534.0" shape="rect" alt="5. Cek jumlah Pagu Anggaran Paket Asal dengan Penjumlahan dari seluruh paket yang digabungkan:Action" id="areadiagram_map_d2SDvtGGAqDIBxES_default" href="ActivityAction_t2SDvtGGAqDIBxER.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','147, 482, 704, 522',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Cek jumlah Pagu Anggaran Paket Asal dengan Penjumlahan dari seluruh paket yang digabungkan/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=j2SDvtGGAqDIBxEV/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=r2SDvtGGAqDIBxEb/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '147, 482, 704, 522')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="253, 382, 598, 434.0" coords2="253, 382, 598, 434.0" shape="rect" alt="4. Tambahkan nilai Pagu Paket ke Pagu Anggaran Paket Asal:Action" id="areadiagram_map_V2SDvtGGAqDIBxEM_default" href="ActivityAction_l2SDvtGGAqDIBxEL.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','253, 382, 598, 422',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Tambahkan nilai Pagu Paket ke Pagu Anggaran Paket Asal/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=N2SDvtGGAqDIBxEP/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=j2SDvtGGAqDIBxEV/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '253, 382, 598, 422')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="296, 282, 555, 334.0" coords2="296, 282, 555, 334.0" shape="rect" alt="3. Pilih paket-paket yang akan digabungkan:Action" id="areadiagram_map_52SDvtGGAqDIBxEG_default" href="ActivityAction_Z2SDvtGGAqDIBxEF.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','296, 282, 555, 322',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Pilih paket-paket yang akan digabungkan/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=F2SDvtGGAqDIBxEJ/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=N2SDvtGGAqDIBxEP/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '296, 282, 555, 322')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="270, 182, 580, 234.0" coords2="270, 182, 580, 234.0" shape="rect" alt="2. Catatkan nilai Pagu anggaran RUP dalam paket asal:Action" id="areadiagram_map_x2SDvtGGAqDIBxEA_default" href="ActivityAction_R2SDvtGGAqDIBxD_.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','270, 182, 580, 222',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Catatkan nilai Pagu anggaran RUP dalam paket asal/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=p2SDvtGGAqDIBxED/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=F2SDvtGGAqDIBxEJ/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '270, 182, 580, 222')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="231, 82, 620, 134.0" coords2="231, 82, 620, 134.0" shape="rect" alt="1. Tetapkan satu paket asal untuk menggabungkan paket-paket lain:Action" id="areadiagram_map_e2SDvtGGAqDIBxD6_default" href="ActivityAction_O2SDvtGGAqDIBxD5.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','231, 82, 620, 122',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Tetapkan satu paket asal untuk menggabungkan paket-paket lain/GenericModel','ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=h2SDvtGGAqDIBxD9/Unnamed/ActivityControlFlow'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=p2SDvtGGAqDIBxED/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '231, 82, 620, 122')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="414, 2, 436, 34.0" coords2="414, 2, 436, 34.0" shape="rect" alt=":Initial Node" id="areadiagram_map_22SDvtGGAqDIBxD3_default" href="InitialNode_m2SDvtGGAqDIBxD2.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','414, 2, 436, 22',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('null/Scenario/GenericModel'),new Array('ActivityDiagram_q2SDvtGGAqDIBxD0.html?shapeid=h2SDvtGGAqDIBxD9/Unnamed/ActivityControlFlow')),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '414, 2, 436, 22')" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ActivityFinial.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ActivityFinial.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityFinalNode_0OSDvtGGAqDIBxE7.html" class="ItemLink">N/A : Activity Final Node</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/MergeNode.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/MergeNode.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="MergeNode_wOSDvtGGAqDIBxEv.html" class="ItemLink">N/A : Merge Node</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Action.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Action.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityAction__2SDvtGGAqDIBxEp.html" class="ItemLink">7.1. penggabungan paket selesai : Action</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/DecisionNode.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/DecisionNode.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="DecisionNode_32SDvtGGAqDIBxEj.html" class="ItemLink">7. ? : Decision Node</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Action.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Action.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityAction_72SDvtGGAqDIBxEd.html" class="ItemLink">6.1. Ulangi/update penggabungan pagunya : Action</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/DecisionNode.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/DecisionNode.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="DecisionNode_T2SDvtGGAqDIBxEX.html" class="ItemLink">6. Pagu Anggaran Paket Asal &gt; Total PaguPaket yang digabungkan? : Decision Node</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Action.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Action.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityAction_t2SDvtGGAqDIBxER.html" class="ItemLink">5. Cek jumlah Pagu Anggaran Paket Asal dengan Penjumlahan dari seluruh paket yang digabungkan : Action</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Action.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Action.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityAction_l2SDvtGGAqDIBxEL.html" class="ItemLink">4. Tambahkan nilai Pagu Paket ke Pagu Anggaran Paket Asal : Action</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Action.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Action.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityAction_Z2SDvtGGAqDIBxEF.html" class="ItemLink">3. Pilih paket-paket yang akan digabungkan : Action</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Action.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Action.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityAction_R2SDvtGGAqDIBxD_.html" class="ItemLink">2. Catatkan nilai Pagu anggaran RUP dalam paket asal : Action</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Action.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Action.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="ActivityAction_O2SDvtGGAqDIBxD5.html" class="ItemLink">1. Tetapkan satu paket asal untuk menggabungkan paket-paket lain : Action</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/InitialNode.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/InitialNode.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="InitialNode_m2SDvtGGAqDIBxD2.html" class="ItemLink">N/A : Initial Node</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>

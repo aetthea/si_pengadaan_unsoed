@@ -1,0 +1,394 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Class Diagram - Setup Pengadaan Versi Entity Bean</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initGridDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+<a href="Package_8zTHKtGGAqDICAwy.html" class="PageParentTitle">Setup Pengadaan Versi Entity Bean : Package</a>	</p>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Class Diagram - Setup Pengadaan Versi Entity Bean		</span>
+<a onclick="javascript: showVpLink('sistem informasi pengadaan unsoed.vpp://diagram/G_9HKtGGAqDICAwn', 'Setup Pengadaan Versi Entity Bean\nsistem informasi pengadaan unsoed.vpp://diagram/G_9HKtGGAqDICAwn', 'Setup Pengadaan Versi Entity Bean', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon(),hideLinkPopup(),hideReferencedBys();">
+			<tr>
+				<td>
+<span class="TableContent">Jump to:</span>					<select id="SelectShape" class="TableContent" onChange="scrollWin('diagram', this.value);hideLinkPopup();showSpotLight('diagram', this.value)">
+<option value="">Please select a model element</option>
+<option value="shape|843.0|10.0|131.0|50.0|Class_gJMbItGGAqDIBAlb.html|Class_gJMbItGGAqDIBAlb.html|AywnKtGGAqDICAzK" id="optionAywnKtGGAqDICAzK">UnitKerja : Class</option>
+<option value="shape|2.0|367.0|131.0|40.0|Class_a6knItGGAqDIBAwm.html|Class_a6knItGGAqDIBAwm.html|qqQnKtGGAqDICAzA" id="optionqqQnKtGGAqDICAzA">Tender : Class</option>
+<option value="shape|807.0|367.0|131.0|50.0|Class_YqXUZNGGAqDIAw_Y.html|Class_YqXUZNGGAqDIAw_Y.html|NWgnKtGGAqDICAy2" id="optionNWgnKtGGAqDICAy2">Spek : Class</option>
+<option value="shape|682.0|10.0|131.0|50.0|Class_tasUZNGGAqDIAw9y.html|Class_tasUZNGGAqDIAw9y.html|aaAnKtGGAqDICAyq" id="optionaaAnKtGGAqDICAyq">RUP : Class</option>
+<option value="shape|682.0|160.0|145.0|92.0|Class_lR0UZNGGAqDIAw9k.html|Class_lR0UZNGGAqDIAw9k.html|40fHKtGGAqDICAyT" id="option40fHKtGGAqDICAyT">PP : Class</option>
+<option value="shape|216.0|491.0|139.0|40.0|Class_xaenItGGAqDIBAyV.html|Class_xaenItGGAqDIBAyV.html|IWPHKtGGAqDICAyJ" id="optionIWPHKtGGAqDICAyJ">PenunjukkanLangsung : Class</option>
+<option value="shape|151.0|407.0|131.0|40.0|Class_IjynItGGAqDIBAxX.html|Class_IjynItGGAqDIBAxX.html|Ni3HKtGGAqDICAx_" id="optionNi3HKtGGAqDICAx_">PengadaanLangsung : Class</option>
+<option value="shape|253.0|16.0|131.0|57.0|Class_rrCbItGGAqDIBAlp.html|Class_rrCbItGGAqDIBAlp.html|cAXHKtGGAqDICAxl" id="optioncAXHKtGGAqDICAxl">Pelaku : Class</option>
+<option value="shape|345.0|173.0|148.0|88.0|Class_mGkUZNGGAqDIAw9W.html|Class_mGkUZNGGAqDIAw9W.html|OJHHKtGGAqDICAxQ" id="optionOJHHKtGGAqDICAxQ">Paket : Class</option>
+<option value="shape|662.0|367.0|131.0|50.0|Class_zeHUZNGGAqDIAw_L.html|Class_zeHUZNGGAqDIAw_L.html|uB7HKtGGAqDICAxD" id="optionuB7HKtGGAqDICAxD">rincian_HPS : Class</option>
+<option value="shape|448.0|387.0|131.0|40.0|Class_U7snItGGAqDIBAxI.html|Class_U7snItGGAqDIBAxI.html|dabHKtGGAqDICAw3" id="optiondabHKtGGAqDICAw3">E_Purchasing : Class</option>
+</select>				</td>
+			</tr>
+		</table>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagram" src="../images/Setup_Pengadaan_Versi_Entity_Bean.png" usemap="#diagram_map" class="Image" width="978" height="535"/>
+					<map name="diagram_map">
+<area imageId="diagram" coords="813.0, 23.0, 813.0, 37.0, 843.0, 37.0, 843.0, 23.0" coords2="813.0, 23.0, 813.0, 37.0, 843.0, 37.0, 843.0, 23.0" shape="poly" alt=":Association" id="areadiagram_map_QywnKtGGAqDICAzM_default" href="Association_avAHItGGAqDIBArS.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="800.0, 252.0, 800.0, 376.0, 807.0, 376.0, 807.0, 367.0, 814.0, 367.0, 814.0, 252.0" coords2="800.0, 252.0, 800.0, 376.0, 807.0, 376.0, 807.0, 367.0, 814.0, 367.0, 814.0, 252.0" shape="poly" alt=":Association" id="areadiagram_map_dWgnKtGGAqDICAy4_default" href="Association_gwy0ZNGGAqDIAxAy.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="700.0, 60.0, 700.0, 160.0, 714.0, 160.0, 714.0, 60.0" coords2="700.0, 60.0, 700.0, 160.0, 714.0, 160.0, 714.0, 60.0" shape="poly" alt=":Association" id="areadiagram_map_GaAnKtGGAqDICAys_default" href="Association_fNM0ZNGGAqDIAxAd.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="390.0, 113.0, 390.0, 116.0, 387.0, 116.0, 387.0, 130.0, 390.0, 130.0, 390.0, 173.0, 404.0, 173.0, 404.0, 130.0, 495.0, 130.0, 495.0, 176.0, 493.0, 176.0, 493.0, 190.0, 495.0, 190.0, 495.0, 193.0, 509.0, 193.0, 509.0, 190.0, 512.0, 190.0, 512.0, 176.0, 509.0, 176.0, 509.0, 130.0, 512.0, 130.0, 512.0, 116.0, 509.0, 116.0, 509.0, 113.0, 495.0, 113.0, 495.0, 116.0, 404.0, 116.0, 404.0, 113.0" coords2="390.0, 113.0, 390.0, 116.0, 387.0, 116.0, 387.0, 130.0, 390.0, 130.0, 390.0, 173.0, 404.0, 173.0, 404.0, 130.0, 495.0, 130.0, 495.0, 176.0, 493.0, 176.0, 493.0, 190.0, 495.0, 190.0, 495.0, 193.0, 509.0, 193.0, 509.0, 190.0, 512.0, 190.0, 512.0, 176.0, 509.0, 176.0, 509.0, 130.0, 512.0, 130.0, 512.0, 116.0, 509.0, 116.0, 509.0, 113.0, 495.0, 113.0, 495.0, 116.0, 404.0, 116.0, 404.0, 113.0" shape="poly" alt="evaluasi:Association" id="areadiagram_map_eJHHKtGGAqDICAxS_default" href="Association_2uLMZNGGAqDIAxCq.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="493.0, 193.0, 493.0, 207.0, 682.0, 207.0, 682.0, 193.0" coords2="493.0, 193.0, 493.0, 207.0, 682.0, 207.0, 682.0, 193.0" shape="poly" alt=":Association" id="areadiagram_map_M0fHKtGGAqDICAyX_default" href="Association_L27sZNGGAqDIAxD9.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="365.0, 73.0, 365.0, 173.0, 379.0, 173.0, 379.0, 73.0" coords2="365.0, 73.0, 365.0, 173.0, 379.0, 173.0, 379.0, 73.0" shape="poly" alt="konsolidasi:Association" id="areadiagram_map_CAXHKtGGAqDICAxn_default" href="Association_t5R7ItGGAqDIBAqL.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="365.0, 73.0, 365.0, 173.0, 379.0, 173.0, 379.0, 73.0" coords2="365.0, 73.0, 365.0, 173.0, 379.0, 173.0, 379.0, 73.0" shape="poly" alt="meluncurkan_pengadaan:Association" id="areadiagram_map_iAXHKtGGAqDICAxp_default" href="Association_EAVvItGGAqDIBA_a.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="345.0, 252.5, 122.0, 364.0, 123.15385, 367.0, 133.0, 367.0, 133.0, 374.0, 355.0, 263.0, 354.23077, 261.0, 345.0, 261.0, 345.0, 252.5" coords2="345.0, 252.5, 122.0, 364.0, 123.15385, 367.0, 133.0, 367.0, 133.0, 374.0, 355.0, 263.0, 354.23077, 261.0, 345.0, 261.0, 345.0, 252.5" shape="poly" alt="member_paket:Generalization" id="areadiagram_map_GqQnKtGGAqDICAzC_default" href="Generalization_gSvnItGGAqDIBAzY.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="342.0, 250.0, 273.19135, 407.0, 282.0, 407.0, 282.0, 416.23077, 284.0, 417.0, 352.37036, 261.0, 345.0, 261.0, 345.0, 251.15384, 342.0, 250.0" coords2="342.0, 250.0, 273.19135, 407.0, 282.0, 407.0, 282.0, 416.23077, 284.0, 417.0, 352.37036, 261.0, 345.0, 261.0, 345.0, 251.15384, 342.0, 250.0" shape="poly" alt=":Generalization" id="areadiagram_map_di3HKtGGAqDICAyB_default" href="Generalization_rj_nItGGAqDIBAzk.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="338.0, 252.0, 338.0, 491.0, 352.0, 491.0, 352.0, 261.0, 345.0, 261.0, 345.0, 252.0" coords2="338.0, 252.0, 338.0, 491.0, 352.0, 491.0, 352.0, 261.0, 345.0, 261.0, 345.0, 252.0" shape="poly" alt=":Generalization" id="areadiagram_map_YWPHKtGGAqDICAyL_default" href="Generalization_cNAXItGGAqDIBAzo.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="693.0, 252.0, 693.0, 367.0, 707.0, 367.0, 707.0, 252.0" coords2="693.0, 252.0, 693.0, 367.0, 707.0, 367.0, 707.0, 252.0" shape="poly" alt=":Association" id="areadiagram_map_00fHKtGGAqDICAyV_default" href="Association_Cvi0ZNGGAqDIAxAq.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="441.0, 261.0, 441.0, 396.0, 448.0, 396.0, 448.0, 387.0, 455.0, 387.0, 455.0, 261.0" coords2="441.0, 261.0, 441.0, 396.0, 448.0, 396.0, 448.0, 387.0, 455.0, 387.0, 455.0, 261.0" shape="poly" alt=":Generalization" id="areadiagram_map_.JHHKtGGAqDICAxU_default" href="Generalization_wHfnItGGAqDIBAzg.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="843, 10, 974, 72.0" coords2="843, 10, 974, 72.0" shape="rect" alt="UnitKerja:Class" id="areadiagram_map_AywnKtGGAqDICAzK_default" href="Class_gJMbItGGAqDIBAlb.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','843, 10, 974, 60',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=CxTrItGGAqDIBAkz/unit kerja/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '843, 10, 974, 60')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="2, 367, 133, 407" coords2="2, 367, 133, 407" shape="rect" alt="Tender:Class" id="areadiagram_map_qqQnKtGGAqDICAzA_default" href="Class_a6knItGGAqDIBAwm.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="807, 367, 938, 429.0" coords2="807, 367, 938, 429.0" shape="rect" alt="Spek:Class" id="areadiagram_map_NWgnKtGGAqDICAy2_default" href="Class_YqXUZNGGAqDIAw_Y.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','807, 367, 938, 417',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=9grUZNGGAqDIAw.7/Spek/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '807, 367, 938, 417')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="682, 10, 813, 72.0" coords2="682, 10, 813, 72.0" shape="rect" alt="RUP:Class" id="areadiagram_map_aaAnKtGGAqDICAyq_default" href="Class_tasUZNGGAqDIAw9y.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','682, 10, 813, 60',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=XMpIZNGGAqDIAwuU/RUP/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '682, 10, 813, 60')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="682, 160, 827, 264.0" coords2="682, 160, 827, 264.0" shape="rect" alt="PP:Class" id="areadiagram_map_40fHKtGGAqDICAyT_default" href="Class_lR0UZNGGAqDIAw9k.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','682, 160, 827, 252',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=hHE4ZNGGAqDIAwzR/DPP/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '682, 160, 827, 252')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="216, 491, 355, 531" coords2="216, 491, 355, 531" shape="rect" alt="PenunjukkanLangsung:Class" id="areadiagram_map_IWPHKtGGAqDICAyJ_default" href="Class_xaenItGGAqDIBAyV.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="151, 407, 282, 447" coords2="151, 407, 282, 447" shape="rect" alt="PengadaanLangsung:Class" id="areadiagram_map_Ni3HKtGGAqDICAx__default" href="Class_IjynItGGAqDIBAxX.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="253, 16, 384, 85.0" coords2="253, 16, 384, 85.0" shape="rect" alt="Pelaku:Class" id="areadiagram_map_cAXHKtGGAqDICAxl_default" href="Class_rrCbItGGAqDIBAlp.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','253, 16, 384, 73',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=EdBrItGGAqDIBAkf/Pelaku Pengadaan/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '253, 16, 384, 73')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="345, 173, 493, 273.0" coords2="345, 173, 493, 273.0" shape="rect" alt="Paket:Class" id="areadiagram_map_OJHHKtGGAqDICAxQ_default" href="Class_mGkUZNGGAqDIAw9W.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','345, 173, 493, 261',new Array(),new Array(),new Array(),new Array(),new Array(),new Array('StateDiagram_c9IhvtGGAqDIBwpE.html/Paket State Machine Diagram/StateDiagram'),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=8ShIZNGGAqDIAwuR/Paket Pengadaan/TAClass'),new Array()),hideReferenceIcon(),showSubdiagramIcon('diagram', '345, 173, 493, 261'),showTransitorIcon('diagram', '345, 173, 493, 261')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="662, 367, 793, 429.0" coords2="662, 367, 793, 429.0" shape="rect" alt="rincian_HPS:Class" id="areadiagram_map_uB7HKtGGAqDICAxD_default" href="Class_zeHUZNGGAqDIAw_L.html" onmouseover="storeReferenceAndSubdiagramInfos('diagram','662, 367, 793, 417',new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array(),new Array('TextualAnalysis_I_0cSNGGAqDIBCul.html?shapeid=SMLUZNGGAqDIAw.4/HPS/TAClass'),new Array()),hideReferenceIcon(),hideSubdiagramIcon(),showTransitorIcon('diagram', '662, 367, 793, 417')" onmousedown="clearSpotLight();"/>
+<area imageId="diagram" coords="448, 387, 579, 427" coords2="448, 387, 579, 427" shape="rect" alt="E_Purchasing:Class" id="areadiagram_map_dabHKtGGAqDICAw3_default" href="Class_U7snItGGAqDIBAxI.html" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+		<p>
+		</p>
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Model Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Name</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_gJMbItGGAqDIBAlb.html" class="ItemLink">UnitKerja : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_a6knItGGAqDIBAwm.html" class="ItemLink">Tender : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_YqXUZNGGAqDIAw_Y.html" class="ItemLink">Spek : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_tasUZNGGAqDIAw9y.html" class="ItemLink">RUP : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_lR0UZNGGAqDIAw9k.html" class="ItemLink">PP : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_xaenItGGAqDIBAyV.html" class="ItemLink">PenunjukkanLangsung : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_IjynItGGAqDIBAxX.html" class="ItemLink">PengadaanLangsung : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_rrCbItGGAqDIBAlp.html" class="ItemLink">Pelaku : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_mGkUZNGGAqDIAw9W.html" class="ItemLink">Paket : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_zeHUZNGGAqDIAw_L.html" class="ItemLink">rincian_HPS : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Class.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Class.png'); background-repeat: no-repeat;">
+					</div>
+					&nbsp; <a href="Class_U7snItGGAqDIBAxI.html" class="ItemLink">E_Purchasing : Class</a>				</span>
+			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		sistem informasi pengadaan unsoed	</div>
+</body>
+</html>
